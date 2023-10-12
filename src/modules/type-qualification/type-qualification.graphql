@@ -1,0 +1,23 @@
+type TypeQualification {
+  id_type_qual: Int!
+  name: String
+  floor_score: Float
+  ceiling_score: Float
+  year: Int
+}
+
+input CreateTypeQualificationInput {
+  name: String!
+  floor_score: Float!
+  ceiling_score: Float!
+  year: Int
+}
+
+type Query {
+  typeQualifications: [TypeQualification]!
+}
+
+type Mutation {
+  createTypeQualification(createTypeQualificationInput: CreateTypeQualificationInput!): TypeQualification!
+  deleteTypeQualification(id_type_qual: Int!): TypeQualification
+}

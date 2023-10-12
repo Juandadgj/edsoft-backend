@@ -1,0 +1,24 @@
+type Institution {
+  id_institution: Int!
+  name: String!
+  register: String!
+  direction: String!
+  phone: String!
+  responsable: String!
+  logo: String
+  user: String!
+  pay_inscription: Int!
+  monthly_pay: Int!
+  day: String!
+  month: String!
+  year: String!
+  version: Int!
+  status: String!
+  title: String!
+  message: String!
+  information: String!
+}
+
+type Query {
+  institutions: [Institution]!
+}

@@ -1,0 +1,30 @@
+type ScholarYear {
+  id_year: Int!
+  rector: String
+  secretary: String
+  comment: String
+}
+
+input CreateScholarYearInput {
+  id_year: Int!
+  rector: String
+  secretary: String
+  comment: String
+}
+
+input UpdateScholarYearInput {
+  id_year: Int!
+  rector: String
+  secretary: String
+  comment: String
+}
+
+type Query {
+  scholarYears: [ScholarYear]!
+}
+
+type Mutation {
+  createScholarYear(createScholarYearInput: CreateScholarYearInput!): ScholarYear!
+  updateScholarYear(updateScholarYearInput: UpdateScholarYearInput!): ScholarYear!
+  deleteScholarYear(id_year: Int!): ScholarYear
+}

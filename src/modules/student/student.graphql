@@ -1,0 +1,76 @@
+type Student {
+  id_student: Int!
+  name: String
+  last_name: String
+  type_id: Int
+  identification: String
+  sex: String
+  direction: String
+  phone: String
+  guardian: String
+  status: String
+  birthday: String
+  father: String
+  mother: String
+  email: String
+}
+
+input CreateStudentInput {
+  name: String!
+  last_name: String!
+  type_id: Int!
+  identification: String!
+  sex: String!
+  direction: String
+  phone: String!
+  guardian: String!
+  status: String
+  birthday: String
+  father: String
+  mother: String
+  email: String
+}
+
+input UpdateStudentInput {
+  id_student: Int!
+  name: String
+  last_name: String
+  type_id: Int
+  identification: String
+  sex: String
+  direction: String
+  phone: String
+  guardian: String
+  status: String
+  birthday: String
+  father: String
+  mother: String
+  email: String
+}
+
+input FilterStudentInput {
+  name: String
+  last_name: String
+  type_id: Int
+  identification: String
+  sex: String
+  direction: String
+  phone: String
+  guardian: String
+  status: String
+  birthday: String
+  father: String
+  mother: String
+  email: String
+}
+
+type Query {
+  students(filterStudentInput: FilterStudentInput): [Student]!
+  studentByID(id_student: Int!): Student
+}
+
+type Mutation {
+  createStudent(createStudentInput: CreateStudentInput!): Student!
+  updateStudent(updateStudentInput: UpdateStudentInput!): Student!
+  deleteStudent(id_student: Int!): Student
+}

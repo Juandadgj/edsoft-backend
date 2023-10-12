@@ -1,0 +1,36 @@
+type User {
+  id_user: Int!
+  user: String!
+  password: String!
+  typeu: String!
+  status: String!
+  belongs: String!
+}
+
+type Auth {
+  token: String
+  role: String
+}
+
+input SignInInput {
+  id_institution: Int!
+  user: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  id_user: Int!
+  user: String!
+  password: String!
+  typeu: String!
+  status: String!
+  belongs: String!
+}
+
+type Query {
+  signIn(signInInput: SignInInput): Auth!
+}
+
+type Mutation {
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}

@@ -1,0 +1,60 @@
+type Absence {
+  id_absence: Int!
+  id_student: Int
+  id_course: Int
+  day: Int
+  month: Int
+  year: Int
+  hours: Int
+  justification: String
+  reason: String
+  period: Int
+}
+
+input CreateAbsenceInput {
+  id_absence: Int!
+  id_student: Int!
+  id_course: Int!
+  day: Int
+  month: Int
+  year: Int
+  hours: Int
+  justification: String
+  reason: String
+  period: Int
+}
+
+input UpdateAbsenceInput {
+  id_absence: Int!
+  id_student: Int!
+  id_course: Int!
+  day: Int
+  month: Int
+  year: Int
+  hours: Int
+  justification: String
+  reason: String
+  period: Int
+}
+
+input FilterAbsenceInput {
+  id_student: Int
+  id_course: Int
+  day: Int
+  month: Int
+  year: Int
+  hours: Int
+  justification: String
+  reason: String
+  period: Int
+}
+
+type Query {
+  absences(filterAbsenceInput: FilterAbsenceInput): [Absence]!
+}
+
+type Mutation {
+  createAbsence(createAbsenceInput: CreateAbsenceInput!): Absence!
+  updateAbsence(updateAbsenceInput: UpdateAbsenceInput!): Absence!
+  deleteAbsence(id_absence: Int!): Absence!
+}

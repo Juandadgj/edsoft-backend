@@ -1,0 +1,56 @@
+type Achievement {
+  id_achievement: Int!
+  id_course: Int
+  period: Int
+  description: String
+}
+
+type Qualification {
+  id_achie_stu: Int!
+  id_achievement: Int
+  id_student: Int
+  score: Float
+}
+
+input CreateAchievementInput {
+  id_achievement: Int!
+  id_course: Int!
+  period: Int!
+  description: String
+}
+
+input UpdateAchievementInput {
+  id_achievement: Int!
+  id_course: Int
+  period: Int
+  description: String
+}
+
+input FilterAchievementInput {
+  id_course: Int
+  period: Int
+  description: String
+}
+
+input UpdateQualificationInput {
+  id_achie_stu: Int!
+  score: Float
+}
+
+input FilterQualificationInput {
+  id_achievement: Int
+  id_student: Int
+  score: Float
+}
+
+type Query {
+  achievements(filterAchievementInput: FilterAchievementInput): [Achievement]!
+  studentQualifications(filterQualificationInput: FilterQualificationInput): [Qualification]!
+}
+
+type Mutation {
+  createAchievement(createAchievementInput: CreateAchievementInput!): Achievement!
+  updateAchievement(updateAchievementInput: UpdateAchievementInput!): Achievement!
+  deleteAchievement(id_achievement: Int!): Achievement
+  updateQualification(updateQualificationInput: UpdateQualificationInput!): Qualification!
+}
