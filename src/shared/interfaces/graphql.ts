@@ -47,10 +47,9 @@ export class FilterAbsenceInput {
 }
 
 export class CreateAchievementInput {
-    id_achievement: number;
     id_course: number;
     period: number;
-    description?: Nullable<string>;
+    description: string;
 }
 
 export class UpdateAchievementInput {
@@ -72,9 +71,8 @@ export class UpdateQualificationInput {
 }
 
 export class FilterQualificationInput {
-    id_achievement?: Nullable<number>;
-    id_student?: Nullable<number>;
-    score?: Nullable<number>;
+    id_course: number;
+    period: number;
 }
 
 export class CreateAreaInput {
@@ -346,7 +344,7 @@ export abstract class IQuery {
 
     abstract achievements(filterAchievementInput?: Nullable<FilterAchievementInput>): Nullable<Achievement>[] | Promise<Nullable<Achievement>[]>;
 
-    abstract studentQualifications(filterQualificationInput?: Nullable<FilterQualificationInput>): Nullable<Qualification>[] | Promise<Nullable<Qualification>[]>;
+    abstract studentQualifications(filterQualificationInput?: Nullable<FilterQualificationInput>): Nullable<QualificationList>[] | Promise<Nullable<QualificationList>[]>;
 
     abstract areas(filterAreaInput?: Nullable<FilterAreaInput>): Nullable<Area>[] | Promise<Nullable<Area>[]>;
 
@@ -467,6 +465,11 @@ export class Qualification {
     score?: Nullable<number>;
 }
 
+export class QualificationList {
+    student: string;
+    qualifications: Nullable<Qualification>[];
+}
+
 export class Area {
     id_area: number;
     name?: Nullable<string>;
@@ -476,12 +479,14 @@ export class Area {
 export class Course {
     id_course: number;
     id_group: number;
+    id_area: number;
+    area?: Nullable<Area>;
     id_teacher: number;
+    teacher?: Nullable<Teacher>;
     name: string;
     position?: Nullable<number>;
     dim_codigo?: Nullable<number>;
     asi_dimension?: Nullable<string>;
-    id_area: number;
     hour: number;
     average?: Nullable<string>;
     percentage?: Nullable<number>;
@@ -521,6 +526,7 @@ export class Group {
     sublevel?: Nullable<string>;
     working_time?: Nullable<string>;
     representative?: Nullable<string>;
+    coursesCount?: Nullable<number>;
 }
 
 export class Institution {

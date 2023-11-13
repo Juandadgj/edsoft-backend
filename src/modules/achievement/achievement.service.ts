@@ -7,6 +7,7 @@ import {
   UpdateAchievementInput,
   UpdateQualificationInput,
 } from 'src/shared/interfaces/graphql';
+require("core-js/actual/array/group-by");
 
 @Injectable()
 export class AchievementService {
@@ -48,9 +49,36 @@ export class AchievementService {
     id_institution: string,
     filterQualificationInput: FilterQualificationInput,
   ) {
-    return await clients[id_institution].achievement_student.findMany({
-      where: filterQualificationInput,
+    const achievements = await clients[id_institution].achievement.findMany({
+      select: {
+        id_achievement: true,
+      },
+      where: {
+        id_course: filterQualificationInput.id_course,
+        period: filterQualificationInput.period
+      }
     });
+    const achievementsIds = achievements.map(element => element.id_achievement);
+    const qualifications = await clients[id_institution].achievement_student.findMany({
+      where: {
+        id_achievement: {
+          in: achievementsIds,
+        },
+      },
+      include: {
+        student: true,
+      }
+    });
+    const qualMap: any = qualifications.map((element: any) => {
+      element['student'] = `${element['student'].name} ${element['student'].last_name}`;
+      return element;
+    });
+    const qualGroup = qualMap.groupBy(qualification => qualification.student);
+    const result = Object.keys(qualGroup).map((studentName) => ({
+      student: studentName,
+      qualifications: qualGroup[studentName],
+    }));
+    return result;
   }
 
   async updateQualification(

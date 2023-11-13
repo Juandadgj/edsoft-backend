@@ -1,12 +1,14 @@
 type Course {
   id_course: Int!
   id_group: Int!
+  id_area: Int!
+  area: Area
   id_teacher: Int!
+  teacher: Teacher
   name: String!
   position: Int
   dim_codigo: Int
   asi_dimension: String
-  id_area: Int!
   hour: Int!
   average: String
   percentage: Int

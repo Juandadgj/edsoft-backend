@@ -19,6 +19,10 @@ export class CourseService {
   async findAll(id_institution: string, filterCourseInput: FilterCourseInput) {
     return await clients[id_institution].course.findMany({
       where: filterCourseInput,
+      include: {
+        teacher: true,
+        area: true,
+      },
     });
   }
 

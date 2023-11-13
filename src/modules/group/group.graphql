@@ -5,6 +5,7 @@ type Group {
   sublevel: String
   working_time: String
   representative: String
+  coursesCount: Int
 }
 
 input CreateGroupInput {

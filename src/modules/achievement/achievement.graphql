@@ -12,11 +12,15 @@ type Qualification {
   score: Float
 }
 
+type QualificationList {
+  student: String!
+  qualifications: [Qualification]!
+}
+
 input CreateAchievementInput {
-  id_achievement: Int!
   id_course: Int!
   period: Int!
-  description: String
+  description: String!
 }
 
 input UpdateAchievementInput {
@@ -38,14 +42,13 @@ input UpdateQualificationInput {
 }
 
 input FilterQualificationInput {
-  id_achievement: Int
-  id_student: Int
-  score: Float
+  id_course: Int!
+  period: Int!
 }
 
 type Query {
   achievements(filterAchievementInput: FilterAchievementInput): [Achievement]!
-  studentQualifications(filterQualificationInput: FilterQualificationInput): [Qualification]!
+  studentQualifications(filterQualificationInput: FilterQualificationInput): [QualificationList]!
 }
 
 type Mutation {

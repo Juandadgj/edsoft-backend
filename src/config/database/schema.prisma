@@ -21,39 +21,48 @@ model absence {
 }
 
 model achievement {
-  id_achievement Int     @id @default(autoincrement())
+  id_achievement Int                   @id @default(autoincrement())
   id_course      Int?
   period         Int?
-  description    String? @db.LongText
+  description    String?               @db.LongText
+  course         course?               @relation(fields: [id_course], references: [id_course])
+  qualifications achievement_student[]
 }
 
 model achievement_student {
-  id_achie_stu   Int     @id @default(autoincrement())
+  id_achie_stu   Int          @id @default(autoincrement())
   id_achievement Int?
   id_student     Int?
   score          Float?
-  valor_nota     String? @db.VarChar(20)
-  sigla_nota     String? @db.VarChar(5)
+  valor_nota     String?      @db.VarChar(20)
+  sigla_nota     String?      @db.VarChar(5)
+  achievement    achievement? @relation(fields: [id_achievement], references: [id_achievement])
+  student        student?     @relation(fields: [id_student], references: [id_student])
 }
 
 model area {
-  id_area Int    @id @default(autoincrement())
-  name    String @db.VarChar(150)
-  status  String @default("H") @db.VarChar(1)
+  id_area Int      @id @default(autoincrement())
+  name    String   @db.VarChar(150)
+  status  String   @default("H") @db.VarChar(1)
+  courses course[]
 }
 
 model course {
-  id_course     Int     @id @default(autoincrement())
+  id_course     Int           @id @default(autoincrement())
   id_group      Int
+  id_area       Int
+  area          area          @relation(fields: [id_area], references: [id_area])
   id_teacher    Int
-  name          String  @db.VarChar(200)
+  teacher       teacher       @relation(fields: [id_teacher], references: [id_teacher])
+  name          String        @db.VarChar(200)
   position      Int?
   dim_codigo    Int?
-  asi_dimension String? @db.Char(1)
-  id_area       Int
+  asi_dimension String?       @db.Char(1)
   hour          Int
-  average       String? @db.Char(2)
+  average       String?       @db.Char(2)
   percentage    Int?
+  group         group?        @relation(fields: [id_group], references: [id_group])
+  achievements  achievement[]
 }
 
 model course_student {
@@ -94,17 +103,18 @@ model featured {
 }
 
 model group {
-  id_group       Int     @id @default(autoincrement())
+  id_group       Int      @id @default(autoincrement())
   id_year        Int?
   level          Int?
-  sublevel       String? @db.VarChar(5)
-  working_time   String? @db.VarChar(5)
-  representative String? @db.VarChar(200)
-  periodo_1      String? @db.VarChar(1)
-  periodo_2      String? @db.VarChar(1)
-  periodo_3      String? @db.VarChar(1)
-  periodo_4      String? @db.VarChar(1)
-  periodo_5      String? @db.VarChar(1)
+  sublevel       String?  @db.VarChar(5)
+  working_time   String?  @db.VarChar(5)
+  representative String?  @db.VarChar(200)
+  periodo_1      String?  @db.VarChar(1)
+  periodo_2      String?  @db.VarChar(1)
+  periodo_3      String?  @db.VarChar(1)
+  periodo_4      String?  @db.VarChar(1)
+  periodo_5      String?  @db.VarChar(1)
+  courses        course[]
 }
 
 model indicator_student {
@@ -169,71 +179,73 @@ model scholar_year {
 }
 
 model student {
-  id_student                 Int       @id @default(autoincrement())
-  name                       String?   @db.VarChar(200)
-  last_name                  String?   @db.VarChar(200)
+  id_student                 Int                   @id @default(autoincrement())
+  name                       String?               @db.VarChar(200)
+  last_name                  String?               @db.VarChar(200)
   type_id                    Int?
-  identification             String?   @db.VarChar(200)
-  sex                        String?   @db.VarChar(10)
-  direction                  String?   @db.VarChar(200)
-  phone                      String?   @db.VarChar(200)
-  guardian                   String?   @db.VarChar(200)
-  est_foto                   String?   @db.VarChar(200)
-  status                     String?   @default("H") @db.VarChar(5)
-  birthday                   DateTime? @db.Date
-  est_indigena               String?   @db.VarChar(2)
-  est_desplasado             String?   @db.VarChar(2)
-  est_madre_c                String?   @db.VarChar(2)
-  est_desmovilisado          String?   @db.VarChar(2)
-  est_sisben                 String?   @db.VarChar(2)
-  father                     String    @db.VarChar(150)
-  mother                     String    @db.VarChar(150)
-  est_ide_acudiente          String    @db.VarChar(100)
-  est_ide_madre              String    @db.VarChar(100)
-  est_ide_padre              String    @db.VarChar(100)
-  est_lugar_nacimiento       String    @db.VarChar(100)
-  est_niv_sisben             String    @db.VarChar(100)
-  est_niv_estrato            String    @db.VarChar(100)
-  est_niv_discapacidad       String    @db.VarChar(100)
-  comunidad_indigena         String?   @db.VarChar(70)
-  afrodescendiente           String?   @db.VarChar(70)
-  comunidad_afrodescendiente String?   @db.VarChar(70)
-  barrio                     String?   @db.VarChar(70)
-  zona                       String?   @db.VarChar(70)
-  estudio_vigencia           String?   @db.VarChar(70)
-  institucion_procedencia    String?   @db.VarChar(70)
-  grado_procedencia          String?   @db.VarChar(70)
-  ano_procedencia            String?   @db.VarChar(70)
-  ciudad_procedencia         String?   @db.VarChar(70)
-  sistema_salud              String?   @db.VarChar(70)
-  tipo_sangra                String?   @db.VarChar(70)
-  entidad_afiliado           String?   @db.VarChar(70)
-  capacidad_excepcional      String?   @db.VarChar(70)
-  codigo                     String?   @db.VarChar(70)
-  municipio                  String?   @db.VarChar(70)
-  estudio_realizado_madre    String?   @db.VarChar(70)
-  profesion_madre            String?   @db.VarChar(70)
-  celular_madre              String?   @db.VarChar(70)
-  estudio_realizado_padre    String?   @db.VarChar(70)
-  profesion_padre            String?   @db.VarChar(70)
-  celulat_padre              String?   @db.VarChar(70)
-  direccion_padre            String?   @db.VarChar(70)
-  necesita_escolar           String?   @db.VarChar(50)
-  email                      String?   @db.VarChar(200)
+  identification             String?               @db.VarChar(200)
+  sex                        String?               @db.VarChar(10)
+  direction                  String?               @db.VarChar(200)
+  phone                      String?               @db.VarChar(200)
+  guardian                   String?               @db.VarChar(200)
+  est_foto                   String?               @db.VarChar(200)
+  status                     String?               @default("H") @db.VarChar(5)
+  birthday                   DateTime?             @db.Date
+  est_indigena               String?               @db.VarChar(2)
+  est_desplasado             String?               @db.VarChar(2)
+  est_madre_c                String?               @db.VarChar(2)
+  est_desmovilisado          String?               @db.VarChar(2)
+  est_sisben                 String?               @db.VarChar(2)
+  father                     String                @db.VarChar(150)
+  mother                     String                @db.VarChar(150)
+  est_ide_acudiente          String                @db.VarChar(100)
+  est_ide_madre              String                @db.VarChar(100)
+  est_ide_padre              String                @db.VarChar(100)
+  est_lugar_nacimiento       String                @db.VarChar(100)
+  est_niv_sisben             String                @db.VarChar(100)
+  est_niv_estrato            String                @db.VarChar(100)
+  est_niv_discapacidad       String                @db.VarChar(100)
+  comunidad_indigena         String?               @db.VarChar(70)
+  afrodescendiente           String?               @db.VarChar(70)
+  comunidad_afrodescendiente String?               @db.VarChar(70)
+  barrio                     String?               @db.VarChar(70)
+  zona                       String?               @db.VarChar(70)
+  estudio_vigencia           String?               @db.VarChar(70)
+  institucion_procedencia    String?               @db.VarChar(70)
+  grado_procedencia          String?               @db.VarChar(70)
+  ano_procedencia            String?               @db.VarChar(70)
+  ciudad_procedencia         String?               @db.VarChar(70)
+  sistema_salud              String?               @db.VarChar(70)
+  tipo_sangra                String?               @db.VarChar(70)
+  entidad_afiliado           String?               @db.VarChar(70)
+  capacidad_excepcional      String?               @db.VarChar(70)
+  codigo                     String?               @db.VarChar(70)
+  municipio                  String?               @db.VarChar(70)
+  estudio_realizado_madre    String?               @db.VarChar(70)
+  profesion_madre            String?               @db.VarChar(70)
+  celular_madre              String?               @db.VarChar(70)
+  estudio_realizado_padre    String?               @db.VarChar(70)
+  profesion_padre            String?               @db.VarChar(70)
+  celulat_padre              String?               @db.VarChar(70)
+  direccion_padre            String?               @db.VarChar(70)
+  necesita_escolar           String?               @db.VarChar(50)
+  email                      String?               @db.VarChar(200)
+  qualifications             achievement_student[]
 }
 
 model teacher {
-  id_teacher      Int     @id @default(autoincrement())
-  name            String? @db.VarChar(200)
-  last_name       String? @db.VarChar(200)
+  id_teacher      Int      @id @default(autoincrement())
+  name            String?  @db.VarChar(200)
+  last_name       String?  @db.VarChar(200)
   type_id         Int?
-  identification  String? @db.VarChar(200)
-  direction       String? @db.VarChar(200)
-  phone           String? @db.VarChar(200)
-  email           String? @db.VarChar(200)
-  degree          String? @db.VarChar(200)
-  pro_descripcion String? @db.VarChar(200)
-  pro_eliminado   String? @default("N") @db.VarChar(5)
+  identification  String?  @db.VarChar(200)
+  direction       String?  @db.VarChar(200)
+  phone           String?  @db.VarChar(200)
+  email           String?  @db.VarChar(200)
+  degree          String?  @db.VarChar(200)
+  pro_descripcion String?  @db.VarChar(200)
+  pro_eliminado   String?  @default("N") @db.VarChar(5)
+  courses         course[]
 }
 
 model type_qualification {

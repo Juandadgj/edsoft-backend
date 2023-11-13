@@ -15,9 +15,19 @@ export class GroupService {
   }
 
   async findAll(id_institution: string, filterGroupInput: FilterGroupInput) {
-    return await clients[id_institution].group.findMany({
+    const query = await clients[id_institution].group.findMany({
       where: filterGroupInput,
+      include: {
+        _count: {
+          select: {courses: true}
+        }
+      }
     });
+    const groups = query.map((group) => {
+      group.coursesCount = group._count.courses;
+      return group;
+    });
+    return groups;
   }
 
   async findOne(id_institution: string, id_group: number) {
