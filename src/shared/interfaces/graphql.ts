@@ -379,6 +379,8 @@ export abstract class IQuery {
     abstract typeQualifications(): Nullable<TypeQualification>[] | Promise<Nullable<TypeQualification>[]>;
 
     abstract signIn(signInInput?: Nullable<SignInInput>): Auth | Promise<Auth>;
+
+    abstract generateReport(): Report | Promise<Report>;
 }
 
 export abstract class IMutation {
@@ -606,6 +608,10 @@ export class User {
 export class Auth {
     token?: Nullable<string>;
     role?: Nullable<string>;
+}
+
+export class Report {
+    report_content: string;
 }
 
 type Nullable<T> = T | null;

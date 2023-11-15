@@ -1,0 +1,7 @@
+type Report {
+  report_content: String!
+}
+
+type Query {
+  generateReport: Report!
+}
