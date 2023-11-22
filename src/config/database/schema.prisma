@@ -94,6 +94,8 @@ model enrollment {
   status           String?   @db.VarChar(10)
   reason_desertion String?   @db.LongText
   date_desertion   DateTime? @db.DateTime(0)
+  group            group?    @relation(fields: [id_group], references: [id_group])
+  student          student?  @relation(fields: [id_student], references: [id_student])
 }
 
 model featured {
@@ -103,18 +105,19 @@ model featured {
 }
 
 model group {
-  id_group       Int      @id @default(autoincrement())
+  id_group       Int          @id @default(autoincrement())
   id_year        Int?
   level          Int?
-  sublevel       String?  @db.VarChar(5)
-  working_time   String?  @db.VarChar(5)
-  representative String?  @db.VarChar(200)
-  periodo_1      String?  @db.VarChar(1)
-  periodo_2      String?  @db.VarChar(1)
-  periodo_3      String?  @db.VarChar(1)
-  periodo_4      String?  @db.VarChar(1)
-  periodo_5      String?  @db.VarChar(1)
+  sublevel       String?      @db.VarChar(5)
+  working_time   String?      @db.VarChar(5)
+  representative String?      @db.VarChar(200)
+  periodo_1      String?      @db.VarChar(1)
+  periodo_2      String?      @db.VarChar(1)
+  periodo_3      String?      @db.VarChar(1)
+  periodo_4      String?      @db.VarChar(1)
+  periodo_5      String?      @db.VarChar(1)
   courses        course[]
+  enrollments    enrollment[]
 }
 
 model indicator_student {
@@ -231,6 +234,7 @@ model student {
   necesita_escolar           String?               @db.VarChar(50)
   email                      String?               @db.VarChar(200)
   qualifications             achievement_student[]
+  enrollments                enrollment[]
 }
 
 model teacher {

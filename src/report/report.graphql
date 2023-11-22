@@ -2,6 +2,10 @@ type Report {
   report_content: String!
 }
 
+input GenerateStudentsListInput {
+  id_group: Int!
+}
+
 type Query {
-  generateReport: Report!
+  generateReport(generateStudentsListInput: GenerateStudentsListInput): Report!
 }

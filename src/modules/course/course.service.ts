@@ -22,6 +22,7 @@ export class CourseService {
       include: {
         teacher: true,
         area: true,
+        group: true
       },
     });
   }

@@ -326,6 +326,10 @@ export class UpdateUserInput {
     belongs: string;
 }
 
+export class GenerateStudentsListInput {
+    id_group: number;
+}
+
 export class Absence {
     id_absence: number;
     id_student?: Nullable<number>;
@@ -380,7 +384,7 @@ export abstract class IQuery {
 
     abstract signIn(signInInput?: Nullable<SignInInput>): Auth | Promise<Auth>;
 
-    abstract generateReport(): Report | Promise<Report>;
+    abstract generateReport(generateStudentsListInput?: Nullable<GenerateStudentsListInput>): Report | Promise<Report>;
 }
 
 export abstract class IMutation {
