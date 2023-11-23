@@ -1,3 +1,4 @@
+import { GenerateStudentsListInput } from 'src/shared/interfaces/graphql';
 import { ReportService } from './report.service';
 import { Resolver, Query, Args } from '@nestjs/graphql';
 
@@ -7,11 +8,13 @@ export class ReportResolver {
 
   @Query('generateReport')
   async generateReport(
-    @Args('id_group') id_group: number,
+    @Args('generateStudentsListInput') generateStudentsListInput: GenerateStudentsListInput,
   ) {
     // Fetch data or generate HTML content as needed
     // Generate PDF using the PdfService
-    const pdfBuffer = await this.reportsService.generateReport(id_group);
+    console.log('ID FROM RESOLVER: ', generateStudentsListInput);
+
+    const pdfBuffer = await this.reportsService.generateReport(generateStudentsListInput);
 
     // Convert the PDF buffer to a base64-encoded string
     const base64Pdf = pdfBuffer.toString('base64');

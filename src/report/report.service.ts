@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import puppeteer from 'puppeteer';
 // import puppeteer2 from '../assets/image.webp';
 import clients from 'src/config/clientsDB';
+import { GenerateStudentsListInput } from 'src/shared/interfaces/graphql';
 
 @Injectable()
 export class ReportService {
 
-  async generateReport(id_group: number) {
+  async generateReport(generateStudentsListInput: GenerateStudentsListInput) {
     try {
+      const { id_group } = generateStudentsListInput;
+      console.log('ID: ', id_group);
       const students = await clients['1059'].enrollment.findMany({
         where: {
           id_group
