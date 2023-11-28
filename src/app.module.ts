@@ -20,7 +20,7 @@ import { UserModule } from './modules/user/user.module';
 import { ScholarYearModule } from './modules/scholar-year/scholar-year.module';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import { TypeQualificationModule } from './modules/type-qualification/type-qualification.module';
-import { ReportModule } from './report/report.module';
+import { ReportModule } from './modules/report/report.module';
 
 
 @Module({

@@ -207,6 +207,16 @@ export class FilterGroupInput {
     representative?: Nullable<string>;
 }
 
+export class GenerateStudentsListInput {
+    id_group: number;
+}
+
+export class GenerateStudentsListInput2 {
+    id_group: number;
+    id_course: number;
+    period: number;
+}
+
 export class CreateScholarYearInput {
     id_year: number;
     rector?: Nullable<string>;
@@ -326,10 +336,6 @@ export class UpdateUserInput {
     belongs: string;
 }
 
-export class GenerateStudentsListInput {
-    id_group: number;
-}
-
 export class Absence {
     id_absence: number;
     id_student?: Nullable<number>;
@@ -370,6 +376,10 @@ export abstract class IQuery {
 
     abstract institutions(): Nullable<Institution>[] | Promise<Nullable<Institution>[]>;
 
+    abstract generateReport(generateStudentsListInput?: Nullable<GenerateStudentsListInput>): Report | Promise<Report>;
+
+    abstract generateReport2(generateStudentsListInput2?: Nullable<GenerateStudentsListInput2>): Report | Promise<Report>;
+
     abstract scholarYears(): Nullable<ScholarYear>[] | Promise<Nullable<ScholarYear>[]>;
 
     abstract students(filterStudentInput?: Nullable<FilterStudentInput>): Nullable<Student>[] | Promise<Nullable<Student>[]>;
@@ -383,8 +393,6 @@ export abstract class IQuery {
     abstract typeQualifications(): Nullable<TypeQualification>[] | Promise<Nullable<TypeQualification>[]>;
 
     abstract signIn(signInInput?: Nullable<SignInInput>): Auth | Promise<Auth>;
-
-    abstract generateReport(generateStudentsListInput?: Nullable<GenerateStudentsListInput>): Report | Promise<Report>;
 }
 
 export abstract class IMutation {
@@ -556,6 +564,10 @@ export class Institution {
     information: string;
 }
 
+export class Report {
+    report_content: string;
+}
+
 export class ScholarYear {
     id_year: number;
     rector?: Nullable<string>;
@@ -612,10 +624,6 @@ export class User {
 export class Auth {
     token?: Nullable<string>;
     role?: Nullable<string>;
-}
-
-export class Report {
-    report_content: string;
 }
 
 type Nullable<T> = T | null;

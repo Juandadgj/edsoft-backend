@@ -6,6 +6,13 @@ input GenerateStudentsListInput {
   id_group: Int!
 }
 
+input GenerateStudentsListInput2 {
+  id_group: Int!
+  id_course: Int!
+  period: Int!
+}
+
 type Query {
   generateReport(generateStudentsListInput: GenerateStudentsListInput): Report!
+  generateReport2(generateStudentsListInput2: GenerateStudentsListInput2): Report!
 }
