@@ -217,6 +217,35 @@ export class GenerateStudentsListInput2 {
     period: number;
 }
 
+export class GenerateReportAreaInput {
+    id_group: number;
+    id_student: number;
+    report_options: ReportDictionary;
+}
+
+export class ReportDictionary {
+    signature: SignatureInput;
+    average_general?: Nullable<boolean>;
+    average_group?: Nullable<boolean>;
+    average_area?: Nullable<boolean>;
+    username?: Nullable<boolean>;
+    qualification_per1?: Nullable<boolean>;
+    qualification_per2?: Nullable<boolean>;
+    qualification_per3?: Nullable<boolean>;
+    qualification_per4?: Nullable<boolean>;
+    average_per?: Nullable<boolean>;
+    all_qualifications?: Nullable<boolean>;
+    professor_course?: Nullable<boolean>;
+    hour?: Nullable<boolean>;
+    absences?: Nullable<boolean>;
+}
+
+export class SignatureInput {
+    professor_group?: Nullable<boolean>;
+    secretary?: Nullable<boolean>;
+    rector?: Nullable<boolean>;
+}
+
 export class CreateScholarYearInput {
     id_year: number;
     rector?: Nullable<string>;
@@ -379,6 +408,8 @@ export abstract class IQuery {
     abstract generateReport(generateStudentsListInput?: Nullable<GenerateStudentsListInput>): Report | Promise<Report>;
 
     abstract generateReport2(generateStudentsListInput2?: Nullable<GenerateStudentsListInput2>): Report | Promise<Report>;
+
+    abstract generateReportArea(generateReportAreaInput?: Nullable<GenerateReportAreaInput>): Report | Promise<Report>;
 
     abstract scholarYears(): Nullable<ScholarYear>[] | Promise<Nullable<ScholarYear>[]>;
 
