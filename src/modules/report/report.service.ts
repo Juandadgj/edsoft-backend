@@ -74,7 +74,6 @@ export class ReportService {
           period,
         },
       });
-      console.log(achievements);
 
       const { teacher, area } = await clients['1059'].course
         .findMany({
@@ -87,8 +86,6 @@ export class ReportService {
           },
         })
         .then((result) => result[0]);
-
-      console.log(teacher, area);
 
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
@@ -116,7 +113,7 @@ export class ReportService {
   }
   async generateReportArea(generateReportAreaInput: GenerateReportAreaInput) {
     const { id_group, id_student, report_options } = generateReportAreaInput;
-
+    console.log(id_group, id_student);
     try {
       const { student } = await clients['1059'].enrollment.findFirst({
         where: {
@@ -142,24 +139,15 @@ export class ReportService {
         },
       });
 
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
+      const htmlContent = report(
+        student,
+        group,
+        areas,
+        courses,
+        report_options,
+      );
 
-      const htmlContent = report(student, group, areas, courses, report_options);
-      console.log(htmlContent)
-      await page.setContent(htmlContent);
-      // await page.emulateMediaType("screen");
-      // Generate PDF
-      const pdf = await page.pdf({
-        path: 'report',
-        format: 'A4',
-        margin: { left: '0.5cm', top: '20px', right: '0.5cm', bottom: '20px' },
-        // headerTemplate: `<h1 style="color: black">Hello, this is your PDF content!</h1>`,
-        // footerTemplate: `<div><span class="pageNumber"></span> / <span class="totalPages"></span></div>`,
-        // printBackground: true
-      });
-      await browser.close();
-      return pdf;
+      return htmlContent;
     } catch (error) {
       throw error;
     }

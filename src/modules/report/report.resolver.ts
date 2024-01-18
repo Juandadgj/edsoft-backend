@@ -50,7 +50,7 @@ export class ReportResolver {
     const pdfBuffer = await this.reportsService.generateReportArea(
       generateReportAreaInput,
     );
-    const base64Pdf = pdfBuffer.toString('base64');
+    const base64Pdf = pdfBuffer;
     return { report_content: base64Pdf };
   }
 }
