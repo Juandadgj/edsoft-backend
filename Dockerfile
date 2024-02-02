@@ -1,4 +1,4 @@
-ARG NODE_IMAGE=node:18.12.1-alpine
+ARG NODE_IMAGE=node:20.11.0-alpine
 
 FROM $NODE_IMAGE AS base
 RUN apk update && apk add --no-cache git

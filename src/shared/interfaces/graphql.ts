@@ -294,19 +294,10 @@ export class UpdateStudentInput {
 }
 
 export class FilterStudentInput {
+    id_group?: Nullable<number>;
     name?: Nullable<string>;
     last_name?: Nullable<string>;
-    type_id?: Nullable<number>;
     identification?: Nullable<string>;
-    sex?: Nullable<string>;
-    direction?: Nullable<string>;
-    phone?: Nullable<string>;
-    guardian?: Nullable<string>;
-    status?: Nullable<string>;
-    birthday?: Nullable<string>;
-    father?: Nullable<string>;
-    mother?: Nullable<string>;
-    email?: Nullable<string>;
 }
 
 export class CreateTeacherInput {
