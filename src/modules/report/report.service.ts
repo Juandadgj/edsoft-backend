@@ -144,18 +144,20 @@ export class ReportService {
                   identification: true,
                   name: true,
                   last_name: true,
-                }
-              }
+                },
+              },
             },
           },
         },
       });
       const coursesMap = courses.map((course: any) => {
         course['definitives'] = course['definitives'].map((element) => {
-          element['student'] = `${element['student'].name} ${element['student'].last_name}`;
+          element[
+            'student'
+          ] = `${element['student'].name} ${element['student'].last_name}`;
           element['user'] = `e${element['student'].identification}`;
           return element;
-        })
+        });
         return course;
       });
       let studentsDefinitives = {};
@@ -167,30 +169,35 @@ export class ReportService {
             studentsDefinitives[definitive.student] = {};
             studentsDefinitives[definitive.student][course.name] = definitive;
           }
-        })
+        });
       });
       const transformation = Object.keys(studentsDefinitives).map((student) => {
-        const courses = Object.keys(studentsDefinitives[student]).map((course) => {
-          return {
-            name: course,
-            ...studentsDefinitives[student][course]
-          }
-        });
+        const courses = Object.keys(studentsDefinitives[student]).map(
+          (course) => {
+            return {
+              name: course,
+              ...studentsDefinitives[student][course],
+            };
+          },
+        );
         return {
           name: student,
           courses: courses,
-        }
-      })
+        };
+      });
       console.log(transformation);
 
       // Agrupar asignaturas por area
       // Sacar las notas por periodo
 
+      // Quemado notas del estudiante para pruebas
+      const studentTransformation = transformation[0];
+
       const htmlContent = report(
         student,
         group,
         areas,
-        courses,
+        studentTransformation,
         report_options,
       );
       return htmlContent;
