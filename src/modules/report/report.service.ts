@@ -35,9 +35,6 @@ export class ReportService {
         path: 'mypdf',
         format: 'A4',
         margin: { left: '0.5cm', top: '1cm', right: '0.5cm', bottom: '2cm' },
-        // headerTemplate: `<h1 style="color: black">Hello, this is your PDF content!</h1>`,
-        // footerTemplate: `<div><span class="pageNumber"></span> / <span class="totalPages"></span></div>`,
-        // printBackground: true
       });
       await browser.close();
 
@@ -87,9 +84,6 @@ export class ReportService {
         path: 'mypdf',
         format: 'A4',
         margin: { left: '0.5cm', top: '1cm', right: '0.5cm', bottom: '2cm' },
-        // headerTemplate: `<h1 style="color: black">Hello, this is your PDF content!</h1>`,
-        // footerTemplate: `<div><span class="pageNumber"></span> / <span class="totalPages"></span></div>`,
-        // printBackground: true
       });
       await browser.close();
       return pdf;
@@ -116,7 +110,7 @@ export class ReportService {
         where: { id_group: id_group },
       });
       const areas = await clients['1059'].area.findMany();
-      let courses: any = await clients['1059'].course.findMany({
+      const courses: any = await clients['1059'].course.findMany({
         where: {
           id_group: id_group,
         },
@@ -171,7 +165,9 @@ export class ReportService {
           }
         });
       });
-      const transformation = Object.keys(studentsDefinitives).map((student) => {
+
+      // Falta agrupar asignaturas por area
+      let result = Object.keys(studentsDefinitives).map((student) => {
         const courses = Object.keys(studentsDefinitives[student]).map(
           (course) => {
             return {
@@ -185,19 +181,27 @@ export class ReportService {
           courses: courses,
         };
       });
-      console.log(transformation);
-
-      // Agrupar asignaturas por area
-      // Sacar las notas por periodo
+      const averages = []
+      result = result.map((student) => {
+        const sumCourses = student.courses.reduce((total, current) => total + Number(current.score1), 0);
+        const coursesAverage = sumCourses / student.courses.length;
+        student['average'] = Number(coursesAverage.toFixed(2));
+        averages.push({name: student.name, average: student['average']});
+        return student;
+      })
+      averages.sort((a, b) => b.average - a.average);
+      result = result.map((student) => {
+        student['position'] = averages.findIndex((average) => average.name == student.name);
+        return student;
+      });
+      console.log(result);
 
       // Quemado notas del estudiante para pruebas
-      const studentTransformation = transformation[0];
-
       const htmlContent = report(
         student,
         group,
         areas,
-        studentTransformation,
+        result[0],
         report_options,
       );
       return htmlContent;
