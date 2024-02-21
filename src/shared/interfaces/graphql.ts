@@ -46,6 +46,13 @@ export class FilterAbsenceInput {
     period?: Nullable<number>;
 }
 
+export class QualificationInput {
+    id_achie_stu?: Nullable<number>;
+    id_achievement?: Nullable<number>;
+    id_student?: Nullable<number>;
+    score?: Nullable<number>;
+}
+
 export class CreateAchievementInput {
     id_course: number;
     period: number;
@@ -65,9 +72,8 @@ export class FilterAchievementInput {
     description?: Nullable<string>;
 }
 
-export class UpdateQualificationInput {
-    id_achie_stu: number;
-    score?: Nullable<number>;
+export class UpdateQualificationsInput {
+    qualifications: Nullable<QualificationInput>[];
 }
 
 export class FilterQualificationInput {
@@ -430,7 +436,7 @@ export abstract class IMutation {
 
     abstract deleteAchievement(id_achievement: number): Nullable<Achievement> | Promise<Nullable<Achievement>>;
 
-    abstract updateQualification(updateQualificationInput: UpdateQualificationInput): Qualification | Promise<Qualification>;
+    abstract updateQualifications(updateQualificationsInput: UpdateQualificationsInput): Nullable<Qualification>[] | Promise<Nullable<Qualification>[]>;
 
     abstract createArea(createAreaInput: CreateAreaInput): Area | Promise<Area>;
 

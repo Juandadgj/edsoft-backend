@@ -5,7 +5,7 @@ import {
   FilterAchievementInput,
   FilterQualificationInput,
   UpdateAchievementInput,
-  UpdateQualificationInput,
+  UpdateQualificationsInput,
 } from 'src/shared/interfaces/graphql';
 require("core-js/actual/array/group-by");
 
@@ -81,13 +81,18 @@ export class AchievementService {
     return result;
   }
 
-  async updateQualification(
+  async updateQualifications(
     id_institution: string,
-    updateQualificationInput: UpdateQualificationInput,
+    updateQualificationsInput: UpdateQualificationsInput,
   ) {
-    return await clients[id_institution].achievement_student.update({
-      where: { id_achie_stu: updateQualificationInput.id_achie_stu },
-      data: updateQualificationInput,
-    });
+    for (const qualification of updateQualificationsInput.qualifications) {
+      await clients[id_institution].achievement_student.update({
+        where: { id_achie_stu: qualification.id_achie_stu },
+        data: {
+          score: qualification.score,
+        },
+      });
+    }
+    return updateQualificationsInput.qualifications;
   }
 }

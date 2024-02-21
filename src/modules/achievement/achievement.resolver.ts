@@ -5,7 +5,7 @@ import {
   FilterAchievementInput,
   FilterQualificationInput,
   UpdateAchievementInput,
-  UpdateQualificationInput,
+  UpdateQualificationsInput,
 } from 'src/shared/interfaces/graphql';
 
 @Resolver('Achievement')
@@ -68,13 +68,13 @@ export class AchievementResolver {
     );
   }
 
-  @Mutation('updateQualification')
+  @Mutation('updateQualifications')
   updateQualification(
     @Args('id_institution') id_institution: string,
-    @Args('updateQualificationInput')
-    updateQualificationInput: UpdateQualificationInput,
+    @Args('updateQualificationsInput')
+    updateQualificationInput: UpdateQualificationsInput,
   ) {
-    return this.achievementService.updateQualification(
+    return this.achievementService.updateQualifications(
       id_institution,
       updateQualificationInput,
     );

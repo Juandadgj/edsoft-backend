@@ -12,6 +12,13 @@ type Qualification {
   score: Float
 }
 
+input QualificationInput {
+  id_achie_stu: Int
+  id_achievement: Int
+  id_student: Int
+  score: Float
+}
+
 type QualificationList {
   student: String!
   qualifications: [Qualification]!
@@ -36,9 +43,8 @@ input FilterAchievementInput {
   description: String
 }
 
-input UpdateQualificationInput {
-  id_achie_stu: Int!
-  score: Float
+input UpdateQualificationsInput {
+  qualifications: [QualificationInput]!
 }
 
 input FilterQualificationInput {
@@ -55,5 +61,5 @@ type Mutation {
   createAchievement(createAchievementInput: CreateAchievementInput!): Achievement!
   updateAchievement(updateAchievementInput: UpdateAchievementInput!): Achievement!
   deleteAchievement(id_achievement: Int!): Achievement
-  updateQualification(updateQualificationInput: UpdateQualificationInput!): Qualification!
+  updateQualifications(updateQualificationsInput: UpdateQualificationsInput!): [Qualification]!
 }
