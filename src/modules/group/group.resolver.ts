@@ -8,7 +8,7 @@ import {
 
 @Resolver('Group')
 export class GroupResolver {
-  constructor(private readonly groupService: GroupService) {}
+  constructor(private readonly groupService: GroupService) { }
 
   @Mutation('createGroup')
   create(
@@ -23,6 +23,7 @@ export class GroupResolver {
     @Args('id_institution') id_institution: string,
     @Args('filterGroupInput') filterGroupInput: FilterGroupInput,
   ) {
+    console.log('1: ', filterGroupInput);
     return this.groupService.findAll(id_institution, filterGroupInput);
   }
 
@@ -31,6 +32,8 @@ export class GroupResolver {
     @Args('id_institution') id_institution: string,
     @Args('id_groupd') id_group: number,
   ) {
+    console.log('2: ', id_group);
+
     return this.groupService.findOne(id_institution, id_group);
   }
 

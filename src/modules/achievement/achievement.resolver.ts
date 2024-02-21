@@ -10,7 +10,7 @@ import {
 
 @Resolver('Achievement')
 export class AchievementResolver {
-  constructor(private readonly achievementService: AchievementService) {}
+  constructor(private readonly achievementService: AchievementService) { }
 
   @Mutation('createAchievement')
   create(

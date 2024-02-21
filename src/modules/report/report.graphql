@@ -1,0 +1,50 @@
+type Report {
+  report_content: String!
+}
+
+input GenerateStudentsListInput {
+  id_group: Int!
+}
+
+input GenerateStudentsListInput2 {
+  id_group: Int!
+  id_course: Int!
+  period: Int!
+}
+
+input GenerateReportAreaInput {
+  id_group: Int!
+  id_student: Int!
+  report_options: ReportDictionary!
+}
+
+input ReportDictionary {
+  signature: SignatureInput!
+  average_general: Boolean
+  average_group: Boolean
+  average_area: Boolean
+  username: Boolean
+  qualification_per1: Boolean
+  qualification_per2: Boolean
+  qualification_per3: Boolean
+  qualification_per4: Boolean
+  average_per: Boolean
+  all_qualifications: Boolean
+  professor_course: Boolean
+  hour: Boolean
+  absences: Boolean
+}
+
+input SignatureInput {
+  professor_group: Boolean
+  secretary: Boolean
+  rector: Boolean
+}
+
+type Query {
+  generateReport(generateStudentsListInput: GenerateStudentsListInput): Report!
+  generateReport2(
+    generateStudentsListInput2: GenerateStudentsListInput2
+  ): Report!
+  generateReportArea(generateReportAreaInput: GenerateReportAreaInput): Report!
+}

@@ -49,19 +49,10 @@ input UpdateStudentInput {
 }
 
 input FilterStudentInput {
+  id_group: Int
   name: String
   last_name: String
-  type_id: Int
   identification: String
-  sex: String
-  direction: String
-  phone: String
-  guardian: String
-  status: String
-  birthday: String
-  father: String
-  mother: String
-  email: String
 }
 
 type Query {

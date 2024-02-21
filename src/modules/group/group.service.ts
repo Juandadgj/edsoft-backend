@@ -19,7 +19,7 @@ export class GroupService {
       where: filterGroupInput,
       include: {
         _count: {
-          select: {courses: true}
+          select: { courses: true }
         }
       }
     });
