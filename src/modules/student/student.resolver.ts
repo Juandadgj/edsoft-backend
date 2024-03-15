@@ -14,16 +14,17 @@ export class StudentResolver {
   create(
     @Args('id_institution') id_institution: string,
     @Args('createStudentInput') createStudentInput: CreateStudentInput,
+    @Args('id_group') id_group: number,
   ) {
-    return this.studentService.create(id_institution, createStudentInput);
+    return this.studentService.create(id_institution, createStudentInput, id_group);
   }
 
-  @Query('students')
-  findAll(
+  @Query('studentsByGroup')
+  findByGroup(
     @Args('id_institution') id_institution: string,
-    @Args('filterStudentInput') filterStudentInput: FilterStudentInput,
+    @Args('id_group') id_group: number,
   ) {
-    return this.studentService.findAll(id_institution, filterStudentInput);
+    return this.studentService.findByGroup(id_institution, id_group);
   }
 
   @Query('studentByID')

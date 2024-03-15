@@ -1,3 +1,24 @@
+type ResumeDefinitive {
+  score1: String
+  score2: String
+  score3: String
+  score4: String
+}
+
+type ResumeCourse {
+  id_course: Int
+  name: String
+  teacher: String
+  definitives: ResumeDefinitive
+}
+
+type ResumeGroup {
+  id_group: Int
+  level: Int
+  sublevel: String
+  courses: [ResumeCourse]
+}
+
 type Student {
   id_student: Int!
   name: String
@@ -13,6 +34,7 @@ type Student {
   father: String
   mother: String
   email: String
+  groups: [ResumeGroup]
 }
 
 input CreateStudentInput {
@@ -49,19 +71,17 @@ input UpdateStudentInput {
 }
 
 input FilterStudentInput {
-  id_group: Int
   name: String
-  last_name: String
   identification: String
 }
 
 type Query {
-  students(filterStudentInput: FilterStudentInput): [Student]!
+  studentsByGroup(id_group: Int!): [Student]!
   studentByID(id_student: Int!): Student
 }
 
 type Mutation {
-  createStudent(createStudentInput: CreateStudentInput!): Student!
+  createStudent(createStudentInput: CreateStudentInput!, id_group: Int!): Student!
   updateStudent(updateStudentInput: UpdateStudentInput!): Student!
   deleteStudent(id_student: Int!): Student
 }

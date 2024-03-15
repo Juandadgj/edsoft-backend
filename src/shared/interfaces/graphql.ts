@@ -300,9 +300,7 @@ export class UpdateStudentInput {
 }
 
 export class FilterStudentInput {
-    id_group?: Nullable<number>;
     name?: Nullable<string>;
-    last_name?: Nullable<string>;
     identification?: Nullable<string>;
 }
 
@@ -410,7 +408,7 @@ export abstract class IQuery {
 
     abstract scholarYears(): Nullable<ScholarYear>[] | Promise<Nullable<ScholarYear>[]>;
 
-    abstract students(filterStudentInput?: Nullable<FilterStudentInput>): Nullable<Student>[] | Promise<Nullable<Student>[]>;
+    abstract studentsByGroup(id_group: number): Nullable<Student>[] | Promise<Nullable<Student>[]>;
 
     abstract studentByID(id_student: number): Nullable<Student> | Promise<Nullable<Student>>;
 
@@ -474,7 +472,7 @@ export abstract class IMutation {
 
     abstract deleteScholarYear(id_year: number): Nullable<ScholarYear> | Promise<Nullable<ScholarYear>>;
 
-    abstract createStudent(createStudentInput: CreateStudentInput): Student | Promise<Student>;
+    abstract createStudent(createStudentInput: CreateStudentInput, id_group: number): Student | Promise<Student>;
 
     abstract updateStudent(updateStudentInput: UpdateStudentInput): Student | Promise<Student>;
 
@@ -603,6 +601,27 @@ export class ScholarYear {
     comment?: Nullable<string>;
 }
 
+export class ResumeDefinitive {
+    score1?: Nullable<string>;
+    score2?: Nullable<string>;
+    score3?: Nullable<string>;
+    score4?: Nullable<string>;
+}
+
+export class ResumeCourse {
+    id_course?: Nullable<number>;
+    name?: Nullable<string>;
+    teacher?: Nullable<string>;
+    definitives?: Nullable<ResumeDefinitive>;
+}
+
+export class ResumeGroup {
+    id_group?: Nullable<number>;
+    level?: Nullable<number>;
+    sublevel?: Nullable<string>;
+    courses?: Nullable<Nullable<ResumeCourse>[]>;
+}
+
 export class Student {
     id_student: number;
     name?: Nullable<string>;
@@ -618,6 +637,7 @@ export class Student {
     father?: Nullable<string>;
     mother?: Nullable<string>;
     email?: Nullable<string>;
+    groups?: Nullable<Nullable<ResumeGroup>[]>;
 }
 
 export class Teacher {
