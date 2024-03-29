@@ -410,6 +410,8 @@ export abstract class IQuery {
 
     abstract studentsByGroup(id_group: number): Nullable<Student>[] | Promise<Nullable<Student>[]>;
 
+    abstract students(filterStudentInput?: Nullable<FilterStudentInput>): Nullable<Nullable<Student>[]> | Promise<Nullable<Nullable<Student>[]>>;
+
     abstract studentByID(id_student: number): Nullable<Student> | Promise<Nullable<Student>>;
 
     abstract teachers(filterTeacherInput?: Nullable<FilterTeacherInput>): Nullable<Teacher>[] | Promise<Nullable<Teacher>[]>;

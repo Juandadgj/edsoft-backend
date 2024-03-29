@@ -16,7 +16,11 @@ export class StudentResolver {
     @Args('createStudentInput') createStudentInput: CreateStudentInput,
     @Args('id_group') id_group: number,
   ) {
-    return this.studentService.create(id_institution, createStudentInput, id_group);
+    return this.studentService.create(
+      id_institution,
+      createStudentInput,
+      id_group,
+    );
   }
 
   @Query('studentsByGroup')
@@ -25,6 +29,14 @@ export class StudentResolver {
     @Args('id_group') id_group: number,
   ) {
     return this.studentService.findByGroup(id_institution, id_group);
+  }
+
+  @Query('students')
+  find(
+    @Args('id_institution') id_institution: string,
+    @Args('filterStudentInput') filterStudentInput: FilterStudentInput,
+  ) {
+    return this.studentService.find(id_institution, filterStudentInput);
   }
 
   @Query('studentByID')

@@ -77,11 +77,15 @@ input FilterStudentInput {
 
 type Query {
   studentsByGroup(id_group: Int!): [Student]!
+  students(filterStudentInput: FilterStudentInput): [Student]
   studentByID(id_student: Int!): Student
 }
 
 type Mutation {
-  createStudent(createStudentInput: CreateStudentInput!, id_group: Int!): Student!
+  createStudent(
+    createStudentInput: CreateStudentInput!
+    id_group: Int!
+  ): Student!
   updateStudent(updateStudentInput: UpdateStudentInput!): Student!
   deleteStudent(id_student: Int!): Student
 }

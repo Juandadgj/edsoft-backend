@@ -38,16 +38,46 @@ export class StudentService {
     return student;
   }
 
-  async findByGroup(
-    id_institution: string,
-    id_group: number,
-  ) {
+  async findByGroup(id_institution: string, id_group: number) {
     const enrollment = await clients[id_institution].enrollment.findMany({
       where: { id_group: id_group },
       include: { student: true },
     });
     const students = enrollment.map((element) => element.student);
     return students;
+  }
+
+  async find(id_institution: string, filterStudentInput: FilterStudentInput) {
+    const student = await clients['1059'].student.findMany({
+      where: {
+        OR: [
+          {
+            OR: [
+              {
+                name: {
+                  contains: filterStudentInput.name || 'NULL',
+                },
+              },
+              {
+                last_name: {
+                  contains: filterStudentInput.name || 'NULL',
+                },
+              },
+            ],
+          },
+          {
+            identification: {
+              contains: filterStudentInput.identification || 'NULL',
+            },
+          },
+        ],
+      },
+    });
+    //const sebas = await clients['1059'].$queryRaw`
+    //  SELECT * FROM student WHERE CONCAT(name, ' ', last_name) LIKE '%${filterStudentInput.name}%'
+    //`;
+    //console.log(sebas);
+    return student;
   }
 
   async findOne(id_institution: string, id_student: number) {
@@ -62,8 +92,8 @@ export class StudentService {
         identification: true,
         guardian: true,
         direction: true,
-        phone:  true,
-      }
+        phone: true,
+      },
     });
     const enrollments = await clients[id_institution].enrollment.findMany({
       where: { id_student: student.id_student },
@@ -84,9 +114,9 @@ export class StudentService {
       },
     });
     courses = courses.map((course) => {
-      course['teacher'] = `${course.teacher.name} ${course.teacher.last_name}`
+      course['teacher'] = `${course.teacher.name} ${course.teacher.last_name}`;
       return course;
-    })
+    });
     const ids_course = courses.map((course) => course.id_course);
     const definitives = await clients[id_institution].course_student.findMany({
       where: {
