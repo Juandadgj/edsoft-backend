@@ -408,6 +408,8 @@ export abstract class IQuery {
 
     abstract scholarYears(): Nullable<ScholarYear>[] | Promise<Nullable<ScholarYear>[]>;
 
+    abstract scholearYearSelected(): ScholarYear | Promise<ScholarYear>;
+
     abstract studentsByGroup(id_group: number): Nullable<Student>[] | Promise<Nullable<Student>[]>;
 
     abstract students(filterStudentInput?: Nullable<FilterStudentInput>): Nullable<Nullable<Student>[]> | Promise<Nullable<Nullable<Student>[]>>;
@@ -473,6 +475,8 @@ export abstract class IMutation {
     abstract updateScholarYear(updateScholarYearInput: UpdateScholarYearInput): ScholarYear | Promise<ScholarYear>;
 
     abstract deleteScholarYear(id_year: number): Nullable<ScholarYear> | Promise<Nullable<ScholarYear>>;
+
+    abstract selectScholarYear(id_year: number): Nullable<ScholarYear> | Promise<Nullable<ScholarYear>>;
 
     abstract createStudent(createStudentInput: CreateStudentInput, id_group: number): Student | Promise<Student>;
 

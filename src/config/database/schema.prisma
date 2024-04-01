@@ -182,6 +182,7 @@ model scholar_year {
   rector    String? @db.VarChar(200)
   secretary String? @db.VarChar(200)
   comment   String? @db.VarChar(200)
+  selected  Boolean @default(false)
 }
 
 model student {

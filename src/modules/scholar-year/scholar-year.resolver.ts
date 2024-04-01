@@ -26,6 +26,11 @@ export class ScholarYearResolver {
     return this.scholarYearService.findAll(id_institution);
   }
 
+  @Query('scholearYearSelected')
+  findSelected(@Args('id_institution') id_institution: string) {
+    return this.scholarYearService.findSelected(id_institution);
+  }
+
   @Mutation('updateScholarYear')
   update(
     @Args('id_institution') id_institution: string,
@@ -44,5 +49,13 @@ export class ScholarYearResolver {
     @Args('id_year') id_year: number,
   ) {
     return this.scholarYearService.delete(id_institution, id_year);
+  }
+
+  @Mutation('selectScholarYear')
+  select(
+    @Args('id_institution') id_institution: string,
+    @Args('id_year') id_year: number,
+  ) {
+    return this.scholarYearService.select(id_institution, id_year);
   }
 }

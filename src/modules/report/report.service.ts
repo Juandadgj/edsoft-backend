@@ -115,13 +115,13 @@ export class ReportService {
           id_group: id_group,
         },
         include: {
-          /*teacher: {
+          teacher: {
             select: {
               name: true,
               last_name: true,
-            }
+            },
           },
-          area: {
+          /*area: {
             select: {
               name: true,
             }
@@ -149,6 +149,9 @@ export class ReportService {
           element[
             'student'
           ] = `${element['student'].name} ${element['student'].last_name}`;
+          element[
+            'teacher'
+          ] = `${course['teacher']['name']} ${course['teacher']['last_name']}`;
           element['user'] = `e${element['student'].identification}`;
           return element;
         });
@@ -165,7 +168,6 @@ export class ReportService {
           }
         });
       });
-
       // Falta agrupar asignaturas por area
       let result = Object.keys(studentsDefinitives).map((student) => {
         const courses = Object.keys(studentsDefinitives[student]).map(
@@ -181,21 +183,24 @@ export class ReportService {
           courses: courses,
         };
       });
-      const averages = []
+      const averages = [];
       result = result.map((student) => {
-        const sumCourses = student.courses.reduce((total, current) => total + Number(current.score1), 0);
+        const sumCourses = student.courses.reduce(
+          (total, current) => total + Number(current.score1),
+          0,
+        );
         const coursesAverage = sumCourses / student.courses.length;
         student['average'] = Number(coursesAverage.toFixed(2));
-        averages.push({name: student.name, average: student['average']});
-        return student;
-      })
-      averages.sort((a, b) => b.average - a.average);
-      result = result.map((student) => {
-        student['position'] = averages.findIndex((average) => average.name == student.name);
+        averages.push({ name: student.name, average: student['average'] });
         return student;
       });
-      console.log(result);
-
+      averages.sort((a, b) => b.average - a.average);
+      result = result.map((student) => {
+        student['position'] = averages.findIndex(
+          (average) => average.name == student.name,
+        );
+        return student;
+      });
       // Quemado notas del estudiante para pruebas
       const htmlContent = report(
         student,

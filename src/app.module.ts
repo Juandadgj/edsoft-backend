@@ -22,7 +22,6 @@ import { TeacherModule } from './modules/teacher/teacher.module';
 import { TypeQualificationModule } from './modules/type-qualification/type-qualification.module';
 import { ReportModule } from './modules/report/report.module';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -52,7 +51,7 @@ import { ReportModule } from './modules/report/report.module';
     TeacherModule,
     TypeQualificationModule,
     UserModule,
-    ReportModule
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [
@@ -63,4 +62,4 @@ import { ReportModule } from './modules/report/report.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

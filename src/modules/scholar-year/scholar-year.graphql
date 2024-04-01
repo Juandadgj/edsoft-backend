@@ -21,10 +21,16 @@ input UpdateScholarYearInput {
 
 type Query {
   scholarYears: [ScholarYear]!
+  scholearYearSelected: ScholarYear!
 }
 
 type Mutation {
-  createScholarYear(createScholarYearInput: CreateScholarYearInput!): ScholarYear!
-  updateScholarYear(updateScholarYearInput: UpdateScholarYearInput!): ScholarYear!
+  createScholarYear(
+    createScholarYearInput: CreateScholarYearInput!
+  ): ScholarYear!
+  updateScholarYear(
+    updateScholarYearInput: UpdateScholarYearInput!
+  ): ScholarYear!
   deleteScholarYear(id_year: Int!): ScholarYear
+  selectScholarYear(id_year: Int!): ScholarYear
 }
