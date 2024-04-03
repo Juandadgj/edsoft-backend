@@ -1,6 +1,7 @@
 import {
-  GenerateStudentsListInput,
-  GenerateStudentsListInput2,
+  GenerateStudentsListUndeterminatedInput,
+  GenerateStudentsListDeterminatedInput,
+  GenerateAchievementsAndIndicators,
   GenerateReportAreaInput,
 } from 'src/shared/interfaces/graphql';
 import { ReportService } from './report.service';
@@ -10,36 +11,49 @@ import { Resolver, Query, Args } from '@nestjs/graphql';
 export class ReportResolver {
   constructor(private readonly reportsService: ReportService) {}
 
-  @Query('generateReport')
-  async generateReport(
-    @Args('generateStudentsListInput')
-    generateStudentsListInput: GenerateStudentsListInput,
+  @Query('generateStudentsListUndeterminated')
+  async generateStudentsListUndeterminated(
+    @Args('generateStudentsListUndeterminatedInput')
+    generateStudentsListUndeterminatedInput: GenerateStudentsListUndeterminatedInput,
   ) {
-    const pdfBuffer = await this.reportsService.generateReport(
-      generateStudentsListInput,
-    );
+    const pdfBuffer =
+      await this.reportsService.generateStudentsListUndeterminated(
+        generateStudentsListUndeterminatedInput,
+      );
 
     // Convert the PDF buffer to a base64-encoded string
-    const base64Pdf = pdfBuffer.toString('base64');
-    return { report_content: base64Pdf };
+    return { report_content: pdfBuffer };
   }
 
-  @Query('generateReport2')
-  async generateReport2(
-    @Args('generateStudentsListInput2')
-    generateStudentsListInput2: GenerateStudentsListInput2,
+  @Query('generateStudentsListDeterminated')
+  async generateStudentsListDeterminated(
+    @Args('generateStudentsListDeterminatedInput')
+    generateStudentsListDeterminatedInput: GenerateStudentsListDeterminatedInput,
   ) {
-    console.log('ID FROM RESOLVER: ', generateStudentsListInput2);
+    const pdfBuffer =
+      await this.reportsService.generateStudentsListDeterminated(
+        generateStudentsListDeterminatedInput,
+      );
+    // Convert the PDF buffer to a base64-encoded string
+    // return base64Pdf;
+    return { report_content: pdfBuffer };
+  }
 
-    const pdfBuffer = await this.reportsService.generateReport2(
-      generateStudentsListInput2,
-    );
+  @Query('generateAchievementsAndIndicators')
+  async generateAchievementsAndIndicators(
+    @Args('generateAchievementsAndIndicators')
+    generateAchievementsAndIndicators: GenerateAchievementsAndIndicators,
+  ) {
+
+    const pdfBuffer =
+      await this.reportsService.generateAchievementsAndIndicators(
+        generateAchievementsAndIndicators,
+      );
 
     // Convert the PDF buffer to a base64-encoded string
-    const base64Pdf = pdfBuffer.toString('base64');
 
     // return base64Pdf;
-    return { report_content: base64Pdf };
+    return { report_content: pdfBuffer };
   }
 
   @Query('generateReportArea')

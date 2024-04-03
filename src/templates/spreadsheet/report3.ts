@@ -1,4 +1,4 @@
-function report1(students: any) {
+function report1(students, course) {
   return `
   <html lang="es>
   <head>
@@ -9,23 +9,32 @@ function report1(students: any) {
               margin: 0;
               padding: 10px;
               font-family: 'Arial', sans-serif;
+              font-size: 10px;
             }
           header {
             text-align: center;
+            
           }
           header div {
             display: flex;
-            justify-content: flex-start;
+            justify-content:center;
+            align-items:center;
           }
           header div img {
               display: block;
-              margin: 0 auto;
               width: 100px;
               height: 100px;
           }
+          .signatures {
+            width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+          }
           table {
             border-collapse: collapse;
-            width: 100%;
+            width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
           }
           th, td {
             border: 1px solid black;
@@ -48,12 +57,14 @@ function report1(students: any) {
         <header>
           <div>
             <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/school-logo-design-template-b3bfdceb55d1cbc48f1ce50fd4e1ef24_screen.jpg?ts=1629941736" alt="Header Image"/>
+            <h1>Institucion Educativa San Marcos Mañana</h1>
           </div>
-          <h1>Institucion Educativa San Marcos Mañana</h1>
           <h3>Quinto 1 Mañana año 2023</h3>
         </header>
-        <h4>Nombre del docente: ______________________________________</h4>
-        <h4>Nombre de la asignatura: _________________________________</h4>
+        <div class="signatures">
+          <h4>Nombre del docente: ${course.teacher.name} ${course.teacher.last_name}</h4>
+          <h4>Nombre de la asignatura: ${course.name}</h4>
+        </div>
         <table>
           <thead>
             <tr>
@@ -67,10 +78,9 @@ function report1(students: any) {
             </tr>
           </thead>
           <tbody>
-            ${students.map(({ student }, i: number) => {
-    console.log(student.name);
-    return (
-      `<tr>
+            ${students
+              .map(({ student }, i: number) => {
+                return `<tr>
                     <td>${i}</td>
                     <td colspan="4" class="name_td">${student.last_name} ${student.name}</td>
                     <td> </td>
@@ -78,10 +88,9 @@ function report1(students: any) {
                     <td> </td>
                     <td> </td>
                     <td> </td>
-                  </tr>`
-    )
-  }).join('')
-    }
+                  </tr>`;
+              })
+              .join('')}
           </tbody>
         </table>
       </body>  

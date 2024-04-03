@@ -2,11 +2,16 @@ type Report {
   report_content: String!
 }
 
-input GenerateStudentsListInput {
+input GenerateStudentsListUndeterminatedInput {
   id_group: Int!
 }
 
-input GenerateStudentsListInput2 {
+input GenerateStudentsListDeterminatedInput {
+  id_course: Int!
+  id_group: Int!
+}
+
+input GenerateAchievementsAndIndicators {
   id_group: Int!
   id_course: Int!
   period: Int!
@@ -23,6 +28,7 @@ input ReportDictionary {
   average_general: Boolean
   average_group: Boolean
   average_area: Boolean
+  position: Boolean
   username: Boolean
   qualification_per1: Boolean
   qualification_per2: Boolean
@@ -42,9 +48,10 @@ input SignatureInput {
 }
 
 type Query {
-  generateReport(generateStudentsListInput: GenerateStudentsListInput): Report!
-  generateReport2(
-    generateStudentsListInput2: GenerateStudentsListInput2
+  generateStudentsListUndeterminated(generateStudentsListUndeterminatedInput: GenerateStudentsListUndeterminatedInput): Report!
+  generateStudentsListDeterminated(generateStudentsListDeterminatedInput: GenerateStudentsListDeterminatedInput): Report!
+  generateAchievementsAndIndicators(
+    generateAchievementsAndIndicators: GenerateAchievementsAndIndicators
   ): Report!
   generateReportArea(generateReportAreaInput: GenerateReportAreaInput): Report!
 }

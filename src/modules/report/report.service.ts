@@ -3,21 +3,25 @@ import puppeteer from 'puppeteer';
 // import puppeteer2 from '../assets/image.webp';
 import clients from 'src/config/clientsDB';
 import {
+  GenerateStudentsListUndeterminatedInput,
+  GenerateStudentsListDeterminatedInput,
+  GenerateAchievementsAndIndicators,
   GenerateReportAreaInput,
-  GenerateStudentsListInput,
-  GenerateStudentsListInput2,
 } from 'src/shared/interfaces/graphql';
-import report from 'src/templates/report';
-import report1 from 'src/templates/report1';
-import report2 from 'src/templates/report2';
+import report from 'src/templates/spreadsheet/report';
+import report1 from 'src/templates/spreadsheet/report1';
+import report2 from 'src/templates/spreadsheet/report2';
+import report3 from 'src/templates/spreadsheet/report3';
+import reportList from 'src/templates/spreadsheet/reportList';
 require('core-js/actual/array/group-by');
 
 @Injectable()
 export class ReportService {
-  async generateReport(generateStudentsListInput: GenerateStudentsListInput) {
+  async generateStudentsListUndeterminated(
+    generateStudentsListInput: GenerateStudentsListUndeterminatedInput,
+  ) {
     try {
       const { id_group } = generateStudentsListInput;
-      console.log('ID: ', id_group);
       const students = await clients['1059'].enrollment.findMany({
         where: {
           id_group,
@@ -26,30 +30,48 @@ export class ReportService {
           student: true,
         },
       });
-
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
       const htmlContent = report1(students);
-      await page.setContent(htmlContent);
-      const pdf = await page.pdf({
-        path: 'mypdf',
-        format: 'A4',
-        margin: { left: '0.5cm', top: '1cm', right: '0.5cm', bottom: '2cm' },
-      });
-      await browser.close();
-
-      return pdf;
+      return htmlContent;
     } catch (error) {
       throw error;
     }
   }
 
-  async generateReport2(
-    generateStudentsListInput2: GenerateStudentsListInput2,
+  async generateStudentsListDeterminated(
+    generateStudentsListDeterminatedInput: GenerateStudentsListDeterminatedInput,
   ) {
     try {
-      const { id_group, id_course, period } = generateStudentsListInput2;
-      console.log('ID: ', id_group, id_course, period);
+      const { id_group, id_course } = generateStudentsListDeterminatedInput;
+      const students = await clients['1059'].enrollment.findMany({
+        where: {
+          id_group,
+        },
+        include: {
+          student: true,
+        },
+      });
+      const courses = await clients['1059'].course.findUnique({
+        where: {
+          id_course,
+        },
+        include: {
+          teacher: true,
+          area: true,
+        },
+      });
+
+      const htmlContent = report3(students, courses);
+      return htmlContent;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async generateAchievementsAndIndicators(
+    generateStudentsList: GenerateAchievementsAndIndicators,
+  ) {
+    try {
+      const { id_group, id_course, period } = generateStudentsList;
       const students = await clients['1059'].enrollment.findMany({
         where: {
           id_group,
@@ -76,17 +98,8 @@ export class ReportService {
         })
         .then((result) => result[0]);
 
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
       const htmlContent = report2(students, achievements, teacher, area);
-      await page.setContent(htmlContent);
-      const pdf = await page.pdf({
-        path: 'mypdf',
-        format: 'A4',
-        margin: { left: '0.5cm', top: '1cm', right: '0.5cm', bottom: '2cm' },
-      });
-      await browser.close();
-      return pdf;
+      return htmlContent;
     } catch (error) {
       throw error;
     }
@@ -152,6 +165,7 @@ export class ReportService {
           element[
             'teacher'
           ] = `${course['teacher']['name']} ${course['teacher']['last_name']}`;
+          element['hour'] = course['hour'];
           element['user'] = `e${element['student'].identification}`;
           return element;
         });
@@ -202,13 +216,7 @@ export class ReportService {
         return student;
       });
       // Quemado notas del estudiante para pruebas
-      const htmlContent = report(
-        student,
-        group,
-        areas,
-        result[0],
-        report_options,
-      );
+      const htmlContent = reportList(group, result, report_options);
       return htmlContent;
     } catch (error) {
       throw error;

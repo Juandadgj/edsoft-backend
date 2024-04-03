@@ -213,11 +213,16 @@ export class FilterGroupInput {
     representative?: Nullable<string>;
 }
 
-export class GenerateStudentsListInput {
+export class GenerateStudentsListUndeterminatedInput {
     id_group: number;
 }
 
-export class GenerateStudentsListInput2 {
+export class GenerateStudentsListDeterminatedInput {
+    id_course: number;
+    id_group: number;
+}
+
+export class GenerateAchievementsAndIndicators {
     id_group: number;
     id_course: number;
     period: number;
@@ -234,6 +239,7 @@ export class ReportDictionary {
     average_general?: Nullable<boolean>;
     average_group?: Nullable<boolean>;
     average_area?: Nullable<boolean>;
+    position?: Nullable<boolean>;
     username?: Nullable<boolean>;
     qualification_per1?: Nullable<boolean>;
     qualification_per2?: Nullable<boolean>;
@@ -400,9 +406,11 @@ export abstract class IQuery {
 
     abstract institutions(): Nullable<Institution>[] | Promise<Nullable<Institution>[]>;
 
-    abstract generateReport(generateStudentsListInput?: Nullable<GenerateStudentsListInput>): Report | Promise<Report>;
+    abstract generateStudentsListUndeterminated(generateStudentsListUndeterminatedInput?: Nullable<GenerateStudentsListUndeterminatedInput>): Report | Promise<Report>;
 
-    abstract generateReport2(generateStudentsListInput2?: Nullable<GenerateStudentsListInput2>): Report | Promise<Report>;
+    abstract generateStudentsListDeterminated(generateStudentsListDeterminatedInput?: Nullable<GenerateStudentsListDeterminatedInput>): Report | Promise<Report>;
+
+    abstract generateAchievementsAndIndicators(generateAchievementsAndIndicators?: Nullable<GenerateAchievementsAndIndicators>): Report | Promise<Report>;
 
     abstract generateReportArea(generateReportAreaInput?: Nullable<GenerateReportAreaInput>): Report | Promise<Report>;
 
