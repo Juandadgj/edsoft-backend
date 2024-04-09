@@ -230,7 +230,7 @@ export class GenerateAchievementsAndIndicators {
 
 export class GenerateReportAreaInput {
     id_group: number;
-    id_student: number;
+    id_student?: Nullable<number>;
     report_options: ReportDictionary;
 }
 

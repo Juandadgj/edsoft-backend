@@ -19,7 +19,7 @@ input GenerateAchievementsAndIndicators {
 
 input GenerateReportAreaInput {
   id_group: Int!
-  id_student: Int!
+  id_student: Int
   report_options: ReportDictionary!
 }
 
@@ -48,8 +48,12 @@ input SignatureInput {
 }
 
 type Query {
-  generateStudentsListUndeterminated(generateStudentsListUndeterminatedInput: GenerateStudentsListUndeterminatedInput): Report!
-  generateStudentsListDeterminated(generateStudentsListDeterminatedInput: GenerateStudentsListDeterminatedInput): Report!
+  generateStudentsListUndeterminated(
+    generateStudentsListUndeterminatedInput: GenerateStudentsListUndeterminatedInput
+  ): Report!
+  generateStudentsListDeterminated(
+    generateStudentsListDeterminatedInput: GenerateStudentsListDeterminatedInput
+  ): Report!
   generateAchievementsAndIndicators(
     generateAchievementsAndIndicators: GenerateAchievementsAndIndicators
   ): Report!
