@@ -26,13 +26,13 @@ function report1(students, course) {
               height: 100px;
           }
           .signatures {
-            width: 1000px;
+            width: 650px;
             margin-left: auto;
             margin-right: auto;
           }
           table {
             border-collapse: collapse;
-            width: 1000px;
+            width: 650px;
             margin-left: auto;
             margin-right: auto;
           }

@@ -1,6 +1,6 @@
 function report1(students: any) {
   return `
-  <html lang="es>
+  <html lang="es">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,13 +26,13 @@ function report1(students: any) {
               height: 100px;
           }
           .signatures {
-            width: 1000px;
+            width: 650px;
             margin-left: auto;
             margin-right: auto;
           }
           table {
             border-collapse: collapse;
-            width: 1000px;
+            width: 650px;
             margin-left: auto;
             margin-right: auto;
           }

@@ -258,7 +258,7 @@ export class ReportService {
       const areas = await clients['1059'].area.findMany();
       if (id_student) {
         const data = await this.getStudentDefinitives(id_student, id_group);
-        return report('10', group, data, report_options);
+        return report(group, data, report_options);
       } else {
         const data = await this.getGroupDefinitives(id_group);
         return reportList(group, data, report_options);

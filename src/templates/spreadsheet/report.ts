@@ -1,4 +1,4 @@
-function report(student, group,transformation, report_options) {
+function report(group,data, report_options) {
   return `
   <html lang="es">
   <head>
@@ -6,12 +6,9 @@ function report(student, group,transformation, report_options) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body {
-        margin: 0;
-        font-family: "Arial", sans-serif;
+        margin:0;
+        font-family: 'Arial', sans-serif;
         font-size: 10px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
       }
       header {
         text-align: center;
@@ -28,7 +25,9 @@ function report(student, group,transformation, report_options) {
       }
       table {
         border-collapse: collapse;
-        width: 100%;
+        width: 650px;
+        margin-left: auto;
+        margin-right: auto;
       }
       th,
       td {
@@ -50,6 +49,9 @@ function report(student, group,transformation, report_options) {
         margin-top: 0px;
         margin-bottom: 0px;
       }
+      .table_header tr, .table_header td {
+        border: none;
+      }
     </style>
   </head>
   <body>
@@ -65,61 +67,41 @@ function report(student, group,transformation, report_options) {
         </div>
         <h1>Institucion Educativa San Marcos Mañana</h1>
       </header>
-      <div
-        style="
-          display: flex;
-          gap: 30px;
-          width: 1000px;
-          margin-left: auto;
-          margin-right: auto;
-        "
-      >
-        <div>
-          <p>Est: <b>${student.name} ${student.last_name}</b></p>
-        </div>
-        <div>
-          <p>
-            Grado: <b>${group.level}-${group.sublevel} ${group.working_time}</b>
-          </p>
-        </div>
-        <div>
-          <p>Per: <b>1 año 2023</b></p>
-        </div>
-        <div>
-          <p>Usuario: <b>e2651658465164</b></p>
-        </div>
-      </div>
-      <div
-        style="
-          display: flex;
-          gap: 30px;
-          width: 1000px;
-          margin-left: auto;
-          margin-right: auto;
-        "
-      >
-        ${report_options.average_general ? `
-        <div>
-          <p>Promedio: <b>3.59</b></p>
-        </div>
-        ` : ``}
-        ${report_options.average_group ? `
-        <div>
-          <p>Promedio del curso: <b>${transformation.average}</b></p>
-        </div>
-        ` : ``}
-        <div>
-          <p>Puesto en el curso: <b>13</b></p>
-        </div>
-        ${report_options.position ? `
-        <div>
-          <p>Puesto del curso: <b>${transformation.position}</b></p>
-        </div>
-        `: ``}
-      </div>
+      <table border="0" cellpadding="3" cellspacing="0"  style="border: none;">
+        <tbody class="table_header">
+          <tr>
+            <td>Est: <b>${data.student}</b></td>
+            <td>Grado: <b>${group.level}-${group.sublevel} ${group.working_time}</b></td>
+            <td>Per: <b>1 año 2023</b></td>
+            <td>Usuario: <b>e2651658465164</b></td>
+          </tr>
+        </tbody>
+      </table>
+      <table border="0" cellpadding="3" cellspacing="0" style="border: none;">
+        <tbody class="table_header">
+          <tr>
+          ${report_options.average_general ? `
+          <td>
+          <p>Promedio: <b>${data.average}</b></p>
+          </td>
+          ` : ``}
+          ${report_options.average_group ? `
+          <td>
+          <p>Promedio del curso: <b>5</b></p>
+          </td>
+          ` : ``}
+          ${report_options.position ? `
+          <td>
+          <p>Puesto en el curso: <b>${data.position}</b></p>
+          </td>
+          `: ``}
+          <td>Puesto en el curso: <b>13</b></td>
+          </tr>
+        <tbody>
+      </table>
       <div></div>
       <br />
-      ${transformation.courses.map((course) => `
+      ${data.courses.map((course) => `
       <table style="margin-top: 10px; margin-bottom: 10px">
         <tr>
           <td>Area: <b>Ciencias Naturales y educacion Ambiental</b></td>
@@ -136,7 +118,7 @@ function report(student, group,transformation, report_options) {
           </th>
           ${report_options.professor_course ? `
           <td>
-            Doc: <b>${course.teacher.name} ${course.teacher.last_name}</b>
+            Doc: <b>${course.teacher}</b>
           </td>
           ` : ``}
           <td width="20%">CG: <b>Alto ( 4 )</b></td>
@@ -150,7 +132,7 @@ function report(student, group,transformation, report_options) {
       <div
         style="
           margin: 2px;
-          width: 1000px;
+          width: 650px;
           margin-left: auto;
           margin-right: auto;
         "
@@ -194,7 +176,7 @@ function report(student, group,transformation, report_options) {
       `,)}
       <div
         style="
-          width: 1000px;
+          width: 650px;
           margin-top: 40px;
           margin-right: auto;
           margin-left: auto;
@@ -206,7 +188,7 @@ function report(student, group,transformation, report_options) {
       </div>
       <div
         style="
-          width: 1000px;
+          width: 650px;
           display: flex;
           justify-content: center;
           margin-top: 40px;

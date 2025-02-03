@@ -9,12 +9,6 @@ function report(group, transformation, report_options) {
         margin: 0;
         font-family: "Arial", sans-serif;
         font-size: 10px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
       }
       header {
         text-align: center;
@@ -31,7 +25,9 @@ function report(group, transformation, report_options) {
       }
       table {
         border-collapse: collapse;
-        width: 100%;
+        width: 650px;
+        margin-left: auto;
+        margin-right: auto;
       }
       th,
       td {
@@ -54,7 +50,7 @@ function report(group, transformation, report_options) {
         margin-bottom: 0px;
       }
       .break {
-        width: 1000px;
+        width: 650px;
         margin-left: auto;
         margin-right: auto;
         page-break-before: always;
@@ -62,7 +58,8 @@ function report(group, transformation, report_options) {
     </style>
   </head>
   <body>
-    ${transformation.map((transformation)=> `
+    ${transformation.map(
+      (transformation) => `
     <div class="break">
       <header
         style="display: flex; justify-content: center; align-items: center"
@@ -79,7 +76,7 @@ function report(group, transformation, report_options) {
         style="
           display: flex;
           gap: 30px;
-          width: 1000px;
+          width: 650px;
           margin-left: auto;
           margin-right: auto;
         "
@@ -103,39 +100,56 @@ function report(group, transformation, report_options) {
         style="
           display: flex;
           gap: 30px;
-          width: 1000px;
+          width: 650px;
           margin-left: auto;
           margin-right: auto;
         "
       >
-        ${report_options.average_general ? `
+        ${
+          report_options.average_general
+            ? `
         <div>
           <p>Promedio: <b>3.59</b></p>
         </div>
-        ` : ``}
-        ${report_options.average_group ? `
+        `
+            : ``
+        }
+        ${
+          report_options.average_group
+            ? `
         <div>
           <p>Promedio del curso: <b>${transformation.average}</b></p>
         </div>
-        ` : ``}
+        `
+            : ``
+        }
         <div>
           <p>Puesto en el curso: <b>13</b></p>
         </div>
-        ${report_options.position ? `
+        ${
+          report_options.position
+            ? `
         <div>
           <p>Puesto del curso: <b>${transformation.position}</b></p>
         </div>
-        `: ``}
+        `
+            : ``
+        }
       </div>
       <div></div>
       <br />
-      ${transformation.courses.map((course) => `
+      ${transformation.courses.map(
+        (course) => `
       <table style="margin-top: 10px; margin-bottom: 10px">
         <tr>
           <td>Area: <b>Ciencias Naturales y educacion Ambiental</b></td>
-          ${report_options.average_area ? `
+          ${
+            report_options.average_area
+              ? `
           <td>Promedio: <b>Alto (4)</b></td>
-          ` : ``}
+          `
+              : ``
+          }
         </tr>
       </table>
       <table>
@@ -144,23 +158,35 @@ function report(group, transformation, report_options) {
             Asig:
             <b> ${course.name}</b>
           </th>
-          ${report_options.professor_course ? `
+          ${
+            report_options.professor_course
+              ? `
           <td>
             Doc: <b>${course.teacher}</b>
           </td>
-          ` : ``}
+          `
+              : ``
+          }
           <td width="20%">CG: <b>Alto ( 4 )</b></td>
-          ${report_options.absences ? `
+          ${
+            report_options.absences
+              ? `
           <td width="15%">Fallas: <b>0</b></td>
-          ` : ``} ${report_options.hour ? `
+          `
+              : ``
+          } ${
+            report_options.hour
+              ? `
           <td width="10%">I.H: <b>${course.hour}</b></td>
-          ` : ``}
+          `
+              : ``
+          }
         </tr>
       </table>
       <div
         style="
           margin: 2px;
-          width: 1000px;
+          width: 650px;
           margin-left: auto;
           margin-right: auto;
         "
@@ -176,7 +202,9 @@ function report(group, transformation, report_options) {
         </div>
       </div>
       <table>
-        ${report_options.all_qualifications ? `
+        ${
+          report_options.all_qualifications
+            ? `
         <tr>
           <td><b>Todos los periodos</b></td>
           <td>Per.1 : <b>${course.score1 ? course.score1 : '-'}</b></td>
@@ -185,26 +213,49 @@ function report(group, transformation, report_options) {
           <td>Per.4 : <b>${course.score4 ? course.score4 : '-'}</b></td>
           <td>Promedio : <b>4</b></td>
         </tr>
-        ` : `
+        `
+            : `
         <tr>
-          ${report_options.qualification_per1 ? `
+          ${
+            report_options.qualification_per1
+              ? `
           <td>Per.1 : <b>${course.score1 ? course.score1 : '-'}</b></td>
-          ` : ``} ${report_options.qualification_per2 ? `
+          `
+              : ``
+          } ${
+            report_options.qualification_per2
+              ? `
           <td>Per.2 : <b>${course.score2 ? course.score2 : '-'}</b></td>
-          ` : ``} ${report_options.qualification_per3 ? `
+          `
+              : ``
+          } ${
+            report_options.qualification_per3
+              ? `
           <td>Per.3 : <b>${course.score3 ? course.score3 : '-'}</b></td>
-          ` : ``} ${report_options.qualification_per4 ? `
+          `
+              : ``
+          } ${
+            report_options.qualification_per4
+              ? `
           <td>Per.4 : <b>${course.score4 ? course.score4 : '-'}</b></td>
-          ` : ``} ${report_options.average_per ? `
+          `
+              : ``
+          } ${
+            report_options.average_per
+              ? `
           <td>Promedio : <b>4</b></td>
-          ` : ``}
+          `
+              : ``
+          }
         </tr>
-        ` }
+        `
+        }
       </table>
-      `,)}
+      `,
+      )}
       <div
         style="
-          width: 1000px;
+          width: 650px;
           margin-top: 40px;
           margin-right: auto;
           margin-left: auto;
@@ -216,7 +267,7 @@ function report(group, transformation, report_options) {
       </div>
       <div
         style="
-          width: 1000px;
+          width: 650px;
           display: flex;
           justify-content: center;
           margin-top: 40px;
@@ -224,28 +275,41 @@ function report(group, transformation, report_options) {
           margin-right: auto;
         "
       >
-        ${report_options.signature.rector ? `
+        ${
+          report_options.signature.rector
+            ? `
         <div style="width: 33%; text-align: center; margin-inline: 10px">
           <hr />
           <p><b>Hoyos Yepes Olga Ines</b></p>
           <p>Rector</p>
         </div>
-        ` : ``} ${report_options.signature.secretary ? `
+        `
+            : ``
+        } ${
+          report_options.signature.secretary
+            ? `
         <div style="width: 33%; text-align: center; margin-inline: 10px">
           <hr />
           <p><b>Hoyos Yepes Olga Ines</b></p>
           <p>Secretario(a)</p>
         </div>
-        ` : ``} ${report_options.signature.professor_group ? `
+        `
+            : ``
+        } ${
+          report_options.signature.professor_group
+            ? `
         <div style="width: 33%; text-align: center; margin-inline: 10px">
           <hr />
           <p><b>Hoyos Yepes Olga Ines</b></p>
           <p>Profesor de grupo</p>
         </div>
-        ` : ``}
+        `
+            : ``
+        }
       </div>
     </div>
-    `)}
+    `,
+    )}
   </body>
 </html>
 

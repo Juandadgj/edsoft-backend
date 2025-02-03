@@ -25,7 +25,7 @@ function report2(students: any, achievements: any, teacher: any, area: any) {
               height: 100px;
           }
           .container {
-            width: 1000px;
+            width: 650px;
             margin-left: auto;
             margin-right: auto;
           }
