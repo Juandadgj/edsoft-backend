@@ -7,7 +7,7 @@ import {
   UpdateAchievementInput,
   UpdateQualificationsInput,
 } from 'src/shared/interfaces/graphql';
-require("core-js/actual/array/group-by");
+require('core-js/actual/array/group-by');
 
 @Injectable()
 export class AchievementService {
@@ -15,9 +15,26 @@ export class AchievementService {
     id_institution: string,
     createAchievementInput: CreateAchievementInput,
   ) {
-    return await clients[id_institution].achievement.create({
+    const course = await clients[id_institution].course.findUnique({
+      where: { id_course: createAchievementInput.id_course },
+    });
+    const group = await clients[id_institution].group.findUnique({
+      where: { id_group: course.id_group },
+    });
+    const enrollments = await clients['1059'].enrollment.findMany({
+      where: { id_group: group.id_group },
+    });
+    const achievement = await clients[id_institution].achievement.create({
       data: createAchievementInput,
     });
+    const achievement_student_map = enrollments.map((element) => ({
+      id_achievement: achievement.id_achievement,
+      id_student: element.id_student,
+    }));
+    await clients[id_institution].achievement_student.createMany({
+      data: achievement_student_map,
+    });
+    return achievement;
   }
 
   async findAll(
@@ -55,11 +72,15 @@ export class AchievementService {
       },
       where: {
         id_course: filterQualificationInput.id_course,
-        period: filterQualificationInput.period
-      }
+        period: filterQualificationInput.period,
+      },
     });
-    const achievementsIds = achievements.map(element => element.id_achievement);
-    const qualifications = await clients[id_institution].achievement_student.findMany({
+    const achievementsIds = achievements.map(
+      (element) => element.id_achievement,
+    );
+    const qualifications = await clients[
+      id_institution
+    ].achievement_student.findMany({
       where: {
         id_achievement: {
           in: achievementsIds,
@@ -67,13 +88,15 @@ export class AchievementService {
       },
       include: {
         student: true,
-      }
+      },
     });
     const qualMap: any = qualifications.map((element: any) => {
-      element['student'] = `${element['student'].name} ${element['student'].last_name}`;
+      element[
+        'student'
+      ] = `${element['student'].name} ${element['student'].last_name}`;
       return element;
     });
-    const qualGroup = qualMap.groupBy(qualification => qualification.student);
+    const qualGroup = qualMap.groupBy((qualification) => qualification.student);
     const result = Object.keys(qualGroup).map((studentName) => ({
       student: studentName,
       qualifications: qualGroup[studentName],
