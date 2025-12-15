@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 import {
   GenerateStudentsListUndeterminatedInput,
   GenerateStudentsListDeterminatedInput,
@@ -15,12 +15,15 @@ require('core-js/actual/array/group-by');
 
 @Injectable()
 export class ReportService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async generateStudentsListUndeterminated(
     generateStudentsListInput: GenerateStudentsListUndeterminatedInput,
   ) {
     try {
       const { id_group } = generateStudentsListInput;
-      const students = await clients['1059'].enrollment.findMany({
+      const prisma = this.prismaManager.getClient('1059');
+      const students = await prisma.enrollment.findMany({
         where: {
           id_group,
         },
@@ -40,7 +43,8 @@ export class ReportService {
   ) {
     try {
       const { id_group, id_course } = generateStudentsListDeterminatedInput;
-      const students = await clients['1059'].enrollment.findMany({
+      const prisma = this.prismaManager.getClient('1059');
+      const students = await prisma.enrollment.findMany({
         where: {
           id_group,
         },
@@ -48,7 +52,7 @@ export class ReportService {
           student: true,
         },
       });
-      const courses = await clients['1059'].course.findUnique({
+      const courses = await prisma.course.findUnique({
         where: {
           id_course,
         },
@@ -70,7 +74,8 @@ export class ReportService {
   ) {
     try {
       const { id_group, id_course, period } = generateStudentsList;
-      const students = await clients['1059'].enrollment.findMany({
+      const prisma = this.prismaManager.getClient('1059');
+      const students = await prisma.enrollment.findMany({
         where: {
           id_group,
         },
@@ -78,13 +83,13 @@ export class ReportService {
           student: true,
         },
       });
-      const achievements = await clients['1059'].achievement.findMany({
+      const achievements = await prisma.achievement.findMany({
         where: {
           id_course,
           period,
         },
       });
-      const { teacher, area } = await clients['1059'].course
+      const { teacher, area } = await prisma.course
         .findMany({
           where: {
             id_course,
@@ -104,11 +109,12 @@ export class ReportService {
   }
 
   async getStudentDefinitives(id_student, id_group) {
+    const prisma = this.prismaManager.getClient('1059');
     // name, username, courseName, scores, teacher, hours, average, position
-    const student = await clients['1059'].student.findUnique({
+    const student = await prisma.student.findUnique({
       where: { id_student },
     });
-    const definitives = await clients['1059'].course_student.findMany({
+    const definitives = await prisma.course_student.findMany({
       where: {
         id_student,
         course: {
@@ -154,7 +160,8 @@ export class ReportService {
   }
 
   async getGroupDefinitives(id_group) {
-    const courses: any = await clients['1059'].course.findMany({
+    const prisma = this.prismaManager.getClient('1059');
+    const courses: any = await prisma.course.findMany({
       where: {
         id_group: id_group,
       },
@@ -250,12 +257,13 @@ export class ReportService {
   }
 
   async generateReportArea(generateReportAreaInput: GenerateReportAreaInput) {
+    const prisma = this.prismaManager.getClient('1059');
     const { id_group, id_student, report_options } = generateReportAreaInput;
     try {
-      const group = await clients['1059'].group.findUnique({
+      const group = await prisma.group.findUnique({
         where: { id_group: id_group },
       });
-      const areas = await clients['1059'].area.findMany();
+      const areas = await prisma.area.findMany();
       if (id_student) {
         const data = await this.getStudentDefinitives(id_student, id_group);
         return report(group, data, report_options);

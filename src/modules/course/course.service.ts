@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 import {
   CreateCourseInput,
   FilterCourseInput,
@@ -10,38 +10,45 @@ import {
 
 @Injectable()
 export class CourseService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async create(id_institution: string, createCourseInput: CreateCourseInput) {
-    return await clients[id_institution].course.create({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.course.create({
       data: createCourseInput,
     });
   }
 
   async findAll(id_institution: string, filterCourseInput: FilterCourseInput) {
-    return await clients[id_institution].course.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.course.findMany({
       where: filterCourseInput,
       include: {
         teacher: true,
         area: true,
-        group: true
+        group: true,
       },
     });
   }
 
   async findOne(id_institution: string, id_course: number) {
-    return await clients[id_institution].course.findUnique({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.course.findUnique({
       where: { id_course: id_course },
     });
   }
 
   async update(id_institution: string, updateCourseInput: UpdateCourseInput) {
-    return await clients[id_institution].course.update({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.course.update({
       where: { id_course: updateCourseInput.id_course },
       data: updateCourseInput,
     });
   }
 
   async delete(id_institution: string, id_course: number) {
-    return await clients[id_institution].course.delete({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.course.delete({
       where: { id_course: id_course },
     });
   }
@@ -50,16 +57,18 @@ export class CourseService {
     id_institution: string,
     filterDefinitivesInput: FilterDefinitivesInput,
   ) {
-    return await clients[id_institution].course_student.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.course_student.findMany({
       where: filterDefinitivesInput,
     });
   }
 
-  async updateDefitinives(
+  async updateDefinitives(
     id_institution: string,
     updateDefinitivesInput: UpdateDefinitivesInput,
   ) {
-    return await clients[id_institution].course_student.update({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.course_student.update({
       where: { id_cour_stu: updateDefinitivesInput.id_cour_stu },
       data: updateDefinitivesInput,
     });

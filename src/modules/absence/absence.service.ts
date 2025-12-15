@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 import {
   CreateAbsenceInput,
   FilterAbsenceInput,
@@ -8,8 +8,11 @@ import {
 
 @Injectable()
 export class AbsenceService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async create(id_institution: string, createAbsenceInput: CreateAbsenceInput) {
-    return await clients[id_institution].absence.create({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.absence.create({
       data: createAbsenceInput,
     });
   }
@@ -18,20 +21,23 @@ export class AbsenceService {
     id_institution: string,
     filterAbsenceInput: FilterAbsenceInput,
   ) {
-    return await clients[id_institution].absence.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.absence.findMany({
       where: filterAbsenceInput,
     });
   }
 
   async update(id_institution: string, updateAbsenceInput: UpdateAbsenceInput) {
-    return await clients[id_institution].absence.update({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.absence.update({
       where: { id_absence: updateAbsenceInput.id_absence },
       data: updateAbsenceInput,
     });
   }
 
   async delete(id_institution: string, id_absence: number) {
-    return await clients[id_institution].absence.delete({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.absence.delete({
       where: { id_absence: id_absence },
     });
   }

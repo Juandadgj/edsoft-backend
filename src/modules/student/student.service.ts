@@ -4,29 +4,32 @@ import {
   UpdateStudentInput,
   FilterStudentInput,
 } from 'src/shared/interfaces/graphql';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 
 @Injectable()
 export class StudentService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async create(
     id_institution: string,
     createStudentInput: CreateStudentInput,
     id_group: number,
   ) {
-    const group = await clients[id_institution].group.findUnique({
+    const prisma = this.prismaManager.getClient(id_institution);
+    const group = await prisma.group.findUnique({
       where: { id_group },
     });
-    const student = await clients[id_institution].student.create({
+    const student = await prisma.student.create({
       data: createStudentInput,
     });
-    await clients[id_institution].enrollment.create({
+    await prisma.enrollment.create({
       data: {
         id_student: student.id_student,
         id_group: group.id_group,
         year: group.id_year,
       },
     });
-    await clients[id_institution].user.create({
+    await prisma.user.create({
       data: {
         user: `e${student.identification}`,
         password: '1234',
@@ -39,7 +42,8 @@ export class StudentService {
   }
 
   async findByGroup(id_institution: string, id_group: number) {
-    const enrollment = await clients[id_institution].enrollment.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    const enrollment = await prisma.enrollment.findMany({
       where: { id_group: id_group },
       include: { student: true },
     });
@@ -48,7 +52,8 @@ export class StudentService {
   }
 
   async find(id_institution: string, filterStudentInput: FilterStudentInput) {
-    const student = await clients['1059'].student.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    const student = await prisma.student.findMany({
       where: {
         OR: [
           {
@@ -83,7 +88,8 @@ export class StudentService {
   async findOne(id_institution: string, id_student: number) {
     // id_student: 1591
     // group: 244
-    const student = await clients[id_institution].student.findUnique({
+    const prisma = this.prismaManager.getClient(id_institution);
+    const student = await prisma.student.findUnique({
       where: { id_student: id_student },
       select: {
         id_student: true,
@@ -95,16 +101,16 @@ export class StudentService {
         phone: true,
       },
     });
-    const enrollments = await clients[id_institution].enrollment.findMany({
+    const enrollments = await prisma.enrollment.findMany({
       where: { id_student: student.id_student },
       select: { id_group: true },
     });
     const ids_group = enrollments.map((enrollment) => enrollment.id_group);
-    const groups = await clients[id_institution].group.findMany({
+    const groups = await prisma.group.findMany({
       where: { id_group: { in: ids_group } },
       select: { id_group: true, level: true, sublevel: true },
     });
-    let courses: any = await clients[id_institution].course.findMany({
+    let courses: any = await prisma.course.findMany({
       where: { id_group: { in: ids_group } },
       select: {
         id_course: true,
@@ -118,7 +124,7 @@ export class StudentService {
       return course;
     });
     const ids_course = courses.map((course) => course.id_course);
-    const definitives = await clients[id_institution].course_student.findMany({
+    const definitives = await prisma.course_student.findMany({
       where: {
         id_student: student.id_student,
         id_course: { in: ids_course },
@@ -148,14 +154,16 @@ export class StudentService {
   }
 
   async update(id_institution: string, updateStudentInput: UpdateStudentInput) {
-    return await clients[id_institution].student.update({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.student.update({
       where: { id_student: updateStudentInput.id_student },
       data: updateStudentInput,
     });
   }
 
   async delete(id_institution: string, id_student: number) {
-    return await clients[id_institution].student.delete({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.student.delete({
       where: { id_student: id_student },
     });
   }

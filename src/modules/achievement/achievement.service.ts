@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 import {
   CreateAchievementInput,
   FilterAchievementInput,
@@ -11,27 +11,30 @@ require('core-js/actual/array/group-by');
 
 @Injectable()
 export class AchievementService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async create(
     id_institution: string,
     createAchievementInput: CreateAchievementInput,
   ) {
-    const course = await clients[id_institution].course.findUnique({
+    const prisma = this.prismaManager.getClient(id_institution);
+    const course = await prisma.course.findUnique({
       where: { id_course: createAchievementInput.id_course },
     });
-    const group = await clients[id_institution].group.findUnique({
+    const group = await prisma.group.findUnique({
       where: { id_group: course.id_group },
     });
-    const enrollments = await clients['1059'].enrollment.findMany({
+    const enrollments = await this.prismaManager.getClient('1059').enrollment.findMany({
       where: { id_group: group.id_group },
     });
-    const achievement = await clients[id_institution].achievement.create({
+    const achievement = await prisma.achievement.create({
       data: createAchievementInput,
     });
     const achievement_student_map = enrollments.map((element) => ({
       id_achievement: achievement.id_achievement,
       id_student: element.id_student,
     }));
-    await clients[id_institution].achievement_student.createMany({
+    await prisma.achievement_student.createMany({
       data: achievement_student_map,
     });
     return achievement;
@@ -41,7 +44,8 @@ export class AchievementService {
     id_institution: string,
     filterAchievementInput: FilterAchievementInput,
   ) {
-    return await clients[id_institution].achievement.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.achievement.findMany({
       where: filterAchievementInput,
     });
   }
@@ -50,14 +54,16 @@ export class AchievementService {
     id_institution: string,
     updateAchievementInput: UpdateAchievementInput,
   ) {
-    return await clients[id_institution].achievement.update({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.achievement.update({
       where: { id_achievement: updateAchievementInput.id_achievement },
       data: updateAchievementInput,
     });
   }
 
   async delete(id_institution: string, id_achievement: number) {
-    return await clients[id_institution].achievement.delete({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.achievement.delete({
       where: { id_achievement: id_achievement },
     });
   }
@@ -66,7 +72,8 @@ export class AchievementService {
     id_institution: string,
     filterQualificationInput: FilterQualificationInput,
   ) {
-    const achievements = await clients[id_institution].achievement.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    const achievements = await prisma.achievement.findMany({
       select: {
         id_achievement: true,
       },
@@ -78,9 +85,7 @@ export class AchievementService {
     const achievementsIds = achievements.map(
       (element) => element.id_achievement,
     );
-    const qualifications = await clients[
-      id_institution
-    ].achievement_student.findMany({
+    const qualifications = await prisma.achievement_student.findMany({
       where: {
         id_achievement: {
           in: achievementsIds,
@@ -108,8 +113,9 @@ export class AchievementService {
     id_institution: string,
     updateQualificationsInput: UpdateQualificationsInput,
   ) {
+    const prisma = this.prismaManager.getClient(id_institution);
     for (const qualification of updateQualificationsInput.qualifications) {
-      await clients[id_institution].achievement_student.update({
+      await prisma.achievement_student.update({
         where: { id_achie_stu: qualification.id_achie_stu },
         data: {
           score: qualification.score,

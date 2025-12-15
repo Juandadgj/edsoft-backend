@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 import {
   CreateScholarYearInput,
   UpdateScholarYearInput,
@@ -7,21 +7,26 @@ import {
 
 @Injectable()
 export class ScholarYearService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async create(
     id_institution: string,
     createScholarYearInput: CreateScholarYearInput,
   ) {
-    return await clients[id_institution].scholar_year.create({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.scholar_year.create({
       data: createScholarYearInput,
     });
   }
 
   async findAll(id_institution: string) {
-    return await clients[id_institution].scholar_year.findMany();
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.scholar_year.findMany();
   }
 
   async findSelected(id_institution: string) {
-    return await clients[id_institution].scholar_year.findFirst({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.scholar_year.findFirst({
       where: {
         selected: true,
       },
@@ -32,26 +37,37 @@ export class ScholarYearService {
     id_institution: string,
     updateScholarYearInput: UpdateScholarYearInput,
   ) {
-    return await clients[id_institution].scholar_year.update({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.scholar_year.update({
       where: { id_year: updateScholarYearInput.id_year },
       data: updateScholarYearInput,
     });
   }
 
   async delete(id_institution: string, id_year: number) {
-    return await clients[id_institution].scholar_year.delete({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.scholar_year.delete({
       where: { id_year: id_year },
     });
   }
 
   async select(id_institution: string, id_year: number) {
-    await clients[id_institution].scholar_year.updateMany({
-      where: { selected: true },
-      data: { selected: false },
+    const prisma = this.prismaManager.getClient(id_institution);
+    await prisma.scholar_year.updateMany({
+      where: {
+        selected: true,
+      },
+      data: {
+        selected: false,
+      },
     });
-    return await clients[id_institution].scholar_year.update({
-      where: { id_year },
-      data: { selected: true },
+    return await prisma.scholar_year.update({
+      where: {
+        id_year,
+      },
+      data: {
+        selected: true,
+      },
     });
   }
 }

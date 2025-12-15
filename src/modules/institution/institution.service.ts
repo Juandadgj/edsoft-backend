@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 
 @Injectable()
 export class InstitutionService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async findAll() {
-    return await clients['institutions'].institution.findMany();
+    const prisma = this.prismaManager.getClient('institutions');
+    return await prisma.institution.findMany();
   }
 }

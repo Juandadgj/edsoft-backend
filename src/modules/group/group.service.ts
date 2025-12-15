@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 import {
   CreateGroupInput,
   FilterGroupInput,
@@ -8,22 +8,26 @@ import {
 
 @Injectable()
 export class GroupService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async create(id_institution: string, createGroupInput: CreateGroupInput) {
-    return await clients[id_institution].group.create({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.group.create({
       data: createGroupInput,
     });
   }
 
   async findAll(id_institution: string, filterGroupInput: FilterGroupInput) {
-    const query = await clients[id_institution].group.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    const query = await prisma.group.findMany({
       where: filterGroupInput,
       include: {
         _count: {
-          select: { courses: true }
-        }
-      }
+          select: { courses: true },
+        },
+      },
     });
-    const groups = query.map((group) => {
+    const groups = query.map((group: any) => {
       group.coursesCount = group._count.courses;
       return group;
     });
@@ -31,20 +35,23 @@ export class GroupService {
   }
 
   async findOne(id_institution: string, id_group: number) {
-    return await clients[id_institution].group.findUnique({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.group.findUnique({
       where: { id_group: id_group },
     });
   }
 
   async update(id_institution: string, updateGroupInput: UpdateGroupInput) {
-    return await clients[id_institution].group.update({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.group.update({
       where: { id_group: updateGroupInput.id_group },
       data: updateGroupInput,
     });
   }
 
   async delete(id_institution: string, id_group: number) {
-    return await clients[id_institution].group.delete({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.group.delete({
       where: { id_group: id_group },
     });
   }

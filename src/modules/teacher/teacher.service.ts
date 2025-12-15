@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 import {
   CreateTeacherInput,
   FilterTeacherInput,
@@ -8,8 +8,11 @@ import {
 
 @Injectable()
 export class TeacherService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async create(id_institution: string, createTeacherInput: CreateTeacherInput) {
-    return await clients[id_institution].teacher.create({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.teacher.create({
       data: createTeacherInput,
     });
   }
@@ -18,26 +21,30 @@ export class TeacherService {
     id_institution: string,
     filterTeacherInput: FilterTeacherInput,
   ) {
-    return await clients[id_institution].teacher.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.teacher.findMany({
       where: filterTeacherInput,
     });
   }
 
   async findOne(id_institution: string, id_teacher: number) {
-    return await clients[id_institution].teacher.findUnique({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.teacher.findUnique({
       where: { id_teacher: id_teacher },
     });
   }
 
   async update(id_institution: string, updateTeacherInput: UpdateTeacherInput) {
-    return await clients[id_institution].teacher.update({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.teacher.update({
       where: { id_teacher: updateTeacherInput.id_teacher },
       data: updateTeacherInput,
     });
   }
 
   async delete(id_institution: string, id_teacher: number) {
-    return await clients[id_institution].teacher.delete({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.teacher.delete({
       where: { id_teacher: id_teacher },
     });
   }

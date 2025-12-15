@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import clients from 'src/config/clientsDB';
+import { PrismaClientManager } from 'src/config/prisma-client.manager';
 import {
   CreateEnrollmentInput,
   FilterEnrollmentInput,
@@ -8,11 +8,14 @@ import {
 
 @Injectable()
 export class EnrollmentService {
+  constructor(private readonly prismaManager: PrismaClientManager) {}
+
   async create(
     id_institution: string,
     createEnrollmentInput: CreateEnrollmentInput,
   ) {
-    return await clients[id_institution].enrollment.create({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.enrollment.create({
       data: createEnrollmentInput,
     });
   }
@@ -21,13 +24,15 @@ export class EnrollmentService {
     id_institution: string,
     filterEnrollmentInput: FilterEnrollmentInput,
   ) {
-    return await clients[id_institution].enrollment.findMany({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.enrollment.findMany({
       where: filterEnrollmentInput,
     });
   }
 
   async findOne(id_institution: string, id_enrollment: number) {
-    return await clients[id_institution].enrollment.findUnique({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.enrollment.findUnique({
       where: { id_enrollment: id_enrollment },
     });
   }
@@ -36,14 +41,16 @@ export class EnrollmentService {
     id_institution: string,
     updateEnrollmentInput: UpdateEnrollmentInput,
   ) {
-    return await clients[id_institution].enrollment.update({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.enrollment.update({
       where: { id_enrollment: updateEnrollmentInput.id_enrollment },
       data: updateEnrollmentInput,
     });
   }
 
   async delete(id_institution: string, id_enrollment: number) {
-    return await clients[id_institution].enrollment.delete({
+    const prisma = this.prismaManager.getClient(id_institution);
+    return await prisma.enrollment.delete({
       where: { id_enrollment: id_enrollment },
     });
   }

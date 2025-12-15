@@ -21,6 +21,8 @@ import { ScholarYearModule } from './modules/scholar-year/scholar-year.module';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import { TypeQualificationModule } from './modules/type-qualification/type-qualification.module';
 import { ReportModule } from './modules/report/report.module';
+import { PrismaClientModule } from './config/prisma-client.module';
+import { AwsModule } from './modules/aws/aws.module';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { ReportModule } from './modules/report/report.module';
         outputAs: 'class',
       },
     }),
+    PrismaClientModule,
     AbsenceModule,
     AchievementModule,
     AreaModule,
@@ -52,6 +55,7 @@ import { ReportModule } from './modules/report/report.module';
     TypeQualificationModule,
     UserModule,
     ReportModule,
+    AwsModule,
   ],
   controllers: [AppController],
   providers: [
