@@ -34,8 +34,8 @@ model achievement_student {
   id_achievement Int?
   id_student     Int?
   score          Float?
-  valor_nota     String?      @db.VarChar(20)
-  sigla_nota     String?      @db.VarChar(5)
+  score_value    String?      @db.VarChar(20)
+  score_acronym  String?      @db.VarChar(5)
   achievement    achievement? @relation(fields: [id_achievement], references: [id_achievement])
   student        student?     @relation(fields: [id_student], references: [id_student])
 }
@@ -48,45 +48,45 @@ model area {
 }
 
 model course {
-  id_course     Int              @id @default(autoincrement())
-  id_group      Int
-  id_area       Int
-  area          area             @relation(fields: [id_area], references: [id_area])
-  id_teacher    Int
-  teacher       teacher          @relation(fields: [id_teacher], references: [id_teacher])
-  name          String           @db.VarChar(200)
-  position      Int?
-  dim_codigo    Int?
-  asi_dimension String?          @db.Char(1)
-  hour          Int
-  average       String?          @db.Char(2)
-  percentage    Int?
-  group         group?           @relation(fields: [id_group], references: [id_group])
-  achievements  achievement[]
-  definitives   course_student[]
+  id_course      Int              @id @default(autoincrement())
+  id_group       Int
+  id_area        Int
+  area           area             @relation(fields: [id_area], references: [id_area])
+  id_teacher     Int
+  teacher        teacher          @relation(fields: [id_teacher], references: [id_teacher])
+  name           String           @db.VarChar(200)
+  position       Int?
+  dimension_code Int?
+  dimension_type String?          @db.Char(1)
+  hour           Int
+  average        String?          @db.Char(2)
+  percentage     Int?
+  group          group?           @relation(fields: [id_group], references: [id_group])
+  achievements   achievement[]
+  definitives    course_student[]
 }
 
 model course_student {
-  id_cour_stu Int      @id @default(autoincrement())
-  id_student  Int?
-  student     student? @relation(fields: [id_student], references: [id_student])
-  id_course   Int?
-  course      course?  @relation(fields: [id_course], references: [id_course])
-  score1      String?  @db.VarChar(15)
-  score2      String?  @db.VarChar(15)
-  score3      String?  @db.VarChar(15)
-  score4      String?  @db.VarChar(15)
-  valor_nota1 String?  @db.VarChar(20)
-  valor_nota2 String?  @db.VarChar(20)
-  valor_nota3 String?  @db.VarChar(20)
-  valor_nota4 String?  @db.VarChar(20)
-  sigla_nota1 String?  @db.VarChar(5)
-  sigla_nota2 String?  @db.VarChar(5)
-  sigla_nota3 String?  @db.VarChar(5)
-  sigla_nota4 String?  @db.VarChar(5)
-  score5      String?  @db.VarChar(15)
-  valor_nota5 String?  @db.VarChar(20)
-  sigla_nota5 String?  @db.VarChar(5)
+  id_cour_stu    Int      @id @default(autoincrement())
+  id_student     Int?
+  student        student? @relation(fields: [id_student], references: [id_student])
+  id_course      Int?
+  course         course?  @relation(fields: [id_course], references: [id_course])
+  score1         String?  @db.VarChar(15)
+  score2         String?  @db.VarChar(15)
+  score3         String?  @db.VarChar(15)
+  score4         String?  @db.VarChar(15)
+  score_value1   String?  @db.VarChar(20)
+  score_value2   String?  @db.VarChar(20)
+  score_value3   String?  @db.VarChar(20)
+  score_value4   String?  @db.VarChar(20)
+  score_acronym1 String?  @db.VarChar(5)
+  score_acronym2 String?  @db.VarChar(5)
+  score_acronym3 String?  @db.VarChar(5)
+  score_acronym4 String?  @db.VarChar(5)
+  score5         String?  @db.VarChar(15)
+  score_value5   String?  @db.VarChar(20)
+  score_acronym5 String?  @db.VarChar(5)
 }
 
 model enrollment {
@@ -114,22 +114,22 @@ model group {
   sublevel       String?      @db.VarChar(5)
   working_time   String?      @db.VarChar(5)
   representative String?      @db.VarChar(200)
-  periodo_1      String?      @db.VarChar(1)
-  periodo_2      String?      @db.VarChar(1)
-  periodo_3      String?      @db.VarChar(1)
-  periodo_4      String?      @db.VarChar(1)
-  periodo_5      String?      @db.VarChar(1)
+  period_1       String?      @db.VarChar(1)
+  period_2       String?      @db.VarChar(1)
+  period_3       String?      @db.VarChar(1)
+  period_4       String?      @db.VarChar(1)
+  period_5       String?      @db.VarChar(1)
   courses        course[]
   enrollments    enrollment[]
 }
 
 model indicator_student {
-  id_ind_stu   Int     @id @default(autoincrement())
-  id_indicator Int?
-  id_student   Int?
-  score        String? @db.VarChar(20)
-  valor_nota   Int?
-  sigla_nota   String? @db.VarChar(5)
+  id_ind_stu    Int     @id @default(autoincrement())
+  id_indicator  Int?
+  id_student    Int?
+  score         String? @db.VarChar(20)
+  score_value   Int?
+  score_acronym String? @db.VarChar(5)
 }
 
 model institution {
@@ -138,7 +138,7 @@ model institution {
   register        String  @db.VarChar(200)
   direction       String  @db.VarChar(250)
   phone           String  @db.VarChar(50)
-  responsable     String  @db.VarChar(250)
+  responsible     String  @db.VarChar(250)
   logo            String? @db.VarChar(250)
   user            String  @db.VarChar(250)
   pay_inscription Int
@@ -151,6 +151,7 @@ model institution {
   title           String  @db.VarChar(50)
   message         String  @db.VarChar(250)
   information     String  @db.LongText
+  features        Json?   @default("{\"absences\": true, \"achievements\": true, \"reports\": true, \"enrollments\": true, \"recommendations\": false, \"observations\": true, \"featured_students\": false}")
 }
 
 model observation {
@@ -174,7 +175,7 @@ model recommendation_student {
   id_rec_stu        Int     @id @default(autoincrement())
   id_recommendation Int?
   id_student        Int?
-  rec_est_nota      String? @db.VarChar(1)
+  score             String? @db.VarChar(1)
 }
 
 model scholar_year {
@@ -186,85 +187,84 @@ model scholar_year {
 }
 
 model student {
-  id_student                 Int                   @id @default(autoincrement())
-  name                       String                @db.VarChar(200)
-  last_name                  String                @db.VarChar(200)
-  type_id                    Int
-  identification             String                @db.VarChar(200)
-  sex                        String                @db.VarChar(10)
-  direction                  String?               @db.VarChar(200)
-  phone                      String                @db.VarChar(200)
-  guardian                   String                @db.VarChar(200)
-  est_foto                   String?               @db.VarChar(200)
-  status                     String?               @default("H") @db.VarChar(5)
-  birthday                   DateTime?             @db.Date
-  est_indigena               String?               @db.VarChar(2)
-  est_desplasado             String?               @db.VarChar(2)
-  est_madre_c                String?               @db.VarChar(2)
-  est_desmovilisado          String?               @db.VarChar(2)
-  est_sisben                 String?               @db.VarChar(2)
-  father                     String?               @db.VarChar(150)
-  mother                     String?               @db.VarChar(150)
-  est_ide_acudiente          String?               @db.VarChar(100)
-  est_ide_madre              String?               @db.VarChar(100)
-  est_ide_padre              String?               @db.VarChar(100)
-  est_lugar_nacimiento       String?               @db.VarChar(100)
-  est_niv_sisben             String?               @db.VarChar(100)
-  est_niv_estrato            String?               @db.VarChar(100)
-  est_niv_discapacidad       String?               @db.VarChar(100)
-  comunidad_indigena         String?               @db.VarChar(70)
-  afrodescendiente           String?               @db.VarChar(70)
-  comunidad_afrodescendiente String?               @db.VarChar(70)
-  barrio                     String?               @db.VarChar(70)
-  zona                       String?               @db.VarChar(70)
-  estudio_vigencia           String?               @db.VarChar(70)
-  institucion_procedencia    String?               @db.VarChar(70)
-  grado_procedencia          String?               @db.VarChar(70)
-  ano_procedencia            String?               @db.VarChar(70)
-  ciudad_procedencia         String?               @db.VarChar(70)
-  sistema_salud              String?               @db.VarChar(70)
-  tipo_sangra                String?               @db.VarChar(70)
-  entidad_afiliado           String?               @db.VarChar(70)
-  capacidad_excepcional      String?               @db.VarChar(70)
-  codigo                     String?               @db.VarChar(70)
-  municipio                  String?               @db.VarChar(70)
-  estudio_realizado_madre    String?               @db.VarChar(70)
-  profesion_madre            String?               @db.VarChar(70)
-  celular_madre              String?               @db.VarChar(70)
-  estudio_realizado_padre    String?               @db.VarChar(70)
-  profesion_padre            String?               @db.VarChar(70)
-  celulat_padre              String?               @db.VarChar(70)
-  direccion_padre            String?               @db.VarChar(70)
-  necesita_escolar           String?               @db.VarChar(50)
-  email                      String?               @db.VarChar(200)
-  qualifications             achievement_student[]
-  enrollments                enrollment[]
-  definitives                course_student[]
+  id_student           Int                   @id @default(autoincrement())
+  name                 String                @db.VarChar(200)
+  last_name            String                @db.VarChar(200)
+  type_id              Int
+  identification       String                @db.VarChar(200)
+  sex                  String                @db.VarChar(10)
+  direction            String?               @db.VarChar(200)
+  phone                String                @db.VarChar(200)
+  guardian             String                @db.VarChar(200)
+  photo                String?               @db.VarChar(200)
+  status               String?               @default("H") @db.VarChar(5)
+  birthday             DateTime?             @db.Date
+  is_indigenous        String?               @db.VarChar(2)
+  is_displaced         String?               @db.VarChar(2)
+  is_head_of_household String?               @db.VarChar(2)
+  is_demobilized       String?               @db.VarChar(2)
+  has_sisben           String?               @db.VarChar(2)
+  father               String?               @db.VarChar(150)
+  mother               String?               @db.VarChar(150)
+  guardian_id          String?               @db.VarChar(100)
+  mother_id            String?               @db.VarChar(100)
+  father_id            String?               @db.VarChar(100)
+  birthplace           String?               @db.VarChar(100)
+  sisben_level         String?               @db.VarChar(100)
+  socioeconomic_level  String?               @db.VarChar(100)
+  disability_level     String?               @db.VarChar(100)
+  indigenous_community String?               @db.VarChar(70)
+  is_afro_descendant   String?               @db.VarChar(70)
+  afro_community       String?               @db.VarChar(70)
+  neighborhood         String?               @db.VarChar(70)
+  zone                 String?               @db.VarChar(70)
+  study_validity       String?               @db.VarChar(70)
+  previous_institution String?               @db.VarChar(70)
+  previous_grade       String?               @db.VarChar(70)
+  previous_year        String?               @db.VarChar(70)
+  previous_city        String?               @db.VarChar(70)
+  health_system        String?               @db.VarChar(70)
+  blood_type           String?               @db.VarChar(70)
+  affiliated_entity    String?               @db.VarChar(70)
+  exceptional_ability  String?               @db.VarChar(70)
+  code                 String?               @db.VarChar(70)
+  municipality         String?               @db.VarChar(70)
+  mother_education     String?               @db.VarChar(70)
+  mother_profession    String?               @db.VarChar(70)
+  mother_cellphone     String?               @db.VarChar(70)
+  father_education     String?               @db.VarChar(70)
+  father_profession    String?               @db.VarChar(70)
+  father_cellphone     String?               @db.VarChar(70)
+  father_address       String?               @db.VarChar(70)
+  school_needs         String?               @db.VarChar(50)
+  email                String?               @db.VarChar(200)
+  qualifications       achievement_student[]
+  enrollments          enrollment[]
+  definitives          course_student[]
 }
 
 model teacher {
-  id_teacher      Int      @id @default(autoincrement())
-  name            String?  @db.VarChar(200)
-  last_name       String?  @db.VarChar(200)
-  type_id         Int?
-  identification  String?  @db.VarChar(200)
-  direction       String?  @db.VarChar(200)
-  phone           String?  @db.VarChar(200)
-  email           String?  @db.VarChar(200)
-  degree          String?  @db.VarChar(200)
-  pro_descripcion String?  @db.VarChar(200)
-  pro_eliminado   String?  @default("N") @db.VarChar(5)
-  courses         course[]
+  id_teacher     Int      @id @default(autoincrement())
+  name           String?  @db.VarChar(200)
+  last_name      String?  @db.VarChar(200)
+  type_id        Int?
+  identification String?  @db.VarChar(200)
+  direction      String?  @db.VarChar(200)
+  phone          String?  @db.VarChar(200)
+  email          String?  @db.VarChar(200)
+  degree         String?  @db.VarChar(200)
+  deleted        String?  @default("N") @db.VarChar(5)
+  courses        course[]
 }
 
 model type_qualification {
-  id_type_qual       Int      @id @default(autoincrement())
-  tipo_not_codigo    Int?
-  name               String?  @db.VarChar(50)
-  floor_score        Decimal? @db.Decimal(10, 1)
-  ceiling_score      Decimal? @db.Decimal(10, 1)
-  tipo_not_cla_sigla String?  @db.VarChar(5)
-  year               Int?
+  id_type_qual           Int      @id @default(autoincrement())
+  type_code              Int?
+  name                   String?  @db.VarChar(50)
+  floor_score            Decimal? @db.Decimal(10, 1)
+  ceiling_score          Decimal? @db.Decimal(10, 1)
+  classification_acronym String?  @db.VarChar(5)
+  year                   Int?
 }
 
 model user {

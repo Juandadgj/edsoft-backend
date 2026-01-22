@@ -4,7 +4,7 @@ type Institution {
   register: String!
   direction: String!
   phone: String!
-  responsable: String!
+  responsible: String!
   logo: String
   user: String!
   pay_inscription: Int!

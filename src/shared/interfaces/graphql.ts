@@ -102,8 +102,8 @@ export class CreateCourseInput {
     id_teacher: number;
     name: string;
     position?: Nullable<number>;
-    dim_codigo?: Nullable<number>;
-    asi_dimension?: Nullable<string>;
+    dimension_code?: Nullable<number>;
+    dimension_type?: Nullable<string>;
     id_area: number;
     hour: number;
     average?: Nullable<string>;
@@ -116,8 +116,8 @@ export class UpdateCourseInput {
     id_teacher?: Nullable<number>;
     name?: Nullable<string>;
     position?: Nullable<number>;
-    dim_codigo?: Nullable<number>;
-    asi_dimension?: Nullable<string>;
+    dimension_code?: Nullable<number>;
+    dimension_type?: Nullable<string>;
     id_area?: Nullable<number>;
     hour?: Nullable<number>;
     average?: Nullable<string>;
@@ -129,8 +129,8 @@ export class FilterCourseInput {
     id_teacher?: Nullable<number>;
     name?: Nullable<string>;
     position?: Nullable<number>;
-    dim_codigo?: Nullable<number>;
-    asi_dimension?: Nullable<string>;
+    dimension_code?: Nullable<number>;
+    dimension_type?: Nullable<string>;
     id_area?: Nullable<number>;
     hour?: Nullable<number>;
     average?: Nullable<string>;
@@ -539,8 +539,8 @@ export class Course {
     teacher?: Nullable<Teacher>;
     name: string;
     position?: Nullable<number>;
-    dim_codigo?: Nullable<number>;
-    asi_dimension?: Nullable<string>;
+    dimension_code?: Nullable<number>;
+    dimension_type?: Nullable<string>;
     hour: number;
     average?: Nullable<string>;
     percentage?: Nullable<number>;
@@ -589,7 +589,7 @@ export class Institution {
     register: string;
     direction: string;
     phone: string;
-    responsable: string;
+    responsible: string;
     logo?: Nullable<string>;
     user: string;
     pay_inscription: number;

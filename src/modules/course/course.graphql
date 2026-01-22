@@ -7,8 +7,8 @@ type Course {
   teacher: Teacher
   name: String!
   position: Int
-  dim_codigo: Int
-  asi_dimension: String
+  dimension_code: Int
+  dimension_type: String
   hour: Int!
   average: String
   percentage: Int
@@ -30,8 +30,8 @@ input CreateCourseInput {
   id_teacher: Int!
   name: String!
   position: Int
-  dim_codigo: Int
-  asi_dimension: String
+  dimension_code: Int
+  dimension_type: String
   id_area: Int!
   hour: Int!
   average: String
@@ -44,8 +44,8 @@ input UpdateCourseInput {
   id_teacher: Int
   name: String
   position: Int
-  dim_codigo: Int
-  asi_dimension: String
+  dimension_code: Int
+  dimension_type: String
   id_area: Int
   hour: Int
   average: String
@@ -57,8 +57,8 @@ input FilterCourseInput {
   id_teacher: Int
   name: String
   position: Int
-  dim_codigo: Int
-  asi_dimension: String
+  dimension_code: Int
+  dimension_type: String
   id_area: Int
   hour: Int
   average: String

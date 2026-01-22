@@ -1,73 +1,202 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 🎓 EdSoft Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Sistema de gestión escolar desarrollado con **NestJS**, **GraphQL** y **Prisma**. Proporciona una API robusta para la administración integral de instituciones educativas.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📋 Descripción
 
-## Description
+EdSoft Backend es una API GraphQL diseñada para gestionar todos los aspectos operativos de instituciones educativas. El sistema soporta múltiples instituciones (multi-tenant) y ofrece funcionalidades completas para la gestión académica.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## ✨ Características Principales
 
-## Installation
+### 📚 Gestión Académica
+- **Estudiantes**: CRUD completo, información personal, datos familiares y seguimiento académico
+- **Profesores**: Gestión de docentes, asignación de cursos y materias
+- **Cursos**: Administración de asignaturas, asignación a grupos y profesores
+- **Grupos**: Organización por niveles, subniveles y jornadas
+- **Áreas**: Clasificación de materias por áreas de conocimiento
 
-```bash
-$ yarn install
+### 📊 Calificaciones y Evaluación
+- **Logros (Achievements)**: Definición y calificación de logros por período
+- **Notas Definitivas**: Seguimiento de calificaciones por período (hasta 5 períodos)
+- **Tipos de Calificación**: Configuración de escalas de notas personalizables
+
+### 📝 Registro y Seguimiento
+- **Matrículas (Enrollments)**: Gestión de inscripciones anuales y estados
+- **Ausencias**: Control de inasistencias con justificaciones
+- **Observaciones**: Registro de anotaciones por período
+- **Recomendaciones**: Sistema de recomendaciones por curso
+
+### 📄 Reportes
+- **Listados de estudiantes**: Generación de listas por grupo
+- **Boletines de notas**: Reportes por estudiante o grupo completo
+- **Reportes de logros e indicadores**: Seguimiento del rendimiento
+
+### 🏫 Administración Institucional
+- **Instituciones**: Configuración multi-tenant
+- **Años Escolares**: Gestión de períodos académicos
+- **Usuarios**: Sistema de autenticación y roles
+
+## 🛠️ Stack Tecnológico
+
+| Tecnología | Versión | Descripción |
+|------------|---------|-------------|
+| **NestJS** | 10.x | Framework de Node.js para aplicaciones escalables |
+| **GraphQL** | 16.x | API Query Language con Apollo Server |
+| **Prisma** | 4.9.0 | ORM moderno para Node.js y TypeScript |
+| **MySQL** | - | Base de datos relacional |
+| **TypeScript** | 5.x | Tipado estático para JavaScript |
+| **AWS S3** | - | Almacenamiento de archivos (imágenes, documentos) |
+
+## 📁 Estructura del Proyecto
+
+```
+src/
+├── config/                 # Configuración de la aplicación
+│   └── database/          # Schema de Prisma y configuración de BD
+├── middlewares/           # Middlewares de autenticación (JWT)
+├── modules/               # Módulos de la aplicación
+│   ├── absence/           # Gestión de ausencias
+│   ├── achievement/       # Gestión de logros
+│   ├── area/              # Gestión de áreas
+│   ├── aws/               # Integración con AWS S3
+│   ├── course/            # Gestión de cursos
+│   ├── enrollment/        # Gestión de matrículas
+│   ├── featured/          # Estudiantes destacados
+│   ├── group/             # Gestión de grupos
+│   ├── institution/       # Gestión de instituciones
+│   ├── report/            # Generación de reportes
+│   ├── scholar-year/      # Años escolares
+│   ├── student/           # Gestión de estudiantes
+│   ├── teacher/           # Gestión de profesores
+│   ├── type-qualification/# Tipos de calificación
+│   └── user/              # Gestión de usuarios
+├── shared/                # Interfaces y tipos compartidos
+├── templates/             # Plantillas para reportes
+└── utils/                 # Utilidades generales
 ```
 
-## Running the app
+## 🚀 Instalación
 
+### Prerrequisitos
+- Node.js 20.x o superior
+- Yarn
+- MySQL
+
+### Configuración
+
+1. **Clonar el repositorio**
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+git clone <repository-url>
+cd edsoft-backend
 ```
 
-## Test
-
+2. **Instalar dependencias**
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+yarn install
 ```
 
-## Support
+3. **Configurar variables de entorno**
+```bash
+cp .env.example .env
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Editar el archivo `.env` con las siguientes variables:
+```env
+PORT=3000
+HOST=0.0.0.0
+NODE_ENV=development
+DATABASE_URL=mysql://usuario:password@localhost:3306/edsoft
+SECRET=tu_secreto_jwt
+```
 
-## Stay in touch
+4. **Generar cliente Prisma**
+```bash
+yarn generate
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 🏃‍♂️ Ejecución
 
-## License
+```bash
+# Modo desarrollo (con hot-reload)
+yarn start:dev
 
-Nest is [MIT licensed](LICENSE).
+# Modo debug
+yarn start:debug
+
+# Modo producción
+yarn start:prod
+```
+
+## 🧪 Tests
+
+```bash
+# Tests unitarios
+yarn test
+
+# Tests e2e
+yarn test:e2e
+
+# Cobertura de tests
+yarn test:cov
+```
+
+## 🐳 Docker
+
+El proyecto incluye un `Dockerfile` para despliegue en contenedores:
+
+```bash
+# Construir imagen
+docker build -t edsoft-backend .
+
+# Ejecutar contenedor
+docker run -p 80:80 edsoft-backend
+```
+
+## 📖 API GraphQL
+
+Una vez iniciado el servidor, puedes acceder al **Apollo Studio Sandbox** en:
+```
+http://localhost:3000/graphql
+```
+
+### Ejemplo de Queries
+
+```graphql
+# Obtener estudiantes por grupo
+query {
+  studentsByGroup(id_group: 1) {
+    id_student
+    name
+    last_name
+    identification
+  }
+}
+
+# Obtener cursos por grupo
+query {
+  coursesByGroup(id_group: 1) {
+    id_course
+    name
+    teacher {
+      name
+      last_name
+    }
+  }
+}
+```
+
+## 🔐 Autenticación
+
+El sistema utiliza **JWT (JSON Web Tokens)** para la autenticación. Las peticiones autenticadas deben incluir el token en el header:
+
+```
+Authorization: Bearer <token>
+```
+
+## 📝 Licencia
+
+Este proyecto es privado y su uso está restringido.
+
+---
+
+Desarrollado con ❤️ para la gestión educativa
