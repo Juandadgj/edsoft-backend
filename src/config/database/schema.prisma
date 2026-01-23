@@ -151,7 +151,7 @@ model institution {
   title           String  @db.VarChar(50)
   message         String  @db.VarChar(250)
   information     String  @db.LongText
-  features        Json?   @default("{\"absences\": true, \"achievements\": true, \"reports\": true, \"enrollments\": true, \"recommendations\": false, \"observations\": true, \"featured_students\": false}")
+  // features        Json?   @default("{\"absences\": true, \"achievements\": true, \"reports\": true, \"enrollments\": true, \"recommendations\": false, \"observations\": true, \"featured_students\": false}")
 }
 
 model observation {

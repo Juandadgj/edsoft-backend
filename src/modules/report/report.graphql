@@ -58,4 +58,8 @@ type Query {
     generateAchievementsAndIndicators: GenerateAchievementsAndIndicators
   ): Report!
   generateReportArea(generateReportAreaInput: GenerateReportAreaInput): Report!
+
+  generateStudentEnrollmentReportI(id_student: Int): Report!
+  generateStudentEnrollmentReportII(id_student: Int): Report!
+
 }

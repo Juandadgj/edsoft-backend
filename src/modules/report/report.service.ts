@@ -6,6 +6,8 @@ import {
   GenerateAchievementsAndIndicators,
   GenerateReportAreaInput,
 } from 'src/shared/interfaces/graphql';
+import { enrollmentII } from 'src/templates/enrollment/enrollmentII';
+import { erollmentI } from 'src/templates/enrollment/erollmentI';
 import report from 'src/templates/spreadsheet/report';
 import report1 from 'src/templates/spreadsheet/report1';
 import report2 from 'src/templates/spreadsheet/report2';
@@ -273,6 +275,29 @@ export class ReportService {
       }
     } catch (error) {
       throw error;
+    }
+  }
+  async generateStudentEnrollmentReportI(id_student: number) {
+    try {
+      const prisma = this.prismaManager.getClient('1059');
+      const student = await prisma.student.findUnique({
+        where: { id_student: id_student },
+      });
+      console.log(student)
+      return erollmentI(student);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async generateStudentEnrollmentReportII(id_student: number) {
+    try {
+      const prisma = this.prismaManager.getClient('1059');
+      const student = await prisma.student.findUnique({
+        where: { id_student: id_student },
+      });
+      return enrollmentII(student);
+    } catch (error) {
+      console.log(error);
     }
   }
 }

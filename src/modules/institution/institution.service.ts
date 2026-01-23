@@ -10,12 +10,12 @@ export class InstitutionService {
   ) {}
 
   async findAll() {
-    const prisma = this.prismaManager.getClient('institutions');
+    const prisma = this.prismaManager.getClient('edsoft_institutions');
     return await prisma.institution.findMany();
   }
 
   async update(id: string, updateInstitutionDto: any) {
-    const prisma = this.prismaManager.getClient('institutions');
+    const prisma = this.prismaManager.getClient('edsoft_institutions');
     const { logo, ...data } = updateInstitutionDto;
 
     let logoUrl: string | undefined;

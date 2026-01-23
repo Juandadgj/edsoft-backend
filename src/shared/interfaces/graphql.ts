@@ -414,6 +414,10 @@ export abstract class IQuery {
 
     abstract generateReportArea(generateReportAreaInput?: Nullable<GenerateReportAreaInput>): Report | Promise<Report>;
 
+    abstract generateStudentEnrollmentReportI(id_student?: Nullable<number>): Report | Promise<Report>;
+
+    abstract generateStudentEnrollmentReportII(id_student?: Nullable<number>): Report | Promise<Report>;
+
     abstract scholarYears(): Nullable<ScholarYear>[] | Promise<Nullable<ScholarYear>[]>;
 
     abstract scholearYearSelected(): ScholarYear | Promise<ScholarYear>;

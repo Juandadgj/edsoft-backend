@@ -67,4 +67,27 @@ export class ReportResolver {
     const base64Pdf = pdfBuffer;
     return { report_content: base64Pdf };
   }
+
+  @Query('generateStudentEnrollmentReportI')
+  async generateStudentEnrollmentReportI(
+    @Args('id_student')
+    id_student: number,
+  ) {
+    const pdfBuffer = await this.reportsService.generateStudentEnrollmentReportI(
+      id_student,
+    );
+    const base64Pdf = pdfBuffer;
+    return { report_content: base64Pdf };
+  }
+  @Query('generateStudentEnrollmentReportII')
+  async generateStudentEnrollmentReportII(
+    @Args('id_student')
+    id_student: number,
+  ) {
+    const pdfBuffer = await this.reportsService.generateStudentEnrollmentReportII(
+      id_student,
+    );
+    const base64Pdf = pdfBuffer;
+    return { report_content: base64Pdf };
+  }
 }
