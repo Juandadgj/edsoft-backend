@@ -8,6 +8,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum GradeDisplayMode {
+    numerica_desempeno = "numerica_desempeno",
+    numerica = "numerica",
+    desempeno = "desempeno"
+}
+
 export class CreateAbsenceInput {
     id_absence: number;
     id_student: number;
@@ -234,6 +240,11 @@ export class GenerateReportAreaInput {
     report_options: ReportDictionary;
 }
 
+export class CertifiedStudentReportInput {
+    id_student: number;
+    report_options?: Nullable<CertifiedStudentDictonary>;
+}
+
 export class ReportDictionary {
     signature: SignatureInput;
     average_general?: Nullable<boolean>;
@@ -256,6 +267,25 @@ export class SignatureInput {
     professor_group?: Nullable<boolean>;
     secretary?: Nullable<boolean>;
     rector?: Nullable<boolean>;
+}
+
+export class CertifiedStudentDictonary {
+    signature: SignatureInput;
+    average_general?: Nullable<boolean>;
+    average_group?: Nullable<boolean>;
+    average_area?: Nullable<boolean>;
+    position?: Nullable<boolean>;
+    username?: Nullable<boolean>;
+    qualification_per1?: Nullable<boolean>;
+    qualification_per2?: Nullable<boolean>;
+    qualification_per3?: Nullable<boolean>;
+    qualification_per4?: Nullable<boolean>;
+    average_per?: Nullable<boolean>;
+    all_qualifications?: Nullable<boolean>;
+    professor_course?: Nullable<boolean>;
+    hour?: Nullable<boolean>;
+    absences?: Nullable<boolean>;
+    gradeDisplayConfig: GradeDisplayMode;
 }
 
 export class CreateScholarYearInput {
@@ -417,6 +447,8 @@ export abstract class IQuery {
     abstract generateStudentEnrollmentReportI(id_student?: Nullable<number>): Report | Promise<Report>;
 
     abstract generateStudentEnrollmentReportII(id_student?: Nullable<number>): Report | Promise<Report>;
+
+    abstract generateCertifiedStudentReport(generateCertifiedStudentReportInput?: Nullable<CertifiedStudentReportInput>): Report | Promise<Report>;
 
     abstract scholarYears(): Nullable<ScholarYear>[] | Promise<Nullable<ScholarYear>[]>;
 

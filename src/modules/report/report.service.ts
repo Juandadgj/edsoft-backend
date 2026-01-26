@@ -5,9 +5,12 @@ import {
   GenerateStudentsListDeterminatedInput,
   GenerateAchievementsAndIndicators,
   GenerateReportAreaInput,
+  ReportDictionary,
+  CertifiedStudentDictonary,
 } from 'src/shared/interfaces/graphql';
 import { enrollmentII } from 'src/templates/enrollment/enrollmentII';
 import { erollmentI } from 'src/templates/enrollment/erollmentI';
+import { certifiedStudentTemplate } from 'src/templates/spreadsheet/certified-student';
 import report from 'src/templates/spreadsheet/report';
 import report1 from 'src/templates/spreadsheet/report1';
 import report2 from 'src/templates/spreadsheet/report2';
@@ -296,6 +299,17 @@ export class ReportService {
         where: { id_student: id_student },
       });
       return enrollmentII(student);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async generateCertifiedStudentReport(id_student: number, report_options: CertifiedStudentDictonary) {
+    try {
+      const prisma = this.prismaManager.getClient('1059');
+      const student = await prisma.student.findUnique({
+        where: { id_student: id_student },
+      });
+      return certifiedStudentTemplate(student, report_options);
     } catch (error) {
       console.log(error);
     }

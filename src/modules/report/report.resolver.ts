@@ -3,6 +3,7 @@ import {
   GenerateStudentsListDeterminatedInput,
   GenerateAchievementsAndIndicators,
   GenerateReportAreaInput,
+  CertifiedStudentReportInput,
 } from 'src/shared/interfaces/graphql';
 import { ReportService } from './report.service';
 import { Resolver, Query, Args } from '@nestjs/graphql';
@@ -86,6 +87,18 @@ export class ReportResolver {
   ) {
     const pdfBuffer = await this.reportsService.generateStudentEnrollmentReportII(
       id_student,
+    );
+    const base64Pdf = pdfBuffer;
+    return { report_content: base64Pdf };
+  }
+  @Query('generateCertifiedStudentReport')
+  async generateCertifiedStudentReport(
+    @Args('generateCertifiedStudentReportInput')
+    generateCertifiedStudentReportInput: CertifiedStudentReportInput,
+  ) {
+    const pdfBuffer = await this.reportsService.generateCertifiedStudentReport(
+      generateCertifiedStudentReportInput.id_student,
+      generateCertifiedStudentReportInput.report_options,
     );
     const base64Pdf = pdfBuffer;
     return { report_content: base64Pdf };

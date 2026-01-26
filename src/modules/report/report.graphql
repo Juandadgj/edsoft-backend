@@ -23,6 +23,11 @@ input GenerateReportAreaInput {
   report_options: ReportDictionary!
 }
 
+input CertifiedStudentReportInput {
+  id_student: Int!
+  report_options: CertifiedStudentDictonary
+}
+
 input ReportDictionary {
   signature: SignatureInput!
   average_general: Boolean
@@ -47,6 +52,31 @@ input SignatureInput {
   rector: Boolean
 }
 
+enum GradeDisplayMode {
+  numerica_desempeno
+  numerica
+  desempeno
+}
+
+input CertifiedStudentDictonary {
+  # Campos de ReportDictionary
+  signature: SignatureInput!
+  average_general: Boolean
+  average_group: Boolean
+  average_area: Boolean
+  position: Boolean
+  username: Boolean
+  qualification_per1: Boolean
+  qualification_per2: Boolean
+  qualification_per3: Boolean
+  qualification_per4: Boolean
+  average_per: Boolean
+  all_qualifications: Boolean
+  professor_course: Boolean
+  hour: Boolean
+  absences: Boolean
+  gradeDisplayConfig: GradeDisplayMode!
+}
 type Query {
   generateStudentsListUndeterminated(
     generateStudentsListUndeterminatedInput: GenerateStudentsListUndeterminatedInput
@@ -61,5 +91,10 @@ type Query {
 
   generateStudentEnrollmentReportI(id_student: Int): Report!
   generateStudentEnrollmentReportII(id_student: Int): Report!
+
+  
+  generateCertifiedStudentReport(
+    generateCertifiedStudentReportInput: CertifiedStudentReportInput
+  ): Report!
 
 }
