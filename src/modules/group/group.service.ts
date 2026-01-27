@@ -1,26 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
-import {
-  CreateGroupInput,
-  FilterGroupInput,
-  UpdateGroupInput,
-} from 'src/shared/interfaces/graphql';
+import { CreateGroupDto } from './dto/create-group.dto';
+import { FilterGroupDto } from './dto/filter-group.dto';
+import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Injectable()
 export class GroupService {
   constructor(private readonly prismaManager: PrismaClientManager) {}
 
-  async create(id_institution: string, createGroupInput: CreateGroupInput) {
+  async create(id_institution: string, createGroupDto: CreateGroupDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.group.create({
-      data: createGroupInput,
+      data: createGroupDto,
     });
   }
 
-  async findAll(id_institution: string, filterGroupInput: FilterGroupInput) {
+  async findAll(id_institution: string, filterGroupDto: FilterGroupDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     const query = await prisma.group.findMany({
-      where: filterGroupInput,
+      where: filterGroupDto,
       include: {
         _count: {
           select: { courses: true },
@@ -41,11 +39,11 @@ export class GroupService {
     });
   }
 
-  async update(id_institution: string, updateGroupInput: UpdateGroupInput) {
+  async update(id_institution: string, updateGroupDto: UpdateGroupDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.group.update({
-      where: { id_group: updateGroupInput.id_group },
-      data: updateGroupInput,
+      where: { id_group: updateGroupDto.id_group },
+      data: updateGroupDto,
     });
   }
 

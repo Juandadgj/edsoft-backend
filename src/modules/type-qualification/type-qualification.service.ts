@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
-import { CreateTypeQualificationInput } from 'src/shared/interfaces/graphql';
+import { CreateTypeQualificationDto } from './dto/create-type-qualification.dto';
 
 @Injectable()
 export class TypeQualificationService {
@@ -8,11 +8,11 @@ export class TypeQualificationService {
 
   async create(
     id_institution: string,
-    createTypeQualificationInput: CreateTypeQualificationInput,
+    createTypeQualificationDto: CreateTypeQualificationDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.type_qualification.create({
-      data: createTypeQualificationInput,
+      data: createTypeQualificationDto,
     });
   }
 

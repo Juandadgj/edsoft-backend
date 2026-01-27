@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
-import {
-  CreateEnrollmentInput,
-  FilterEnrollmentInput,
-  UpdateEnrollmentInput,
-} from 'src/shared/interfaces/graphql';
+import { CreateEnrollmentDto } from './dto/create-enrollment.dto';
+import { FilterEnrollmentDto } from './dto/filter-enrollment.dto';
+import { UpdateEnrollmentDto } from './dto/update-enrollment.dto';
 
 @Injectable()
 export class EnrollmentService {
@@ -12,21 +10,21 @@ export class EnrollmentService {
 
   async create(
     id_institution: string,
-    createEnrollmentInput: CreateEnrollmentInput,
+    createEnrollmentDto: CreateEnrollmentDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.enrollment.create({
-      data: createEnrollmentInput,
+      data: createEnrollmentDto,
     });
   }
 
   async findAll(
     id_institution: string,
-    filterEnrollmentInput: FilterEnrollmentInput,
+    filterEnrollmentDto: FilterEnrollmentDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.enrollment.findMany({
-      where: filterEnrollmentInput,
+      where: filterEnrollmentDto,
     });
   }
 
@@ -39,12 +37,12 @@ export class EnrollmentService {
 
   async update(
     id_institution: string,
-    updateEnrollmentInput: UpdateEnrollmentInput,
+    updateEnrollmentDto: UpdateEnrollmentDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.enrollment.update({
-      where: { id_enrollment: updateEnrollmentInput.id_enrollment },
-      data: updateEnrollmentInput,
+      where: { id_enrollment: updateEnrollmentDto.id_enrollment },
+      data: updateEnrollmentDto,
     });
   }
 

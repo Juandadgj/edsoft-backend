@@ -156,7 +156,7 @@ export function erollmentI(student) {
                   </tr>
                   <tr>
                     <td width="100%">
-                      <b>Matriculado al grado :</b> ${student.enrolled_grade || ""}
+                      <b>Matriculado al grado :</b> ${student.level || ""}
                     </td>
                   </tr>
                 </tbody>

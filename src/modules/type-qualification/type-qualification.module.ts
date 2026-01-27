@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeQualificationService } from './type-qualification.service';
-import { TypeQualificationResolver } from './type-qualification.resolver';
+import { TypeQualificationController } from './type-qualification.controller';
 
 @Module({
-  providers: [TypeQualificationResolver, TypeQualificationService],
+  controllers: [TypeQualificationController],
+  providers: [TypeQualificationService],
 })
 export class TypeQualificationModule {}

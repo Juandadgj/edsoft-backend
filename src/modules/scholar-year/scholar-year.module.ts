@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ScholarYearService } from './scholar-year.service';
-import { ScholarYearResolver } from './scholar-year.resolver';
+import { ScholarYearController } from './scholar-year.controller';
 
 @Module({
-  providers: [ScholarYearResolver, ScholarYearService],
+  controllers: [ScholarYearController],
+  providers: [ScholarYearService],
 })
 export class ScholarYearModule {}

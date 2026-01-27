@@ -1,32 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
-import {
-  CreateAreaInput,
-  FilterAreaInput,
-  UpdateAreaInput,
-} from 'src/shared/interfaces/graphql';
+import { CreateAreaDto } from './dto/create-area.dto';
+import { FilterAreaDto } from './dto/filter-area.dto';
+import { UpdateAreaDto } from './dto/update-area.dto';
 
 @Injectable()
 export class AreaService {
   constructor(private readonly prismaManager: PrismaClientManager) {}
 
-  async create(id_institution: string, createAreaInput: CreateAreaInput) {
+  async create(id_institution: string, createAreaDto: CreateAreaDto) {
     const prisma = this.prismaManager.getClient(id_institution);
-    return await prisma.area.create({ data: createAreaInput });
+    return await prisma.area.create({ data: createAreaDto });
   }
 
-  async findAll(id_institution: string, filterAreaInput: FilterAreaInput) {
+  async findAll(id_institution: string, filterAreaDto: FilterAreaDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.area.findMany({
-      where: filterAreaInput,
+      where: filterAreaDto,
     });
   }
 
-  async update(id_institution: string, updateAreaInput: UpdateAreaInput) {
+  async update(id_institution: string, updateAreaDto: UpdateAreaDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.area.update({
-      where: { id_area: updateAreaInput.id_area },
-      data: updateAreaInput,
+      where: { id_area: updateAreaDto.id_area },
+      data: updateAreaDto,
     });
   }
 

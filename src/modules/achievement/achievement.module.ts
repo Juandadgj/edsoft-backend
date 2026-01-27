@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AchievementService } from './achievement.service';
-import { AchievementResolver } from './achievement.resolver';
+import { AchievementController } from './achievement.controller';
 
 @Module({
-  providers: [AchievementResolver, AchievementService],
+  controllers: [AchievementController],
+  providers: [AchievementService],
 })
 export class AchievementModule {}

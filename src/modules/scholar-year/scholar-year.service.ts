@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
-import {
-  CreateScholarYearInput,
-  UpdateScholarYearInput,
-} from 'src/shared/interfaces/graphql';
+import { CreateScholarYearDto } from './dto/create-scholar-year.dto';
+import { UpdateScholarYearDto } from './dto/update-scholar-year.dto';
 
 @Injectable()
 export class ScholarYearService {
@@ -11,11 +9,11 @@ export class ScholarYearService {
 
   async create(
     id_institution: string,
-    createScholarYearInput: CreateScholarYearInput,
+    createScholarYearDto: CreateScholarYearDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.scholar_year.create({
-      data: createScholarYearInput,
+      data: createScholarYearDto,
     });
   }
 
@@ -35,12 +33,12 @@ export class ScholarYearService {
 
   async update(
     id_institution: string,
-    updateScholarYearInput: UpdateScholarYearInput,
+    updateScholarYearDto: UpdateScholarYearDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.scholar_year.update({
-      where: { id_year: updateScholarYearInput.id_year },
-      data: updateScholarYearInput,
+      where: { id_year: updateScholarYearDto.id_year },
+      data: updateScholarYearDto,
     });
   }
 

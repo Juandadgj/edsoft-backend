@@ -1,37 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
-import {
-  CreateAbsenceInput,
-  FilterAbsenceInput,
-  UpdateAbsenceInput,
-} from 'src/shared/interfaces/graphql';
+import { CreateAbsenceDto } from './dto/create-absence.dto';
+import { FilterAbsenceDto } from './dto/filter-absence.dto';
+import { UpdateAbsenceDto } from './dto/update-absence.dto';
 
 @Injectable()
 export class AbsenceService {
   constructor(private readonly prismaManager: PrismaClientManager) {}
 
-  async create(id_institution: string, createAbsenceInput: CreateAbsenceInput) {
+  async create(id_institution: string, createAbsenceDto: CreateAbsenceDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.absence.create({
-      data: createAbsenceInput,
+      data: createAbsenceDto,
     });
   }
 
   async findAll(
     id_institution: string,
-    filterAbsenceInput: FilterAbsenceInput,
+    filterAbsenceDto: FilterAbsenceDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.absence.findMany({
-      where: filterAbsenceInput,
+      where: filterAbsenceDto,
     });
   }
 
-  async update(id_institution: string, updateAbsenceInput: UpdateAbsenceInput) {
+  async update(id_institution: string, updateAbsenceDto: UpdateAbsenceDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.absence.update({
-      where: { id_absence: updateAbsenceInput.id_absence },
-      data: updateAbsenceInput,
+      where: { id_absence: updateAbsenceDto.id_absence },
+      data: updateAbsenceDto,
     });
   }
 

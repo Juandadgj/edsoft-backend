@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
-import {
-  CreateAchievementInput,
-  FilterAchievementInput,
-  FilterQualificationInput,
-  UpdateAchievementInput,
-  UpdateQualificationsInput,
-} from 'src/shared/interfaces/graphql';
+import { CreateAchievementDto } from './dto/create-achievement.dto';
+import { FilterAchievementDto } from './dto/filter-achievement.dto';
+import { FilterQualificationDto, UpdateQualificationsDto } from './dto/qualification.dto';
+import { UpdateAchievementDto } from './dto/update-achievement.dto';
 require('core-js/actual/array/group-by');
 
 @Injectable()
@@ -15,11 +12,11 @@ export class AchievementService {
 
   async create(
     id_institution: string,
-    createAchievementInput: CreateAchievementInput,
+    createAchievementDto: CreateAchievementDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     const course = await prisma.course.findUnique({
-      where: { id_course: createAchievementInput.id_course },
+      where: { id_course: createAchievementDto.id_course },
     });
     const group = await prisma.group.findUnique({
       where: { id_group: course.id_group },
@@ -28,7 +25,7 @@ export class AchievementService {
       where: { id_group: group.id_group },
     });
     const achievement = await prisma.achievement.create({
-      data: createAchievementInput,
+      data: createAchievementDto,
     });
     const achievement_student_map = enrollments.map((element) => ({
       id_achievement: achievement.id_achievement,
@@ -42,22 +39,22 @@ export class AchievementService {
 
   async findAll(
     id_institution: string,
-    filterAchievementInput: FilterAchievementInput,
+    filterAchievementDto: FilterAchievementDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.achievement.findMany({
-      where: filterAchievementInput,
+      where: filterAchievementDto,
     });
   }
 
   async update(
     id_institution: string,
-    updateAchievementInput: UpdateAchievementInput,
+    updateAchievementDto: UpdateAchievementDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.achievement.update({
-      where: { id_achievement: updateAchievementInput.id_achievement },
-      data: updateAchievementInput,
+      where: { id_achievement: updateAchievementDto.id_achievement },
+      data: updateAchievementDto,
     });
   }
 
@@ -70,7 +67,7 @@ export class AchievementService {
 
   async findQualifications(
     id_institution: string,
-    filterQualificationInput: FilterQualificationInput,
+    filterQualificationDto: FilterQualificationDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     const achievements = await prisma.achievement.findMany({
@@ -78,8 +75,8 @@ export class AchievementService {
         id_achievement: true,
       },
       where: {
-        id_course: filterQualificationInput.id_course,
-        period: filterQualificationInput.period,
+        id_course: filterQualificationDto.id_course,
+        period: filterQualificationDto.period,
       },
     });
     const achievementsIds = achievements.map(
@@ -111,10 +108,10 @@ export class AchievementService {
 
   async updateQualifications(
     id_institution: string,
-    updateQualificationsInput: UpdateQualificationsInput,
+    updateQualificationsDto: UpdateQualificationsDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
-    for (const qualification of updateQualificationsInput.qualifications) {
+    for (const qualification of updateQualificationsDto.qualifications) {
       await prisma.achievement_student.update({
         where: { id_achie_stu: qualification.id_achie_stu },
         data: {
@@ -122,6 +119,6 @@ export class AchievementService {
         },
       });
     }
-    return updateQualificationsInput.qualifications;
+    return updateQualificationsDto.qualifications;
   }
 }

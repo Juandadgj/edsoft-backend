@@ -1,29 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
-import {
-  CreateTeacherInput,
-  FilterTeacherInput,
-  UpdateTeacherInput,
-} from 'src/shared/interfaces/graphql';
+import { CreateTeacherDto } from './dto/create-teacher.dto';
+import { FilterTeacherDto } from './dto/filter-teacher.dto';
+import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 @Injectable()
 export class TeacherService {
   constructor(private readonly prismaManager: PrismaClientManager) {}
 
-  async create(id_institution: string, createTeacherInput: CreateTeacherInput) {
+  async create(id_institution: string, createTeacherDto: CreateTeacherDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.teacher.create({
-      data: createTeacherInput,
+      data: createTeacherDto,
     });
   }
 
   async findAll(
     id_institution: string,
-    filterTeacherInput: FilterTeacherInput,
+    filterTeacherDto: FilterTeacherDto,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.teacher.findMany({
-      where: filterTeacherInput,
+      where: filterTeacherDto,
     });
   }
 
@@ -34,11 +32,11 @@ export class TeacherService {
     });
   }
 
-  async update(id_institution: string, updateTeacherInput: UpdateTeacherInput) {
+  async update(id_institution: string, updateTeacherDto: UpdateTeacherDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.teacher.update({
-      where: { id_teacher: updateTeacherInput.id_teacher },
-      data: updateTeacherInput,
+      where: { id_teacher: updateTeacherDto.id_teacher },
+      data: updateTeacherDto,
     });
   }
 

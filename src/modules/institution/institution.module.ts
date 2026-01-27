@@ -1,16 +1,11 @@
 import { Module } from '@nestjs/common';
 import { InstitutionService } from './institution.service';
-import { InstitutionResolver } from './institution.resolver';
-import { PrismaService } from 'src/config/database/prisma.service';
+import { InstitutionController } from './institution.controller';
 import { AwsModule } from '../aws/aws.module';
 
 @Module({
   imports: [AwsModule],
-  providers: [
-    InstitutionResolver,
-    InstitutionService,
-    PrismaService,
-  ],
+  controllers: [InstitutionController],
+  providers: [InstitutionService],
 })
-
 export class InstitutionModule {}

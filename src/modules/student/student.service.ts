@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import {
-  CreateStudentInput,
-  UpdateStudentInput,
-  FilterStudentInput,
-} from 'src/shared/interfaces/graphql';
+import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateStudentDto } from './dto/update-student.dto';
+import { FilterStudentDto } from './dto/filter-student.dto';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
 
 @Injectable()
@@ -12,7 +10,7 @@ export class StudentService {
 
   async create(
     id_institution: string,
-    createStudentInput: CreateStudentInput,
+    createStudentInput: Omit<CreateStudentDto, 'id_group'>,
     id_group: number,
   ) {
     const prisma = this.prismaManager.getClient(id_institution);
@@ -51,7 +49,7 @@ export class StudentService {
     return students;
   }
 
-  async find(id_institution: string, filterStudentInput: FilterStudentInput) {
+  async find(id_institution: string, filterStudentInput: FilterStudentDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     const student = await prisma.student.findMany({
       where: {
@@ -153,7 +151,7 @@ export class StudentService {
     return student;
   }
 
-  async update(id_institution: string, updateStudentInput: UpdateStudentInput) {
+  async update(id_institution: string, updateStudentInput: UpdateStudentDto) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.student.update({
       where: { id_student: updateStudentInput.id_student },

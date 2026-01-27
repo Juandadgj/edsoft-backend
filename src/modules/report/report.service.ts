@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
 import {
-  GenerateStudentsListUndeterminatedInput,
-  GenerateStudentsListDeterminatedInput,
-  GenerateAchievementsAndIndicators,
-  GenerateReportAreaInput,
-  ReportDictionary,
-  CertifiedStudentDictonary,
-} from 'src/shared/interfaces/graphql';
+  GenerateStudentsListUndeterminatedDto,
+  GenerateStudentsListDeterminatedDto,
+  GenerateAchievementsAndIndicatorsDto,
+  GenerateReportAreaDto,
+  GenerateStudentEnrollmentReportDto,
+  CertifiedStudentReportDto,
+} from './dto/report.dto';
 import { enrollmentII } from 'src/templates/enrollment/enrollmentII';
 import { erollmentI } from 'src/templates/enrollment/erollmentI';
 import { certifiedStudentTemplate } from 'src/templates/spreadsheet/certified-student';
@@ -23,10 +23,10 @@ export class ReportService {
   constructor(private readonly prismaManager: PrismaClientManager) {}
 
   async generateStudentsListUndeterminated(
-    generateStudentsListInput: GenerateStudentsListUndeterminatedInput,
+    generateStudentsListDto: GenerateStudentsListUndeterminatedDto,
   ) {
     try {
-      const { id_group } = generateStudentsListInput;
+      const { id_group } = generateStudentsListDto;
       const prisma = this.prismaManager.getClient('1059');
       const students = await prisma.enrollment.findMany({
         where: {
@@ -44,10 +44,10 @@ export class ReportService {
   }
 
   async generateStudentsListDeterminated(
-    generateStudentsListDeterminatedInput: GenerateStudentsListDeterminatedInput,
+    generateStudentsListDto: GenerateStudentsListDeterminatedDto,
   ) {
     try {
-      const { id_group, id_course } = generateStudentsListDeterminatedInput;
+      const { id_group, id_course } = generateStudentsListDto;
       const prisma = this.prismaManager.getClient('1059');
       const students = await prisma.enrollment.findMany({
         where: {
@@ -75,7 +75,7 @@ export class ReportService {
   }
 
   async generateAchievementsAndIndicators(
-    generateStudentsList: GenerateAchievementsAndIndicators,
+    generateStudentsList: GenerateAchievementsAndIndicatorsDto,
   ) {
     try {
       const { id_group, id_course, period } = generateStudentsList;
@@ -261,9 +261,9 @@ export class ReportService {
     return result;
   }
 
-  async generateReportArea(generateReportAreaInput: GenerateReportAreaInput) {
+  async generateReportArea(generateReportAreaDto: GenerateReportAreaDto) {
     const prisma = this.prismaManager.getClient('1059');
-    const { id_group, id_student, report_options } = generateReportAreaInput;
+    const { id_group, id_student, report_options } = generateReportAreaDto;
     try {
       const group = await prisma.group.findUnique({
         where: { id_group: id_group },
@@ -280,35 +280,77 @@ export class ReportService {
       throw error;
     }
   }
-  async generateStudentEnrollmentReportI(id_student: number) {
+  async generateStudentEnrollmentReportI(generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto) {
     try {
+      const { id_student, id_year } = generateStudentEnrollmentReportDto;
       const prisma = this.prismaManager.getClient('1059');
+      const institution = await prisma.institution.findFirst({where: { id_institution: 1059 }});
       const student = await prisma.student.findUnique({
         where: { id_student: id_student },
+      });
+      const enrollment = await prisma.enrollment.findFirst({
+        where: {
+          id_student: id_student,
+          year: id_year,
+        },
+        include: {
+          group: {
+            select: {
+              level: true,
+            }
+          },
+        }
       });
       console.log(student)
-      return erollmentI(student);
+      return erollmentI({...student, level: enrollment.group.level}, institution);
     } catch (error) {
       console.log(error);
     }
   }
-  async generateStudentEnrollmentReportII(id_student: number) {
+  async generateStudentEnrollmentReportII(generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto) {
     try {
+      const { id_student } = generateStudentEnrollmentReportDto;
       const prisma = this.prismaManager.getClient('1059');
       const student = await prisma.student.findUnique({
         where: { id_student: id_student },
       });
-      return enrollmentII(student);
+      const enrollment = await prisma.enrollment.findFirst({
+        where: {
+          id_student: id_student,
+        },
+        include: {
+          group: {
+            select: {
+              level: true,
+            }
+          },
+        }
+      });
+      return enrollmentII({...student, level: enrollment.group.level});
     } catch (error) {
       console.log(error);
     }
   }
-  async generateCertifiedStudentReport(id_student: number, report_options: CertifiedStudentDictonary) {
+  async generateCertifiedStudentReport(certifiedStudentReportDto: CertifiedStudentReportDto) {
     try {
       const prisma = this.prismaManager.getClient('1059');
+      const { id_student } = certifiedStudentReportDto;
+      const report_options = certifiedStudentReportDto.report_options;
       const student = await prisma.student.findUnique({
         where: { id_student: id_student },
+        select: {
+          name: true,
+          last_name: true,
+          identification: true,
+          type_id: true,
+        }
       });
+      const definitives = await prisma.course_student.findMany({
+        where: {
+          id_student: id_student,
+        },
+      });
+      student['definitives'] = definitives;
       return certifiedStudentTemplate(student, report_options);
     } catch (error) {
       console.log(error);

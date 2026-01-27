@@ -1,8 +1,8 @@
-import { CertifiedStudentDictonary } from 'src/shared/interfaces/graphql';
+import { CertifiedStudentDictionary } from 'src/modules/report/dto/report.dto';
 
 export function certifiedStudentTemplate(
   student,
-  report_options: CertifiedStudentDictonary,
+  report_options: CertifiedStudentDictionary,
 ): string {
   return `<html>
   <head>

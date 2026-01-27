@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import jwt from 'jsonwebtoken';
-import { SignInInput, UpdateUserInput } from 'src/shared/interfaces/graphql';
+import { SignInDto } from './dto/sign-in.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaClientManager } from 'src/config/prisma-client.manager';
 
 @Injectable()
@@ -8,19 +9,19 @@ export class UserService {
   constructor(private readonly prismaManager: PrismaClientManager) {}
   private roles = ['Administrator', 'Secretary', 'Teacher', 'Student'];
 
-  async signIn(signInInput: SignInInput) {
-    const DB = String(signInInput.id_institution);
+  async signIn(signInDto: SignInDto) {
+    const DB = String(signInDto.id_institution);
     const prisma = this.prismaManager.getClient(DB);
     const userDB = await prisma.user.findFirst({
-      where: { user: signInInput.user },
+      where: { user: signInDto.user },
     });
     if (!userDB) throw new Error('User not found');
-    if (signInInput.password != userDB.password)
+    if (signInDto.password != userDB.password)
       throw new Error('Incorrect password');
     const token = jwt.sign(
       {
         id_user: userDB.id_user,
-        id_institution: signInInput.id_institution,
+        id_institution: signInDto.id_institution,
         role: this.roles[userDB.typeu - 1],
       },
       process.env.SECRET,
@@ -32,11 +33,11 @@ export class UserService {
     };
   }
 
-  async update(id_institution: string, updateUserInput: any) {
+  async update(id_institution: string, updateUserDto: any) {
     const prisma = this.prismaManager.getClient(id_institution);
     return await prisma.user.update({
-      where: { id_user: updateUserInput.id_user },
-      data: updateUserInput,
+      where: { id_user: updateUserDto.id_user },
+      data: updateUserDto,
     });
   }
 }

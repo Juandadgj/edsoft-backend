@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { GroupService } from './group.service';
-import { GroupResolver } from './group.resolver';
+import { GroupController } from './group.controller';
 
 @Module({
-  providers: [GroupResolver, GroupService],
+  controllers: [GroupController],
+  providers: [GroupService],
 })
 export class GroupModule {}
