@@ -334,7 +334,7 @@ export class ReportService {
   async generateCertifiedStudentReport(certifiedStudentReportDto: CertifiedStudentReportDto) {
     try {
       const prisma = this.prismaManager.getClient('1059');
-      const { id_student } = certifiedStudentReportDto;
+      const { id_student, id_group } = certifiedStudentReportDto;
       const report_options = certifiedStudentReportDto.report_options;
       const student = await prisma.student.findUnique({
         where: { id_student: id_student },
@@ -347,7 +347,22 @@ export class ReportService {
       });
       const definitives = await prisma.course_student.findMany({
         where: {
-          id_student: id_student,
+          id_student,
+          course: {
+            id_group,
+          },
+        },
+        select: {
+          score1: true,
+          score2: true,
+          score3: true,
+          score4: true,
+          score5: true,
+          course: {
+            select: {
+              name: true,
+            },
+          },
         },
       });
       student['definitives'] = definitives;

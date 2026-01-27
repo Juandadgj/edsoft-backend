@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsInt, IsNumber, IsOptional, IsArray } from 'class-validator';
 
 export class CreateQualificationDto {
@@ -23,14 +24,17 @@ export class UpdateQualificationsDto {
 }
 
 export class FilterQualificationDto {
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   id_student?: number;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   id_course?: number;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   period?: number;

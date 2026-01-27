@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class FilterTeacherDto {
@@ -9,6 +10,7 @@ export class FilterTeacherDto {
   @IsOptional()
   last_name?: string;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   type_id?: number;

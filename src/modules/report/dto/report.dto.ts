@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, IsBoolean } from 'class-validator';
+import { IsInt, IsOptional, IsBoolean, IsIn } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class SignatureInput {
@@ -77,33 +77,41 @@ export class ReportDictionary {
 }
 
 export class GenerateStudentsListUndeterminatedDto {
+  @Type(() => Number)
   @IsInt()
   id_group: number;
 }
 
 export class GenerateStudentsListDeterminatedDto {
+  @Type(() => Number)
   @IsInt()
   id_course: number;
 
+  @Type(() => Number)
   @IsInt()
   id_group: number;
 }
 
 export class GenerateAchievementsAndIndicatorsDto {
+  @Type(() => Number)
   @IsInt()
   id_group: number;
 
+  @Type(() => Number)
   @IsInt()
   id_course: number;
 
+  @Type(() => Number)
   @IsInt()
   period: number;
 }
 
 export class GenerateReportAreaDto {
+  @Type(() => Number)
   @IsInt()
   id_group: number;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   id_student?: number;
@@ -113,9 +121,11 @@ export class GenerateReportAreaDto {
 }
 
 export class GenerateStudentEnrollmentReportDto {
+  @Type(() => Number)
   @IsInt()
   id_student: number;
 
+  @Type(() => Number)
   @IsInt()
   id_year: number;
 }
@@ -126,8 +136,17 @@ export class CertifiedStudentDictionary extends ReportDictionary {
 }
 
 export class CertifiedStudentReportDto {
+  @Type(() => Number)
   @IsInt()
   id_student: number;
+
+  @Type(() => Number)
+  @IsInt()
+  id_group: number;
+
+  @Type(() => Number)
+  @IsInt()
+  id_year: number;
 
   @Type(() => CertifiedStudentDictionary)
   @IsOptional()

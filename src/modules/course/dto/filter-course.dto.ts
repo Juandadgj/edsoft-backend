@@ -1,10 +1,13 @@
+import { Type } from 'class-transformer';
 import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class FilterCourseDto {
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   id_group?: number;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   id_teacher?: number;
@@ -13,10 +16,12 @@ export class FilterCourseDto {
   @IsOptional()
   name?: string;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   position?: number;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   dimension_code?: number;
@@ -25,10 +30,12 @@ export class FilterCourseDto {
   @IsOptional()
   dimension_type?: string;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   id_area?: number;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   hour?: number;
@@ -37,6 +44,7 @@ export class FilterCourseDto {
   @IsOptional()
   average?: string;
 
+  @Type(() => Number)
   @IsInt()
   @IsOptional()
   percentage?: number;
