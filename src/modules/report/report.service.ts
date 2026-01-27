@@ -7,6 +7,8 @@ import {
   GenerateReportAreaDto,
   GenerateStudentEnrollmentReportDto,
   CertifiedStudentReportDto,
+  CertifiedStudentDictionary,
+  ReportDictionary,
 } from './dto/report.dto';
 import { enrollmentII } from 'src/templates/enrollment/enrollmentII';
 import { erollmentI } from 'src/templates/enrollment/erollmentI';
@@ -261,9 +263,12 @@ export class ReportService {
     return result;
   }
 
-  async generateReportArea(generateReportAreaDto: GenerateReportAreaDto) {
+  async generateReportArea(
+    generateReportAreaDto: GenerateReportAreaDto,
+    report_options?: ReportDictionary,
+  ) {
     const prisma = this.prismaManager.getClient('1059');
-    const { id_group, id_student, report_options } = generateReportAreaDto;
+    const { id_group, id_student } = generateReportAreaDto;
     try {
       const group = await prisma.group.findUnique({
         where: { id_group: id_group },
@@ -271,20 +276,29 @@ export class ReportService {
       const areas = await prisma.area.findMany();
       if (id_student) {
         const data = await this.getStudentDefinitives(id_student, id_group);
-        return report(group, data, report_options);
+        return {
+          report_content: report(group, data, report_options),
+        }
       } else {
         const data = await this.getGroupDefinitives(id_group);
-        return reportList(group, data, report_options);
+        return {
+          report_content: reportList(group, data, report_options),
+        };
       }
     } catch (error) {
       throw error;
     }
   }
-  async generateStudentEnrollmentReportI(generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto) {
+  async generateStudentEnrollmentReportI(
+    generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto,
+  ) {
     try {
       const { id_student, id_year } = generateStudentEnrollmentReportDto;
       const prisma = this.prismaManager.getClient('1059');
-      const institution = await prisma.institution.findFirst({where: { id_institution: 1059 }});
+      const tenant = this.prismaManager.getClient('edsoft_institutions');
+      const institution = await tenant.institution.findFirst({
+        where: { id_institution: 1059 },
+      });
       const student = await prisma.student.findUnique({
         where: { id_student: id_student },
       });
@@ -297,17 +311,27 @@ export class ReportService {
           group: {
             select: {
               level: true,
-            }
+            },
           },
-        }
+        },
       });
-      console.log(student)
-      return erollmentI({...student, level: enrollment.group.level}, institution);
+      console.log(enrollment)
+      return {
+        report_content: erollmentI({
+          student: student,
+          level: enrollment?.group?.level,
+          institution: institution,
+          year: id_year,
+          id_enrollment: enrollment?.id_enrollment,
+        }),
+      }
     } catch (error) {
       console.log(error);
     }
   }
-  async generateStudentEnrollmentReportII(generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto) {
+  async generateStudentEnrollmentReportII(
+    generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto,
+  ) {
     try {
       const { id_student } = generateStudentEnrollmentReportDto;
       const prisma = this.prismaManager.getClient('1059');
@@ -322,20 +346,28 @@ export class ReportService {
           group: {
             select: {
               level: true,
-            }
+            },
           },
-        }
+        },
       });
-      return enrollmentII({...student, level: enrollment.group.level});
+      return {
+        report_content: enrollmentII({...student, level: enrollment.group.level}),
+      }
     } catch (error) {
       console.log(error);
     }
   }
-  async generateCertifiedStudentReport(certifiedStudentReportDto: CertifiedStudentReportDto) {
+  async generateCertifiedStudentReport(
+    certifiedStudentReportDto: CertifiedStudentReportDto,
+    report_options?: CertifiedStudentDictionary,
+  ) {
     try {
       const prisma = this.prismaManager.getClient('1059');
+      const tenant = this.prismaManager.getClient('edsoft_institutions');
+      const institution = await tenant.institution.findFirst({
+        where: { id_institution: 1059 },
+      });
       const { id_student, id_group } = certifiedStudentReportDto;
-      const report_options = certifiedStudentReportDto.report_options;
       const student = await prisma.student.findUnique({
         where: { id_student: id_student },
         select: {
@@ -343,7 +375,7 @@ export class ReportService {
           last_name: true,
           identification: true,
           type_id: true,
-        }
+        },
       });
       const definitives = await prisma.course_student.findMany({
         where: {
@@ -361,12 +393,21 @@ export class ReportService {
           course: {
             select: {
               name: true,
+              hour: true,
             },
           },
         },
       });
       student['definitives'] = definitives;
-      return certifiedStudentTemplate(student, report_options);
+      console.log(institution)
+      return {
+        report_content: certifiedStudentTemplate(
+          student,
+          definitives,
+          report_options,
+          institution,
+        ),
+      };
     } catch (error) {
       console.log(error);
     }

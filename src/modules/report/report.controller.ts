@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Body, Query, UseGuards, Post } from '@nestjs/common';
 import { ReportService } from './report.service';
 import {
   GenerateStudentsListUndeterminatedDto,
@@ -13,6 +7,8 @@ import {
   GenerateReportAreaDto,
   GenerateStudentEnrollmentReportDto,
   CertifiedStudentReportDto,
+  CertifiedStudentDictionary,
+  ReportDictionary,
 } from './dto/report.dto';
 import { InstitutionId } from 'src/common/decorators/institution-id.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
@@ -25,7 +21,8 @@ export class ReportController {
   @Get('students-list-undeterminated')
   generateStudentsListUndeterminated(
     @InstitutionId() id_institution: string,
-    @Query() generateStudentsListUndeterminatedDto: GenerateStudentsListUndeterminatedDto,
+    @Query()
+    generateStudentsListUndeterminatedDto: GenerateStudentsListUndeterminatedDto,
   ) {
     return this.reportService.generateStudentsListUndeterminated(
       generateStudentsListUndeterminatedDto,
@@ -35,7 +32,8 @@ export class ReportController {
   @Get('students-list-determinated')
   generateStudentsListDeterminated(
     @InstitutionId() id_institution: string,
-    @Query() generateStudentsListDeterminatedDto: GenerateStudentsListDeterminatedDto,
+    @Query()
+    generateStudentsListDeterminatedDto: GenerateStudentsListDeterminatedDto,
   ) {
     return this.reportService.generateStudentsListDeterminated(
       generateStudentsListDeterminatedDto,
@@ -45,25 +43,28 @@ export class ReportController {
   @Get('achievements-and-indicators')
   generateAchievementsAndIndicators(
     @InstitutionId() id_institution: string,
-    @Query() generateAchievementsAndIndicatorsDto: GenerateAchievementsAndIndicatorsDto,
+    @Query()
+    generateAchievementsAndIndicatorsDto: GenerateAchievementsAndIndicatorsDto,
   ) {
     return this.reportService.generateAchievementsAndIndicators(
       generateAchievementsAndIndicatorsDto,
     );
   }
 
-  @Get('area')
+  @Post('area')
   generateReportArea(
     @InstitutionId() id_institution: string,
     @Query() generateReportAreaDto: GenerateReportAreaDto,
+    @Body() generateReportAreaBodyDto?: ReportDictionary,
   ) {
-    return this.reportService.generateReportArea(generateReportAreaDto);
+    return this.reportService.generateReportArea(generateReportAreaDto, generateReportAreaBodyDto);
   }
 
   @Get('student-enrollment-i')
   generateStudentEnrollmentReportI(
     @InstitutionId() id_institution: string,
-    @Query() generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto,
+    @Query()
+    generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto,
   ) {
     return this.reportService.generateStudentEnrollmentReportI(
       generateStudentEnrollmentReportDto,
@@ -73,20 +74,23 @@ export class ReportController {
   @Get('student-enrollment-ii')
   generateStudentEnrollmentReportII(
     @InstitutionId() id_institution: string,
-    @Query() generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto,
+    @Query()
+    generateStudentEnrollmentReportDto: GenerateStudentEnrollmentReportDto,
   ) {
     return this.reportService.generateStudentEnrollmentReportII(
       generateStudentEnrollmentReportDto,
     );
   }
 
-  @Get('certified-student')
+  @Post('certified-student')
   generateCertifiedStudentReport(
     @InstitutionId() id_institution: string,
     @Query() certifiedStudentReportDto: CertifiedStudentReportDto,
+    @Body() certifiedStudentReportBodyDto?: CertifiedStudentDictionary,
   ) {
     return this.reportService.generateCertifiedStudentReport(
       certifiedStudentReportDto,
+      certifiedStudentReportBodyDto,
     );
   }
 }

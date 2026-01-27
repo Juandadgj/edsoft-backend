@@ -1,4 +1,12 @@
-export function erollmentI(student) {
+import { institution, student } from "@prisma/client";
+
+export function erollmentI({student, level, year, institution, id_enrollment }: {
+  student: student,
+  level: number,
+  institution: institution,
+  year: number,
+  id_enrollment: number,
+}): string {
   return `
     <html lang="en">
   <head>
@@ -48,11 +56,11 @@ export function erollmentI(student) {
                       <br /> </font
                     ><br />
                     <h3>
-                      AÑO:2026 &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      AÑO:${year} &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                       &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; HOJA DE
                       MATRÍCULA &nbsp;&nbsp;&nbsp;&nbsp;
                       &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp; No. 100220264006
+                      &nbsp;&nbsp;&nbsp;&nbsp; No. ${id_enrollment || ''}
                     </h3>
                     <h3></h3>
                   </td>
@@ -85,12 +93,12 @@ export function erollmentI(student) {
                     <td width="70%">
                       <b>Nombre y Apellidos:</b> ${student.name || ""} ${student.last_name || ""}
                     </td>
-                    <td width="30%"><b>Sexo:</b> ${student.gender || ""}</td>
+                    <td width="30%"><b>Sexo:</b> ${student.sex || ""}</td>
                   </tr>
                   <tr>
                     <td width="70%">
                       <b>Lugar y fecha de nacimiento:</b> ${student.birthplace || ""},
-                      ${student.birthdate || ""}
+                      ${student.birthday || ""}
                     </td>
                     <td width="30%"><b></b></td>
                   </tr>
@@ -139,7 +147,7 @@ export function erollmentI(student) {
                 <tbody>
                   <tr>
                     <td width="50%"><b>Correo: ${student.email || ""}</b></td>
-                    <td width="50%"><b>Nacionalidad:</b> ${student.nationality || ""}</td>
+                    <td width="50%"><b>Nacionalidad:</b> ${student.code || ""}</td>
                   </tr>
                 </tbody>
               </table>
@@ -156,7 +164,7 @@ export function erollmentI(student) {
                   </tr>
                   <tr>
                     <td width="100%">
-                      <b>Matriculado al grado :</b> ${student.level || ""}
+                      <b>Matriculado al grado :</b> ${level || ""}
                     </td>
                   </tr>
                 </tbody>

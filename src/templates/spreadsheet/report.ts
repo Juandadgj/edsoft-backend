@@ -1,4 +1,6 @@
-function report(group,data, report_options) {
+import { ReportDictionary } from "src/modules/report/dto/report.dto";
+
+function report(group,data, report_options: ReportDictionary) {
   return `
   <html lang="es">
   <head>
@@ -196,19 +198,19 @@ function report(group,data, report_options) {
           margin-right: auto;
         "
       >
-        ${report_options.signature.rector ? `
+        ${report_options.signature?.rector ? `
         <div style="width: 33%; text-align: center; margin-inline: 10px">
           <hr />
           <p><b>Hoyos Yepes Olga Ines</b></p>
           <p>Rector</p>
         </div>
-        ` : ``} ${report_options.signature.secretary ? `
+        ` : ``} ${report_options.signature?.secretary ? `
         <div style="width: 33%; text-align: center; margin-inline: 10px">
           <hr />
           <p><b>Hoyos Yepes Olga Ines</b></p>
           <p>Secretario(a)</p>
         </div>
-        ` : ``} ${report_options.signature.professor_group ? `
+        ` : ``} ${report_options.signature?.professor_group ? `
         <div style="width: 33%; text-align: center; margin-inline: 10px">
           <hr />
           <p><b>Hoyos Yepes Olga Ines</b></p>

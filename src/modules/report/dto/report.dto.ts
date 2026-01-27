@@ -57,6 +57,10 @@ export class ReportDictionary {
 
   @IsBoolean()
   @IsOptional()
+  qualification_per5?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
   average_per?: boolean;
 
   @IsBoolean()
@@ -74,6 +78,20 @@ export class ReportDictionary {
   @IsBoolean()
   @IsOptional()
   absences?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  showLogo?: boolean;
+
+  @Type(() => Number)
+  @IsInt()
+  @IsOptional()
+  headerTitleSize?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  showHeaderSubtitle?: boolean;
+
 }
 
 export class GenerateStudentsListUndeterminatedDto {
@@ -115,9 +133,6 @@ export class GenerateReportAreaDto {
   @IsInt()
   @IsOptional()
   id_student?: number;
-
-  @Type(() => ReportDictionary)
-  report_options: ReportDictionary;
 }
 
 export class GenerateStudentEnrollmentReportDto {
@@ -144,11 +159,4 @@ export class CertifiedStudentReportDto {
   @IsInt()
   id_group: number;
 
-  @Type(() => Number)
-  @IsInt()
-  id_year: number;
-
-  @Type(() => CertifiedStudentDictionary)
-  @IsOptional()
-  report_options?: CertifiedStudentDictionary;
 }

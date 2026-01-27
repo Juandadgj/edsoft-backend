@@ -1,8 +1,11 @@
+import { institution } from '@prisma/client';
 import { CertifiedStudentDictionary } from 'src/modules/report/dto/report.dto';
 
 export function certifiedStudentTemplate(
   student,
+  definitives: any[],
   report_options: CertifiedStudentDictionary,
+  institution: institution,
 ): string {
   return `<html>
   <head>
@@ -95,18 +98,26 @@ export function certifiedStudentTemplate(
             <table width="100%">
               <tbody>
                 <tr height="80" border="0">
-                  <td align="center" valign="middle">
+                  ${
+                    report_options.showLogo
+                      ? `
+                    <td align="center" valign="middle">
                     <img
                       src="../../fotos/1002/logo.jpg"
                       width="70"
                       height="80"
                     />
-                  </td>
+                  </td>`
+                      : ''
+                  }
                   <td align="center" width="">
-                    <font size="4">
-                      INSTITUCIÓN EDUCATIVA GIMNASIO DEL SAN JORGE </font
+                    <font size="${report_options.headerTitleSize || 4}">
+                      ${institution.name} </font
                     ><br />
-                    <center>
+                  ${
+                    report_options.showHeaderSubtitle
+                      ? `
+                      <center>
                       Programa para el Desarrollo Integral de Niños y Niñas
                       <br />
                       CRA 24 Nº 20 - 65 Tel 2954011 San Marcos- Sucre
@@ -114,6 +125,9 @@ export function certifiedStudentTemplate(
                       <br />
                       <br />
                     </center>
+                    `
+                      : ''
+                  }
                   </td>
                 </tr>
               </tbody>
@@ -122,7 +136,9 @@ export function certifiedStudentTemplate(
             <center>C E R T I F I C A</center>
             <br /><br />
             <div align="justify">
-              Que el estudiante VERGARA VERGARA ALEXANDRA Cursó y
+              Que el estudiante ${student.last_name || ''} ${
+                student.first_name || ''
+              } Cursó y
               <b>aprobó</b> en este plantel el grado Quinto de educación básica
               primaria , durante el año lectivo 2022 respectivamente, con el
               resultado académico que se relaciona a continuación: <br /><br />
@@ -132,95 +148,105 @@ export function certifiedStudentTemplate(
                     <td>
                       <center><b>Asignatura</b></center>
                     </td>
+                    ${report_options.hour ? `<td>
+                      <center><b>H.S.</b></center> </td>` : ''}  
                     ${
-                      report_options.qualification_per1 &&
-                      `<td>
-                      Per.1
+                      report_options.qualification_per1
+                        ? `<td>
+                        <b>
+                          Per.1
+                        </b>
                       </td>`
+                        : ''
                     }
                       ${
-                        report_options.qualification_per2 &&
-                        `<td>
-                      Per.2
+                        report_options.qualification_per2
+                          ? `<td>
+                        <b>
+                          Per.2
+                        </b>
                       </td>`
+                          : ''
                       }
                       ${
-                        report_options.qualification_per3 &&
-                        `<td>
-                      Per.3
+                        report_options.qualification_per3
+                          ? `<td>
+                        <b>
+                          Per.3
+                        </b>
                       </td>`
+                          : ''
                       }
                       ${
-                        report_options.qualification_per4 &&
-                        `<td>
-                      Per.4
+                        report_options.qualification_per4
+                          ? `<td>
+                        <b>
+                          Per.4
+                        </b>
                       </td>`
+                          : ''
+                      }
+                      ${
+                        report_options.average_per
+                          ? `<td>
+                          <b>
+                            Promedio
+                          </b>
+                        </td>`
+                          : ''
+                      }
+                      ${
+                        report_options.qualification_per5
+                          ? `<td>
+                        <b>
+                          Per. Final
+                        </b>
+                      </td>`
+                          : ''
                       }
                   </tr>
-                  <tr>
-                    <td>Matemáticas</td>
-                    <td><center>&nbsp; ( 4.9 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Geometrìa</td>
-                    <td><center>&nbsp; ( 4.9 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Estadística</td>
-                    <td><center>&nbsp; ( 5 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Lengua Castellana</td>
-                    <td><center>&nbsp; ( 4.8 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Comprensión Lectora</td>
-                    <td><center>&nbsp; ( 4.8 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Ortografía Y Caligrafìa</td>
-                    <td><center>&nbsp; ( 4.8 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Inglès</td>
-                    <td><center>&nbsp; ( 5 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Ciencias Sociales</td>
-                    <td><center>&nbsp; ( 5 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Ciencias Naturales Y Edu. Ambiental</td>
-                    <td><center>&nbsp; ( 4.9 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Tecnologìa E Informàtica</td>
-                    <td><center>&nbsp; ( 5 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Educaciòn Ètica Y Valores Humanos</td>
-                    <td><center>&nbsp; ( 4.9 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Educaciòn Religiosa</td>
-                    <td><center>&nbsp; ( 4.9 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Educaciòn Artìstica</td>
-                    <td><center>&nbsp; ( 4.9 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Educ. Fìsica, Recreaciòn Y Deportes</td>
-                    <td><center>&nbsp; ( 4.5 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Conducta</td>
-                    <td><center>&nbsp; ( 5 )</center></td>
-                  </tr>
-                  <tr>
-                    <td>Disciplina</td>
-                    <td><center>&nbsp; ( 5 )</center></td>
-                  </tr>
+                    ${definitives
+                      .map((definitive) => {
+                        return `<tr><td>${definitive.course.name}</td>
+
+                        ${
+                          report_options.hour
+                            ? `<td><center>&nbsp; ${definitive.course.hour} </center></td>`
+                            : ''
+                        }
+                    ${
+                      report_options.qualification_per1
+                        ? `<td><center>&nbsp; ${definitive.score1} </center></td>`
+                        : ''
+                    }
+                    ${
+                      report_options.qualification_per2
+                        ? `<td><center>&nbsp; ${definitive.score2} </center></td>`
+                        : ''
+                    }
+                    ${
+                      report_options.qualification_per3
+                        ? `<td><center>&nbsp; ${definitive.score3} </center></td>`
+                        : ''
+                    }
+                    ${
+                      report_options.qualification_per4
+                        ? `<td><center>&nbsp; ${definitive.score4} </center></td>`
+                        : ''
+                    }
+                    ${
+                      report_options.average_per
+                        ? `<td><center>&nbsp; ( 4.9 )</center></td>`
+                        : ''
+                    }
+                    ${
+                      report_options.qualification_per5
+                        ? `<td><center>&nbsp; ${definitive.score5} </center></td>`
+                        : ''
+                    }
+                        </tr>`;
+                      })
+                      .join('')}
                 </tbody>
               </table>
               <br />
@@ -230,10 +256,30 @@ export function certifiedStudentTemplate(
             <table width="100%" border="0" cellpadding="3" cellspacing="0">
               <tbody>
                 <tr>
-                  <td align="center" width="33%">
-                    <hr style="width: 200" />
-                    <b>Glenis Pernett Martínez</b><br />Rector(a)
-                  </td>
+                  ${
+                    report_options?.signature?.professor_group
+                      ? `<td align="center" width="33%">
+                      <hr style="width: 200" />
+                      <b>Glenis Pernett Martínez</b><br />Rector(a)
+                    </td>`
+                      : ''
+                  }
+                  ${
+                    report_options?.signature?.secretary
+                      ? `<td align="center" width="33%">
+                      <hr style="width: 200" />
+                      <b>Glenis Pernett Martínez</b><br />Secretario(a)
+                    </td>`
+                      : ''
+                  }
+                  ${
+                    report_options?.signature?.professor_group
+                      ? `<td align="center" width="33%">
+                      <hr style="width: 200" />
+                      <b>Glenis Pernett Martínez</b><br />Profesor de grupo
+                    </td>`
+                      : ''
+                  }
                 </tr>
               </tbody>
             </table>
