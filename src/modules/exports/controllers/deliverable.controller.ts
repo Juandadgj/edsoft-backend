@@ -1,46 +1,82 @@
-import { Controller, Get, Body, Query, UseGuards, Post } from '@nestjs/common';
+import { Body, Controller, Post, Query, UseGuards } from '@nestjs/common';
 import { DeliverableService } from '../services/deliverable.service';
+import { GenerateDeliverableDto } from '../dto/deliverable.dto';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 import {
+  CertifiedStudentDictionary,
+  CertifiedStudentReportDto,
+  GenerateReportAreaDto,
   ReportDictionary,
 } from '../dto/deliverable.dto';
-import { InstitutionId } from 'src/common/decorators/institution-id.decorator';
-import { AuthGuard } from 'src/common/guards/auth.guard';
-import { CertifiedStudentDictionary, CertifiedStudentReportDto } from '../dto/deliverable.dto';
+import report from 'src/templates/spreadsheet/report';
 
+@Controller('reports/deliverables')
 @UseGuards(AuthGuard)
-@Controller('exports/deliverables')
 export class DeliverableController {
   constructor(private readonly deliverableService: DeliverableService) {}
 
-  @Get('student-definitives')
-  getStudentDefinitives(
-    @InstitutionId() id_institution: string,
-    @Query('id_student') id_student: number,
-    @Query('id_group') id_group: number,
-  ) {
-    return this.deliverableService.getStudentDefinitives(
-      id_student,
-      id_group,
-    );
+  @Post('configurable-reports')
+  async getConfigurableReports(
+    @Query() generateReportAreaDto: GenerateReportAreaDto,
+    @Body() dto: ReportDictionary,
+  ): Promise<any> {
+    const html = await this.deliverableService.getConfigurableReports(generateReportAreaDto, dto);
+    return { report_content: html };
   }
 
-  @Get('group-definitives')
-  getGroupDefinitives(
-    @InstitutionId() id_institution: string,
-    @Query('id_group') id_group: number,
-  ) {
-    return this.deliverableService.getGroupDefinitives(id_group);
+  @Post('general-grade')
+  async getGeneralGrade(@Query() dto: GenerateDeliverableDto): Promise<any> {
+    const html = await this.deliverableService.getGeneralGrade(dto);
+    return { report_content: html };
   }
 
-  @Post('certified-student')
-  CertifiedStudentReport(
-    @InstitutionId() id_institution: string,
+  @Post('grade-with-achievements')
+  async getGradeWithAchievements(
+    @Query() dto: GenerateDeliverableDto,
+  ): Promise<any> {
+    const html = await this.deliverableService.getGradeWithAchievements(dto);
+    return { report_content: html };
+  }
+
+  @Post('grade-with-indicators')
+  async getGradeWithIndicators(
+    @Query() dto: GenerateDeliverableDto,
+  ): Promise<any> {
+    const html = await this.deliverableService.getGradeWithIndicators(dto);
+    return { report_content: html };
+  }
+
+  @Post('numeric-alphabetic-all')
+  async getNumericAlphabeticAll(
+    @Query() dto: GenerateDeliverableDto,
+  ): Promise<any> {
+    const html = await this.deliverableService.getNumericAlphabeticAll(dto);
+    return { report_content: html };
+  }
+
+  @Post('numeric-alphabetic-marked')
+  async getNumericAlphabeticMarked(
+    @Query() dto: GenerateDeliverableDto,
+  ): Promise<any> {
+    const html = await this.deliverableService.getNumericAlphabeticMarked(dto);
+    return { report_content: html };
+  }
+
+  @Post('student-certificate')
+  async getStudentCertificate(
     @Query() certifiedStudentReportDto: CertifiedStudentReportDto,
-    @Body() certifiedStudentReportBodyDto?: CertifiedStudentDictionary,
-  ) {
-    return this.deliverableService.getStudentCertificate(
+    @Body() dto: CertifiedStudentDictionary,
+  ): Promise<any> {
+    const html = await this.deliverableService.getStudentCertificate(
       certifiedStudentReportDto,
-      certifiedStudentReportBodyDto,
+      dto,
     );
+    return { report_content: html };
+  }
+
+  @Post('student-id-card')
+  async getStudentIdCard(@Query() dto: GenerateDeliverableDto): Promise<any> {
+    const html = await this.deliverableService.getStudentIdCard(dto);
+    return { report_content: html };
   }
 }
