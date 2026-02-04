@@ -14,7 +14,7 @@ import { UserModule } from './modules/user/user.module';
 import { ScholarYearModule } from './modules/scholar-year/scholar-year.module';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import { TypeQualificationModule } from './modules/type-qualification/type-qualification.module';
-import { ReportModule } from './modules/report/report.module';
+import { ExportsModule } from './modules/exports/exports.module';
 import { PrismaClientModule } from './config/prisma-client.module';
 import { AwsModule } from './modules/aws/aws.module';
 
@@ -38,7 +38,7 @@ import { AwsModule } from './modules/aws/aws.module';
     TeacherModule,
     TypeQualificationModule,
     UserModule,
-    ReportModule,
+    ExportsModule,
     AwsModule,
   ],
   controllers: [AppController],

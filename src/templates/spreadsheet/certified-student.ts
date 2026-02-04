@@ -1,5 +1,5 @@
 import { institution } from '@prisma/client';
-import { CertifiedStudentDictionary } from 'src/modules/report/dto/report.dto';
+import { CertifiedStudentDictionary } from 'src/modules/exports/dto/certificate.dto';
 
 export function certifiedStudentTemplate(
   student,

@@ -3,7 +3,7 @@ ARG NODE_IMAGE=node:20.11.0-alpine
 FROM $NODE_IMAGE AS base
 RUN apk update && apk add --no-cache git
 RUN apk add --no-cache dumb-init
-RUN npm install --global prisma@4.9.0
+RUN npm install --global prisma@6.3.1
 RUN mkdir -p /usr/src/app && chown node:node /usr/src/app
 WORKDIR /usr/src/app
 RUN mkdir tmp
@@ -22,7 +22,7 @@ RUN yarn build
 FROM base AS production
 ENV PORT=80
 ENV HOST=0.0.0.0
-ENV DATABASE_URL=mysql://admin:SystemPlus2022@edsoft-dev.cbzj9vz5web2.us-east-1.rds.amazonaws.com:3306
+ENV DATABASE_URL=mysql://root:EdSoft2025*@ls-8fb7b28c83085f62d37bde4aca2e1d22085dbd5b.c7e0wko6uvjv.us-east-1.rds.amazonaws.com:3306
 ENV SECRET=HyvyyEjddJkQCihnrjNUD4iScqLhTDhJM8mAcrNG4UwN5YevkH
 COPY ./package*.json ./
 COPY ./src ./src

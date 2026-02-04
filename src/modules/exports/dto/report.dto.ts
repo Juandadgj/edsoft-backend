@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, IsBoolean, IsIn } from 'class-validator';
+import { IsInt, IsOptional, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class SignatureInput {
@@ -94,37 +94,7 @@ export class ReportDictionary {
 
 }
 
-export class GenerateStudentsListUndeterminatedDto {
-  @Type(() => Number)
-  @IsInt()
-  id_group: number;
-}
-
-export class GenerateStudentsListDeterminatedDto {
-  @Type(() => Number)
-  @IsInt()
-  id_course: number;
-
-  @Type(() => Number)
-  @IsInt()
-  id_group: number;
-}
-
-export class GenerateAchievementsAndIndicatorsDto {
-  @Type(() => Number)
-  @IsInt()
-  id_group: number;
-
-  @Type(() => Number)
-  @IsInt()
-  id_course: number;
-
-  @Type(() => Number)
-  @IsInt()
-  period: number;
-}
-
-export class GenerateReportAreaDto {
+export class ReportAreaDto {
   @Type(() => Number)
   @IsInt()
   id_group: number;
@@ -133,30 +103,4 @@ export class GenerateReportAreaDto {
   @IsInt()
   @IsOptional()
   id_student?: number;
-}
-
-export class GenerateStudentEnrollmentReportDto {
-  @Type(() => Number)
-  @IsInt()
-  id_student: number;
-
-  @Type(() => Number)
-  @IsInt()
-  id_year: number;
-}
-
-export class CertifiedStudentDictionary extends ReportDictionary {
-  @IsOptional()
-  gradeDisplayConfig?: string;
-}
-
-export class CertifiedStudentReportDto {
-  @Type(() => Number)
-  @IsInt()
-  id_student: number;
-
-  @Type(() => Number)
-  @IsInt()
-  id_group: number;
-
 }

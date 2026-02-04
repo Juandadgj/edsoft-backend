@@ -1,4 +1,4 @@
-import { ReportDictionary } from "src/modules/report/dto/report.dto";
+import { ReportDictionary } from "src/modules/exports/dto/report.dto";
 
 function report(group,data, report_options: ReportDictionary) {
   return `
