@@ -16,6 +16,7 @@ import { UpdateEnrollmentDto } from './dto/update-enrollment.dto';
 import { FilterEnrollmentDto } from './dto/filter-enrollment.dto';
 import { InstitutionId } from 'src/common/decorators/institution-id.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { StudentEnrollmentReportDto } from '../exports/dto/deliverable.dto';
 
 @UseGuards(AuthGuard)
 @Controller('enrollments')
@@ -60,5 +61,27 @@ export class EnrollmentController {
     @Param('id_enrollment', ParseIntPipe) id_enrollment: number,
   ) {
     return this.enrollmentService.delete(id_institution, id_enrollment);
+  }
+
+  @Get('student-enrollment-i')
+  StudentEnrollmentReportI(
+    @InstitutionId() id_institution: string,
+    @Query()
+    StudentEnrollmentReportDto: StudentEnrollmentReportDto,
+  ) {
+    return this.enrollmentService.StudentEnrollmentReportI(
+      StudentEnrollmentReportDto,
+    );
+  }
+
+  @Get('student-enrollment-ii')
+  StudentEnrollmentReportII(
+    @InstitutionId() id_institution: string,
+    @Query()
+    StudentEnrollmentReportDto: StudentEnrollmentReportDto,
+  ) {
+    return this.enrollmentService.StudentEnrollmentReportII(
+      StudentEnrollmentReportDto,
+    );
   }
 }

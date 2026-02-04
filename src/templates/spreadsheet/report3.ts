@@ -62,7 +62,9 @@ function report1(students, course) {
           <h3>Quinto 1 Mañana año 2023</h3>
         </header>
         <div class="signatures">
-          <h4>Nombre del docente: ${course.teacher.name} ${course.teacher.last_name}</h4>
+          <h4>Nombre del docente: ${course.teacher.name} ${
+            course.teacher.last_name
+          }</h4>
           <h4>Nombre de la asignatura: ${course.name}</h4>
         </div>
         <table>

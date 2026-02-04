@@ -1,12 +1,13 @@
-import { institution } from '@prisma/client';
-import { CertifiedStudentDictionary } from 'src/modules/exports/dto/certificate.dto';
+import { institution, student } from '@prisma/client';
+import { CertifiedStudentDictionary } from 'src/modules/exports/dto/deliverable.dto';
 
 export function certifiedStudentTemplate(
-  student,
+  student: Pick<student, 'name' | 'last_name' | 'identification' | 'type_id'>,
   definitives: any[],
   report_options: CertifiedStudentDictionary,
   institution: institution,
 ): string {
+  console.log(report_options);
   return `<html>
   <head>
     <style>
@@ -137,7 +138,7 @@ export function certifiedStudentTemplate(
             <br /><br />
             <div align="justify">
               Que el estudiante ${student.last_name || ''} ${
-                student.first_name || ''
+                student.name || ''
               } Cursó y
               <b>aprobó</b> en este plantel el grado Quinto de educación básica
               primaria , durante el año lectivo 2022 respectivamente, con el
@@ -148,8 +149,12 @@ export function certifiedStudentTemplate(
                     <td>
                       <center><b>Asignatura</b></center>
                     </td>
-                    ${report_options.hour ? `<td>
-                      <center><b>H.S.</b></center> </td>` : ''}  
+                    ${
+                      report_options.hour
+                        ? `<td>
+                      <center><b>H.S.</b></center> </td>`
+                        : ''
+                    }  
                     ${
                       report_options.qualification_per1
                         ? `<td>
@@ -257,7 +262,7 @@ export function certifiedStudentTemplate(
               <tbody>
                 <tr>
                   ${
-                    report_options?.signature?.professor_group
+                    report_options.showRectorSignature
                       ? `<td align="center" width="33%">
                       <hr style="width: 200" />
                       <b>Glenis Pernett Martínez</b><br />Rector(a)
@@ -265,7 +270,7 @@ export function certifiedStudentTemplate(
                       : ''
                   }
                   ${
-                    report_options?.signature?.secretary
+                    report_options.showSecretarySignature
                       ? `<td align="center" width="33%">
                       <hr style="width: 200" />
                       <b>Glenis Pernett Martínez</b><br />Secretario(a)
@@ -273,7 +278,7 @@ export function certifiedStudentTemplate(
                       : ''
                   }
                   ${
-                    report_options?.signature?.professor_group
+                    report_options.showGroupProfessorSignature
                       ? `<td align="center" width="33%">
                       <hr style="width: 200" />
                       <b>Glenis Pernett Martínez</b><br />Profesor de grupo

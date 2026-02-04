@@ -1,6 +1,6 @@
-import { ReportDictionary } from "src/modules/exports/dto/report.dto";
+import { ReportDictionary } from 'src/modules/exports/dto/deliverable.dto';
 
-function report(group,data, report_options: ReportDictionary) {
+function report(group, data, report_options: ReportDictionary) {
   return `
   <html lang="es">
   <head>
@@ -73,7 +73,9 @@ function report(group,data, report_options: ReportDictionary) {
         <tbody class="table_header">
           <tr>
             <td>Est: <b>${data.student}</b></td>
-            <td>Grado: <b>${group.level}-${group.sublevel} ${group.working_time}</b></td>
+            <td>Grado: <b>${group.level}-${group.sublevel} ${
+              group.working_time
+            }</b></td>
             <td>Per: <b>1 año 2023</b></td>
             <td>Usuario: <b>e2651658465164</b></td>
           </tr>
@@ -82,34 +84,51 @@ function report(group,data, report_options: ReportDictionary) {
       <table border="0" cellpadding="3" cellspacing="0" style="border: none;">
         <tbody class="table_header">
           <tr>
-          ${report_options.average_general ? `
+          ${
+            report_options.average_general
+              ? `
           <td>
           <p>Promedio: <b>${data.average}</b></p>
           </td>
-          ` : ``}
-          ${report_options.average_group ? `
+          `
+              : ``
+          }
+          ${
+            report_options.average_group
+              ? `
           <td>
           <p>Promedio del curso: <b>5</b></p>
           </td>
-          ` : ``}
-          ${report_options.position ? `
+          `
+              : ``
+          }
+          ${
+            report_options.position
+              ? `
           <td>
           <p>Puesto en el curso: <b>${data.position}</b></p>
           </td>
-          `: ``}
+          `
+              : ``
+          }
           <td>Puesto en el curso: <b>13</b></td>
           </tr>
         <tbody>
       </table>
       <div></div>
       <br />
-      ${data.courses.map((course) => `
+      ${data.courses.map(
+        (course) => `
       <table style="margin-top: 10px; margin-bottom: 10px">
         <tr>
           <td>Area: <b>Ciencias Naturales y educacion Ambiental</b></td>
-          ${report_options.average_area ? `
+          ${
+            report_options.average_area
+              ? `
           <td>Promedio: <b>Alto (4)</b></td>
-          ` : ``}
+          `
+              : ``
+          }
         </tr>
       </table>
       <table>
@@ -118,17 +137,29 @@ function report(group,data, report_options: ReportDictionary) {
             Asig:
             <b> ${course.name}</b>
           </th>
-          ${report_options.professor_course ? `
+          ${
+            report_options.professor_course
+              ? `
           <td>
             Doc: <b>${course.teacher}</b>
           </td>
-          ` : ``}
+          `
+              : ``
+          }
           <td width="20%">CG: <b>Alto ( 4 )</b></td>
-          ${report_options.absences ? `
+          ${
+            report_options.absences
+              ? `
           <td width="15%">Fallas: <b>0</b></td>
-          ` : ``} ${report_options.hour ? `
+          `
+              : ``
+          } ${
+            report_options.hour
+              ? `
           <td width="10%">I.H: <b>${course.hour}</b></td>
-          ` : ``}
+          `
+              : ``
+          }
         </tr>
       </table>
       <div
@@ -150,7 +181,9 @@ function report(group,data, report_options: ReportDictionary) {
         </div>
       </div>
       <table>
-        ${report_options.all_qualifications ? `
+        ${
+          report_options.all_qualifications
+            ? `
         <tr>
           <td><b>Todos los periodos</b></td>
           <td>Per.1 : <b>${course.score1 ? course.score1 : '-'}</b></td>
@@ -159,23 +192,46 @@ function report(group,data, report_options: ReportDictionary) {
           <td>Per.4 : <b>${course.score4 ? course.score4 : '-'}</b></td>
           <td>Promedio : <b>4</b></td>
         </tr>
-        ` : `
+        `
+            : `
         <tr>
-          ${report_options.qualification_per1 ? `
+          ${
+            report_options.qualification_per1
+              ? `
           <td>Per.1 : <b>${course.score1 ? course.score1 : '-'}</b></td>
-          ` : ``} ${report_options.qualification_per2 ? `
+          `
+              : ``
+          } ${
+            report_options.qualification_per2
+              ? `
           <td>Per.2 : <b>${course.score2 ? course.score2 : '-'}</b></td>
-          ` : ``} ${report_options.qualification_per3 ? `
+          `
+              : ``
+          } ${
+            report_options.qualification_per3
+              ? `
           <td>Per.3 : <b>${course.score3 ? course.score3 : '-'}</b></td>
-          ` : ``} ${report_options.qualification_per4 ? `
+          `
+              : ``
+          } ${
+            report_options.qualification_per4
+              ? `
           <td>Per.4 : <b>${course.score4 ? course.score4 : '-'}</b></td>
-          ` : ``} ${report_options.average_per ? `
+          `
+              : ``
+          } ${
+            report_options.average_per
+              ? `
           <td>Promedio : <b>4</b></td>
-          ` : ``}
+          `
+              : ``
+          }
         </tr>
-        ` }
+        `
+        }
       </table>
-      `,)}
+      `,
+      )}
       <div
         style="
           width: 650px;
@@ -198,25 +254,37 @@ function report(group,data, report_options: ReportDictionary) {
           margin-right: auto;
         "
       >
-        ${report_options.signature?.rector ? `
+        ${
+          report_options.showRectorSignature
+            ? `
         <div style="width: 33%; text-align: center; margin-inline: 10px">
           <hr />
           <p><b>Hoyos Yepes Olga Ines</b></p>
           <p>Rector</p>
         </div>
-        ` : ``} ${report_options.signature?.secretary ? `
+        `
+            : ``
+        } ${
+          report_options.showSecretarySignature
+            ? `
         <div style="width: 33%; text-align: center; margin-inline: 10px">
           <hr />
           <p><b>Hoyos Yepes Olga Ines</b></p>
           <p>Secretario(a)</p>
         </div>
-        ` : ``} ${report_options.signature?.professor_group ? `
+        `
+            : ``
+        } ${
+          report_options.showGroupProfessorSignature
+            ? `
         <div style="width: 33%; text-align: center; margin-inline: 10px">
           <hr />
           <p><b>Hoyos Yepes Olga Ines</b></p>
           <p>Profesor de grupo</p>
         </div>
-        ` : ``}
+        `
+            : ``
+        }
       </div>
     </div>
   </body>
